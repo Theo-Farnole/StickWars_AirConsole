@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea8a57f3e921f84886256d451786c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerId: 0
-  _speed: 7
+  _playerId: 1
+  _speed: 800
   _jumpForce: 350
   _damageTackle: 3
   _spriteRenderer: {fileID: 3867000743271930268}
