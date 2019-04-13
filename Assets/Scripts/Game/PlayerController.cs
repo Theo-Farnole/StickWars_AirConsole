@@ -87,9 +87,6 @@ public class PlayerController : MonoBehaviour
         // inputs
         ManageInput();
 
-        // collisions
-        //UpdateCollisions();
-
         // update gravity scalvoid
         
         _rb.gravityScale = _isStick ? _stickGravityModifier : 1f;        
@@ -147,6 +144,13 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetKey(_controls.Left) ? horizontal - 1 : horizontal;
         horizontal = Input.GetKey(_controls.Right) ? horizontal + 1 : horizontal;
 
+        // override horizontal if he's talcking
+        if (_isTackling)
+        {
+            // horizontal in function of flipX
+            horizontal = (_spriteRenderer.flipX ? -1 : 1); 
+        }
+
         // ... added to velocity
         if (!_isStick || (horizontal < 0 && _collision.left == false) || (horizontal > 0 && _collision.right == false))
         {
@@ -168,9 +172,9 @@ public class PlayerController : MonoBehaviour
 
     void ManageInput()
     {
-        _isTackling = Input.GetKey(KeyCode.S);
+        _isTackling = Input.GetKey(_controls.Tackle);
 
-        if (Input.GetKeyDown(KeyCode.Z) && (_isGrounded || _isStick))
+        if (Input.GetKeyDown(_controls.Jump) && (_isGrounded || _isStick))
         {
             Jump();
         }
