@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
 
+    private PlayerControls _controls;
+
     private bool _isGrounded = false;
     private bool _isTackling = false;
 
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _spriteRenderer.color = _playerId.ToColor();
+        _controls = _playerId.ToControls();
 
         _hashJump = Animator.StringToHash("jump");
         _hashRunning = Animator.StringToHash("running");
@@ -37,25 +40,29 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        var horizontal = Input.GetAxisRaw("Horizontal");
+        int horizontal = 0;
+        
+        horizontal = Input.GetKey(_controls.Left) ?  horizontal-1 : horizontal;
+        horizontal = Input.GetKey(_controls.Right) ? horizontal+1 : horizontal;
 
         transform.position += horizontal * _speed * Vector3.right * Time.deltaTime;
         transform.localScale = new Vector2(Mathf.Sign(horizontal), 1); // to face the direction
 
         CheckIsGrounded();
         ManageInput();
-    
+
         // update Animator
         _animator.SetBool(_hashRunning, (horizontal != 0));
         _animator.SetBool(_hashJump, !_isGrounded);
+        _animator.SetBool(_hashTackle, _isTackling);
     }
 
     #region OnCollision callbacks
-    void OnCollisionEnter2D(Collision2D hit)
+    private void OnTriggerEnter2D(Collider2D hit)
     {
         Entity ent = hit.gameObject.GetComponent<Entity>();
 
-        if (ent != null)
+        if (ent != null && _isTackling)
         {
             ent.GetDamage(_damageTackle);
         }
@@ -66,9 +73,7 @@ public class PlayerController : MonoBehaviour
     #region Inputs
     void ManageInput()
     {
-        _isTackling = Input.GetKey(KeyCode.S); 
-        _animator.SetBool(_hashTackle, _isTackling);
-        
+        _isTackling = Input.GetKey(KeyCode.S);
 
         if (Input.GetKeyDown(KeyCode.Z) && _isGrounded)
         {
@@ -87,11 +92,11 @@ public class PlayerController : MonoBehaviour
 
     void CheckIsGrounded()
     {
-        var min = GetComponent<BoxCollider2D>().bounds.min;
+        Vector3 raycastPosition = new Vector3(GetComponent<BoxCollider2D>().bounds.center.x, GetComponent<BoxCollider2D>().bounds.min.y - 0.05f, 0f);
 
-        RaycastHit2D hit2D = Physics2D.Raycast(min, Vector2.down, 0.1f);
+        RaycastHit2D hit2D = Physics2D.Raycast(raycastPosition, Vector2.down, 0.05f);
         _isGrounded = hit2D;
 
-        Debug.DrawLine(min, min + Vector3.down * 0.1f, _playerId.ToColor());
+        Debug.DrawLine(raycastPosition, raycastPosition + Vector3.down * 0.05f, _playerId.ToColor());
     }
 }

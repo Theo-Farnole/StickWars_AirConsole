@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3867000743114586796}
   - component: {fileID: 3867000743114586799}
   - component: {fileID: 3867000743114586798}
-  m_Layer: 0
+  - component: {fileID: 2045191749}
+  m_Layer: 9
   m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,9 +50,9 @@ MonoBehaviour:
   _playerId: 0
   _speed: 7
   _jumpForce: 350
-  _damageFistAttack: 3
-  hitBoxFistAttack: {fileID: 0}
+  _damageTackle: 3
   _spriteRenderer: {fileID: 3867000743271930268}
+  _animator: {fileID: 3867000743271930271}
 --- !u!50 &3867000743114586799
 Rigidbody2D:
   serializedVersion: 4
@@ -72,7 +73,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &3867000743114586798
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -99,6 +100,32 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.59927344, y: 1.47}
   m_EdgeRadius: 0
+--- !u!61 &2045191749
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3867000743114586834}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.06756151, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.29, y: 1.47}
+    newSize: {x: 5.29, y: 1.47}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.59927344, y: 1.47}
+  m_EdgeRadius: 0
 --- !u!1 &3867000743271930269
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +137,7 @@ GameObject:
   - component: {fileID: 3867000743271930270}
   - component: {fileID: 3867000743271930268}
   - component: {fileID: 3867000743271930271}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +216,7 @@ Animator:
   m_GameObject: {fileID: 3867000743271930269}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 05fb4e1b27df497498126de471e85336, type: 2}
+  m_Controller: {fileID: 9100000, guid: d0b81255d47ab6f41afd6fdb8e5bc501, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
