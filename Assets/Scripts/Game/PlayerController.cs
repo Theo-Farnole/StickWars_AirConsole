@@ -11,13 +11,7 @@ public class PlayerController : MonoBehaviour
     #region serialized variables
     [SerializeField] private PlayerID _playerId;
     [Space]
-    [Header("Movements")]
-    [SerializeField] private float _speed = 3;
-    [SerializeField] private float _jumpForce = 500;
-    [Range(0f, 1f)]
-    [SerializeField] private float _stickGravityModifier = 0.3f;
-    [Header("Attack")]
-    [SerializeField] private int _damageTackle = 3;
+    [SerializeField] private PlayerControllerData _data;
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
@@ -81,15 +75,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // horizontal input...
-        int horizontal = Move();
+        // horizontal input
+        int horizontal = HorizontalMove();
+        float vertical = VerticalMove();
 
         // inputs
         ManageInput();
 
-        // update gravity scalvoid
-        
-        _rb.gravityScale = _isStick ? _stickGravityModifier : 1f;        
+        // update gravity scale
+        _rb.gravityScale = _isStick ? 0f : 1f;
+        _rb.velocity = _isStick ? Vector2.zero : _rb.velocity;
 
         // update Animator
         _animator.SetBool(_hashWallSliding, _isStick);
@@ -125,7 +120,7 @@ public class PlayerController : MonoBehaviour
 
         if (ent != null && _isTackling)
         {
-            ent.GetDamage(_damageTackle);
+            ent.GetDamage(_data.DamageTackle);
         }
     }
     #endregion
@@ -136,7 +131,7 @@ public class PlayerController : MonoBehaviour
     /// Move the player by using it Rigidbody2D's velocity.
     /// </summary>
     /// <returns>horizontal axis</returns>
-    int Move()
+    int HorizontalMove()
     {
         // horizontal input...
         int horizontal = 0;
@@ -154,11 +149,9 @@ public class PlayerController : MonoBehaviour
         // ... added to velocity
         if (!_isStick || (horizontal < 0 && _collision.left == false) || (horizontal > 0 && _collision.right == false))
         {
-            float delta = horizontal * _speed * Time.deltaTime;
+            float delta = horizontal * _data.Speed * Time.deltaTime;
 
-            Vector3 vel = _rb.velocity;
-            vel.x = delta;
-            _rb.velocity = vel;
+            transform.position += Vector3.right * delta;
         }
 
         // ... modify face of the sprite
@@ -168,6 +161,20 @@ public class PlayerController : MonoBehaviour
         }
 
         return horizontal;
+    }
+
+    float VerticalMove()
+    {
+        float vertical = 0f;
+
+        if (_isStick)
+        {
+            vertical = _data.SlidingDownSpeed;
+        }
+
+        transform.position += Vector3.down * vertical * Time.deltaTime;
+
+        return vertical;
     }
 
     void ManageInput()
@@ -185,7 +192,7 @@ public class PlayerController : MonoBehaviour
         _isGrounded = false;
 
         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
-        GetComponent<Rigidbody2D>().AddForce(Vector2.up * _jumpForce);
+        GetComponent<Rigidbody2D>().AddForce(Vector2.up * _data.JumpForce);
     }
 
     void UpdateCollisions()

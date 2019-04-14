@@ -48,9 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerId: 1
-  _speed: 800
-  _jumpForce: 350
-  _damageTackle: 3
+  _data: {fileID: 11400000, guid: 6a1d6a54f4485c34cafba676dbf12d0d, type: 2}
   _spriteRenderer: {fileID: 3867000743271930268}
   _animator: {fileID: 3867000743271930271}
 --- !u!50 &3867000743114586799
