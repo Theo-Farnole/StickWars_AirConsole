@@ -1,0 +1,9 @@
+version: 2
+importPivots: 1
+tpsheetFileNames:
+- Assets/Sprites/stickman/stickman_data.tpsheet
+textureFileNames:
+- Assets/Sprites/stickman/stickman_tex.png
+normalmapFileNames:
+- 
+enableDebugOutput: 0
