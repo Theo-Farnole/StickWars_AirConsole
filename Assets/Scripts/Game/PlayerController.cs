@@ -75,9 +75,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // horizontal input
+        // horizontal & verticals input
         int horizontal = HorizontalMove();
         float vertical = VerticalMove();
+
+        // update isGrounded var
+        _isGrounded = _collision.down;
 
         // inputs
         ManageInput();
@@ -185,6 +188,16 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        if (!_isGrounded && (_collision.left && Input.GetKeyDown(_controls.Left)) ||
+                            (_collision.right && Input.GetKeyDown(_controls.Right)))
+        {
+            _isStick = true;
+        }
+        else
+        {
+            _isStick = false;
+        }
     }
 
     void Jump()
@@ -234,14 +247,6 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         Debug.Log( _collision.ToString());
-
-        _isGrounded = _collision.down;
-        _isStick = !_collision.down && (_collision.left || _collision.right);
-
-        if (_isStick)
-        {
-            Debug.Log("Sticked!");
-        }
     }
     #endregion
 }
