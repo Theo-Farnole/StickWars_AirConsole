@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718d9fb26a1122540a7810c9c9d406ab, type: 3}
   m_Name: PlayerController
   m_EditorClassIdentifier: 
-  _speed: 8
+  _speed: 800
   _jumpForce: 300
-  _slidingDownSpeed: 1.5
+  _slidingDownSpeed: 500
   _damageTackle: 3
