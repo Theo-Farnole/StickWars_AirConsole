@@ -18,9 +18,10 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region internals variables
+    const int MAX_JUMPS_COUNT = 2;
     class PlayerCollision
     {
-        private const string FORMAT = "^: {0}, v {1} \n {2} < > {3}";
+        const string FORMAT = "^: {0}, v {1} \n {2} < > {3}";
 
         public bool left = false;
         public bool right = false;
@@ -45,15 +46,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    int _horizontal = 0;
+
     private PlayerControls _controls;
     private PlayerCollision _collision;
     private bool _isGrounded = false;
     private bool _isTackling = false;
     private bool _isStick = false;
+    private int _jumpsCount = 0;
 
     // caching variables
     private int _hashAttack, _hashJump, _hashRunning, _hashTackle, _hashWallSliding;
     private Rigidbody2D _rb;
+    private Vector3 _velocity = Vector3.zero;
     #endregion
     #endregion
 
@@ -75,25 +80,34 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // horizontal & verticals input
-        int horizontal = HorizontalMove();
-        float vertical = VerticalMove();
+        // inputs
+        ManageInput();
 
         // update isGrounded var
         _isGrounded = _collision.down;
 
-        // inputs
-        ManageInput();
+        // reset jump count ?
+        if (_isGrounded)
+        {
+            _jumpsCount = 0;
+        }
+    }
 
-        // update gravity scale
-        _rb.gravityScale = _isStick ? 0f : 1f;
-        _rb.velocity = _isStick ? Vector2.zero : _rb.velocity;
-
-        // update Animator
+    // update Animator state
+    void LateUpdate()
+    {
         _animator.SetBool(_hashWallSliding, _isStick);
-        _animator.SetBool(_hashRunning, (horizontal != 0));
+        _animator.SetBool(_hashRunning, (_horizontal != 0));
         _animator.SetBool(_hashJump, !_isGrounded);
         _animator.SetBool(_hashTackle, _isTackling);
+    }
+
+    // update Rigidbody2D force
+    void FixedUpdate()
+    {
+        // movement
+        HorizontalMove();
+        VerticalMove();
     }
     #endregion
 
@@ -129,70 +143,39 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Update Functions
-
-    /// <summary>
-    /// Move the player by using it Rigidbody2D's velocity.
-    /// </summary>
-    /// <returns>horizontal axis</returns>
-    int HorizontalMove()
-    {
-        // horizontal input...
-        int horizontal = 0;
-
-        horizontal = Input.GetKey(_controls.Left) ? horizontal - 1 : horizontal;
-        horizontal = Input.GetKey(_controls.Right) ? horizontal + 1 : horizontal;
-
-        // override horizontal if he's talcking
-        if (_isTackling)
-        {
-            // horizontal in function of flipX
-            horizontal = (_spriteRenderer.flipX ? -1 : 1); 
-        }
-
-        // ... added to velocity
-        if (!_isStick || (horizontal < 0 && _collision.left == false) || (horizontal > 0 && _collision.right == false))
-        {
-            float delta = horizontal * _data.Speed * Time.deltaTime;
-
-            transform.position += Vector3.right * delta;
-        }
-
-        // ... modify face of the sprite
-        if (horizontal != 0)
-        {
-            _spriteRenderer.flipX = (horizontal < 0) ? true : false;
-        }
-
-        return horizontal;
-    }
-
-    float VerticalMove()
-    {
-        float vertical = 0f;
-
-        if (_isStick)
-        {
-            vertical = _data.SlidingDownSpeed;
-        }
-
-        transform.position += Vector3.down * vertical * Time.deltaTime;
-
-        return vertical;
-    }
-
     void ManageInput()
     {
         _isTackling = Input.GetKey(_controls.Tackle);
 
-        if (Input.GetKeyDown(_controls.Jump) && (_isGrounded || _isStick))
+        // jump
+        if (Input.GetKeyDown(_controls.Jump) && _jumpsCount < MAX_JUMPS_COUNT)
         {
             Jump();
         }
 
-        if (!_isGrounded && (_collision.left && Input.GetKeyDown(_controls.Left)) ||
-                            (_collision.right && Input.GetKeyDown(_controls.Right)))
+        // horizontal input
+        _horizontal = 0;
+
+        if (Input.GetKey(_controls.Left))
+        {
+            _horizontal--;
+        }
+        if (Input.GetKey(_controls.Right))
+        {
+            _horizontal++;
+        }
+
+        // is sticked ?
+        if (_horizontal < 0)
+        {
+            Debug.Log("stick ? " + _collision.ToString());
+        }
+
+        if (!_isGrounded && (_collision.left  && _horizontal < 0) ||
+                            (_collision.right && _horizontal > 0))
         {
             _isStick = true;
+            _jumpsCount = 0;
         }
         else
         {
@@ -200,13 +183,54 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void HorizontalMove()
+    {
+        // ... override horizontal if he's talcking ...
+        if (_isTackling)
+        {
+            // horizontal in function of flipX
+            _horizontal = (_spriteRenderer.flipX ? -1 : 1); 
+        }
+
+        // ... added to velocity ...
+        if (!_isStick || (_horizontal < 0 && _collision.left == false) || (_horizontal > 0 && _collision.right == false))
+        {
+            _rb.velocity = new Vector2(_data.Speed * _horizontal, _rb.velocity.y);
+        }
+        else
+        {
+            _rb.velocity = new Vector2(0, _rb.velocity.y);
+        }
+
+        // ... modify face of the sprite
+        if (_horizontal != 0)
+        {
+            _spriteRenderer.flipX = (_horizontal < 0) ? true : false;
+        }
+    }
+
+    void VerticalMove()
+    {
+        if (_isStick)
+        {
+            _rb.velocity = new Vector2(_rb.velocity.x, _data.SlidingDownSpeed);
+            _rb.gravityScale = 0;
+        }
+        else
+        {
+            _rb.gravityScale = 1;
+        }
+    }
+
     void Jump()
     {
+        _jumpsCount++;
         _isGrounded = false;
 
         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
         GetComponent<Rigidbody2D>().AddForce(Vector2.up * _data.JumpForce);
     }
+    #endregion
 
     void UpdateCollisions()
     {
@@ -248,5 +272,4 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log( _collision.ToString());
     }
-    #endregion
 }
