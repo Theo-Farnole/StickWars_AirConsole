@@ -114,6 +114,8 @@ public class PlayerController : MonoBehaviour
     #region OnCollision callbacks
     void OnCollisionEnter2D(Collision2D collision)
     {
+        // ===
+        // sticking system
         bool isStickOld = _isStick;
 
         UpdateCollisions();    
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         UpdateCollisions();
     }
@@ -137,12 +139,13 @@ public class PlayerController : MonoBehaviour
 
         if (ent != null && _isTackling)
         {
+            Debug.Log("<color=green>" + transform.name + "</color> hit with <color=red>" + hit.transform.name + "</color>");
             ent.GetDamage(_data.DamageTackle);
         }
     }
     #endregion
 
-    #region Update Functions
+    #region Update Methods
     void ManageInput()
     {
         _isTackling = Input.GetKey(_controls.Tackle);
@@ -163,12 +166,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(_controls.Right))
         {
             _horizontal++;
-        }
-
-        // is sticked ?
-        if (_horizontal < 0)
-        {
-            Debug.Log("stick ? " + _collision.ToString());
         }
 
         if (!_isGrounded && (_collision.left  && _horizontal < 0) ||
@@ -236,7 +233,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 raycastPosition;
         RaycastHit2D hit2D;
-        int layerMask = ~LayerMask.GetMask("Entity");
+        int layerMask = ~LayerMask.GetMask("Entity", "Ignore Cdollision");
 
         #region UP
         raycastPosition = new Vector3(GetComponent<BoxCollider2D>().bounds.center.x, GetComponent<BoxCollider2D>().bounds.max.y, 0f);
@@ -270,6 +267,6 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(raycastPosition, raycastPosition + Vector3.down * 0.05f, _playerId.ToColor());
         #endregion
 
-        Debug.Log( _collision.ToString());
+        //Debug.Log( _collision.ToString());
     }
 }
