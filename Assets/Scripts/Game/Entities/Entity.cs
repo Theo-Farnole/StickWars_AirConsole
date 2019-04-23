@@ -40,7 +40,7 @@ public class Entity : MonoBehaviour
      */
     virtual public void GetDamage(int damage)
     {
-        Debug.Log(transform.name + " a reçu " + damage);
+        Debug.Log("<color=green>" + transform.name + "</color> a reçu <color=red>" + damage + " damages.</color>");
 
         _hp -= damage;
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
