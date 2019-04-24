@@ -133,13 +133,13 @@ public class PlayerController : MonoBehaviour
         UpdateCollisions();
     }
 
-    void OnTriggerEnter2D(Collider2D hit)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Entity ent = hit.gameObject.GetComponent<Entity>();
+        Entity ent = other.gameObject.GetComponent<Entity>();
 
         if (ent != null && _isTackling)
         {
-            Debug.Log("<color=green>" + transform.name + "</color> hit with <color=red>" + hit.transform.name + "</color>");
+            Debug.Log("<color=green>" + transform.name + "</color> hit with <color=red>" + other.transform.name + "</color> + other.collider.IsTrigger? " + other.isTrigger);
             ent.GetDamage(_data.DamageTackle);
         }
     }
@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 raycastPosition;
         RaycastHit2D hit2D;
-        int layerMask = ~LayerMask.GetMask("Entity", "Ignore Cdollision");
+        int layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision");
 
         #region UP
         raycastPosition = new Vector3(GetComponent<BoxCollider2D>().bounds.center.x, GetComponent<BoxCollider2D>().bounds.max.y, 0f);
