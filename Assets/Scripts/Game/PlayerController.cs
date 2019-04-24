@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     #region internals variables
     const int MAX_JUMPS_COUNT = 2;
+    const float TACKLE_DURATION = 1.1f / 2f;
     class PlayerCollision
     {
         const string FORMAT = "^: {0}, v {1} \n {2} < > {3}";
@@ -135,6 +137,11 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (transform.name == "player blue")
+        {
+            Debug.Log("OnTriggerEnter2D with " + other.transform.name);
+        }
+
         Entity ent = other.gameObject.GetComponent<Entity>();
 
         if (ent != null && _isTackling)
@@ -148,10 +155,21 @@ public class PlayerController : MonoBehaviour
     #region Update Methods
     void ManageInput()
     {
-        _isTackling = Input.GetKey(_controls.Tackle);
+        // tackle system
+        //_isTackling = Input.GetKey(_controls.Tackle);
+
+        if (Input.GetKeyDown(_controls.Tackle))
+        {
+            _isTackling = true;
+
+            StartCoroutine(ExecuteAfterTime(TACKLE_DURATION, () =>
+            {
+                _isTackling = false;
+            }));
+        }
 
         // jump
-        if (Input.GetKeyDown(_controls.Jump) && _jumpsCount < MAX_JUMPS_COUNT)
+        if (Input.GetKeyDown(_controls.Jump) && !_isTackling && _jumpsCount < MAX_JUMPS_COUNT)
         {
             Jump();
         }
@@ -168,6 +186,7 @@ public class PlayerController : MonoBehaviour
             _horizontal++;
         }
 
+        // sticking system
         if (!_isGrounded && (_collision.left  && _horizontal < 0) ||
                             (_collision.right && _horizontal > 0))
         {
@@ -268,5 +287,12 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         //Debug.Log( _collision.ToString());
+    }
+
+    IEnumerator ExecuteAfterTime(float time, Action task)
+    {
+        yield return new WaitForSeconds(time);
+
+        task();
     }
 }
