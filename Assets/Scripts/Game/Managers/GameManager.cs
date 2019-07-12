@@ -17,67 +17,48 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         AirConsole.instance.onMessage += OnMessage;
-        AirConsole.instance.onConnect += OnConnect;
-        AirConsole.instance.onDisconnect += OnDisconnect;
     }
 
-    void OnConnect(int device_id)
+    void Start()
     {
-        if (AirConsole.instance.GetActivePlayerDeviceIds.Count < 4)
+        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
+        AirConsole.instance.SetActivePlayers(devicesIds.Count);
+
+        for (int i = 0; i < devicesIds.Count; i++)
         {
-            var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
+            int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(devicesIds[i]);
 
             var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
-            player.playerId = (CharID)activePlayers;
-            _characters[activePlayers] = player;
-
-            activePlayers++;
-            AirConsole.instance.SetActivePlayers(activePlayers);
+            player.playerId = (CharID)playerNumber;
+            _characters[playerNumber] = player;
         }
     }
 
     void OnMessage(int device_id, JToken data)
     {
-        int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
+        int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
 
-        if (active_player != -1)
+        if (playerNumber == -1)
+            return;
+
+        var player = _characters[playerNumber];
+
+        if (player == null || data == null)
+            return;
+
+        if (data["horizontal"] != null)
         {
-            Debug.Log("OnMessge! from " + active_player);
-            var player = _characters[active_player];
-
-            if (player == null)
-                return;
-
-            if (data["horizontal"] != null)
-            {
-                player.Horizontal = (float)data["horizontal"];
-            }
-
-            if (data["bPressed"] != null)
-            {
-                player.TacklePressed = (bool)data["bPressed"];
-            }
-
-            if (data["aPressed"] != null)
-            {
-                player.JumpPressed = (bool)data["aPressed"];
-            }
+            player.Horizontal = (float)data["horizontal"];
         }
-    }
 
-    void OnDisconnect(int device_id)
-    {
-        int active_player = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-        if (active_player != -1)
+        if (data["bPressed"] != null)
         {
-            if (AirConsole.instance.GetControllerDeviceIds().Count >= 2)
-            {
-            }
-            else
-            {
-                AirConsole.instance.SetActivePlayers(0);
+            player.TacklePressed = (bool)data["bPressed"];
+        }
 
-            }
+        if (data["aPressed"] != null)
+        {
+            player.JumpPressed = (bool)data["aPressed"];
         }
     }
 

@@ -55,4 +55,9 @@ public class LevelSelector : Singleton<LevelSelector>
         _leftImageLevel.sprite = _levels[leftIndex].sprite;
         _rightImageLevel.sprite = _levels[rightIndex].sprite;
     }
+
+    public LevelData GetSelectedLevelData()
+    {
+        return _levels[_selectedLevel];
+    }
 }

@@ -4,11 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    public readonly static float CHANGE_LEVEL_TIME_DELAY = 0.5f;
+    public readonly static float CHANGE_LEVEL_TIME_DELAY = 0.3f;
 
     #region Fields
     [Header("Players' Avatar")]
@@ -36,13 +37,20 @@ public class MenuManager : MonoBehaviour
             });
         }
     }
+
+    void OnDestroy()
+    {
+        AirConsole.instance.onMessage -= OnMessage;
+        AirConsole.instance.onConnect -= OnConnect;
+        AirConsole.instance.onDisconnect -= OnDisconnect;
+    }
     #endregion
 
     void OnMessage(int device_id, JToken data)
     {
         if (device_id == AirConsole.instance.GetMasterControllerDeviceId())
         {
-            if (_canChangeLevel)
+            if (_canChangeLevel && data["horizontal"] != null)
             {
                 LevelSelector.Instance.SelectedLevel += (int)data["horizontal"];
 
@@ -50,11 +58,14 @@ public class MenuManager : MonoBehaviour
 
                 this.ExecuteAfterTime(CHANGE_LEVEL_TIME_DELAY, () =>
                 {
-                    _canChangeLevel = false;
+                    _canChangeLevel = true;
                 });
             }
 
-            //if ((int)data["move"];)
+            if (data["aPressed"] != null && (bool)data["aPressed"])
+            {
+                SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
+            }
         }
     }
 
@@ -64,6 +75,8 @@ public class MenuManager : MonoBehaviour
         Debug.Log("On connect!");
 
         var playerAvatarIndex = AirConsole.instance.GetControllerDeviceIds().Count - 1;
+
+        Debug.Log("playerAvatarIndex " + playerAvatarIndex);
 
         _playersAvatar[playerAvatarIndex].transform.ActionForEachChildren((GameObject c) =>
         {
@@ -89,4 +102,5 @@ public class MenuManager : MonoBehaviour
     {
         Debug.LogError("OnDisconnect not implemented");
     }
+
 }

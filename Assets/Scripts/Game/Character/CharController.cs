@@ -120,6 +120,7 @@ public class CharController : MonoBehaviour
             this.ExecuteAfterTime(TACKLE_DURATION, () =>
             {
                 _tacklePressed = false;
+                _horizontal = 0;
             });
         }
     }
