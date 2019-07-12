@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class CharController : MonoBehaviour
 {
-    #region Classes
+    #region Classes & Struct
     [System.Serializable]
     class PlayerCollision
     {
@@ -36,6 +36,21 @@ public class CharController : MonoBehaviour
             return string.Format(FORMAT, up, down, left, right);
         }
     }
+
+    [System.Serializable]
+    public struct PlayerInput
+    {
+        public bool tacklePressed;
+        public float horizontalInput;
+        public bool jumpPressed;
+
+        public PlayerInput(float horizontalInput = 0, bool jumpPressed = false, bool tacklePressed = false)
+        {
+            this.horizontalInput = horizontalInput;
+            this.jumpPressed = jumpPressed;
+            this.tacklePressed = tacklePressed;
+        }
+    }
     #endregion
 
     #region Fields
@@ -46,7 +61,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region serialized variables
-    [SerializeField] private CharID _playerId;
+    public CharID playerId;
     [Space]
     [SerializeField] private PlayerControllerData _data;
     [Header("Rendering")]
@@ -66,9 +81,9 @@ public class CharController : MonoBehaviour
     private List<Entity> _hittedEntities = new List<Entity>();
 
     // input
-    private bool _tacklePressed = false;
-    private int _horizontal = 0;
+    private float _horizontal = 0;
     private bool _jumpPressed = false;
+    private bool _tacklePressed = false;
 
     // caching variables
     private Rigidbody2D _rb;
@@ -84,6 +99,32 @@ public class CharController : MonoBehaviour
     #endregion
     #endregion
 
+    #region Properties
+    public float Horizontal { get => _horizontal; set => _horizontal = value; }
+    public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
+    public bool TacklePressed
+    {
+        get
+        {
+            return _tacklePressed;
+        }
+
+        set
+        {
+            // can't externally set _tacklePressed to false
+            if (value == false)
+                return;
+
+            _tacklePressed = value;
+
+            this.ExecuteAfterTime(TACKLE_DURATION, () =>
+            {
+                _tacklePressed = false;
+            });
+        }
+    }
+    #endregion
+
     #region MonoBehaviour callbacks
     #region Initialization
     void Awake()
@@ -96,8 +137,8 @@ public class CharController : MonoBehaviour
 
     void Start()
     {
-        _spriteRenderer.color = _playerId.ToColor();
-        _controls = _playerId.ToControls();
+        _spriteRenderer.color = playerId.ToColor();
+        _controls = playerId.ToControls();
         _collision = new PlayerCollision();
     }
     #endregion
@@ -107,7 +148,7 @@ public class CharController : MonoBehaviour
     {
         UpdateCollisions();
 
-        ManageInput();
+        //ManageInput();
         ManageStick();
         ManageJump();
     }
@@ -248,6 +289,7 @@ public class CharController : MonoBehaviour
     #region FixedUpdate
     void ProcessInputs()
     {
+        Debug.Log("_horizontal " + _horizontal);
         ProcessHorizontalInput();
         ProcessVerticalInput();
     }
