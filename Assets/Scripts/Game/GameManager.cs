@@ -48,19 +48,19 @@ public class GameManager : MonoBehaviour
             if (player == null)
                 return;
 
-            if (data["move"] != null)
+            if (data["horizontal"] != null)
             {
-                player.Horizontal = (float)data["move"];
+                player.Horizontal = (float)data["horizontal"];
             }
 
-            if (data["tackle"] != null)
+            if (data["bPressed"] != null)
             {
-                player.TacklePressed = (bool)data["tackle"];
+                player.TacklePressed = (bool)data["bPressed"];
             }
 
-            if (data["jump"] != null)
+            if (data["aPressed"] != null)
             {
-                player.JumpPressed = (bool)data["jump"];
+                player.JumpPressed = (bool)data["aPressed"];
             }
         }
     }

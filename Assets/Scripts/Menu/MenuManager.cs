@@ -44,7 +44,7 @@ public class MenuManager : MonoBehaviour
         {
             if (_canChangeLevel)
             {
-                LevelSelector.Instance.SelectedLevel += (int)data["move"];
+                LevelSelector.Instance.SelectedLevel += (int)data["horizontal"];
 
                 _canChangeLevel = false;
 

@@ -40,21 +40,21 @@
             };
         }
 
-        function move(amount) {
+        function horizontal(amount) {
             airconsole.message(AirConsole.SCREEN, {
-                move: amount
+                horizontal: amount
             })
         }
 
-        function tackle(value) {
+        function bPressed(pressed) {
             airconsole.message(AirConsole.SCREEN, {
-                tackle: value
+                bPressed: pressed
             })
         }
 
-        function jump(value) {
+        function aPressed(pressed) {
             airconsole.message(AirConsole.SCREEN, {
-                jump: value
+                aPressed: pressed
             })
         }
     </script>
@@ -148,21 +148,21 @@
 <body onload="init()">
     
     <div id="move_wrapper">
-        <div class=button_horizontal ontouchstart="move(-1)" ontouchend="move(0)" onmousedown="move(-1)" onmouseup="move(0)">
+        <div class=button_horizontal ontouchstart="horizontal(-1)" ontouchend="horizontal(0)" onmousedown="horizontal(-1)" onmouseup="horizontal(0)">
             <div class="button_label">LEFT</div>
         </div>
 
-        <div class=button_horizontal ontouchstart="move(1)" ontouchend="move(0)" onmousedown="move(1)" onmouseup="move(0)">
+        <div class=button_horizontal ontouchstart="horizontal(1)" ontouchend="horizontal(0)" onmousedown="horizontal(1)" onmouseup="horizontal(0)">
             <div class="button_label">RIGHT</div>
         </div>
     </div>
 
     <div id="buttons_wrapper">
-        <div  class=button_actions id="button_A"ontouchstart="jump(true)" ontouchend="jump(false)" onmousedown="jump(true)" onmouseup="jump(false)">
+        <div  class=button_actions id="button_A"ontouchstart="aPressed(true)" ontouchend="aPressed(false)" onmousedown="aPressed(true)" onmouseup="aPressed(false)">
             <div class="button_label">A</div>
         </div>
 
-        <div  class=button_actions id="button_B" ontouchstart="tackle(true)" ontouchend="tackle(false)" onmousedown="tackle(true)" onmouseup="tackle(false)">
+        <div  class=button_actions id="button_B" ontouchstart="bPressed(true)" ontouchend="bPressed(false)" onmousedown="bPressed(true)" onmouseup="bPressed(false)">
             <div class="button_label">B</div>
         </div>
     </div>
