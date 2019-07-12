@@ -62,6 +62,9 @@ public class CharController : MonoBehaviour
     private int _jumpsCount = 0;
     private Vector3 _velocity = Vector3.zero;
 
+    // attack variables
+    private List<Entity> _hittedEntities = new List<Entity>();
+
     // input
     private bool _tacklePressed = false;
     private int _horizontal = 0;
@@ -141,12 +144,28 @@ public class CharController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (!_tacklePressed)
+            return;
+
         Entity ent = other.gameObject.GetComponent<Entity>();
 
-        if (ent != null && _tacklePressed)
+        bool hasBeenHitted = (_hittedEntities.Find(x => x == ent) != null);
+        if (ent != null && hasBeenHitted == false)
         {
             Debug.Log("<color=green>" + transform.name + "</color> hit with <color=red>" + other.transform.name + "</color> + other.collider.IsTrigger? " + other.isTrigger);
             ent.GetDamage(_data.DamageTackle);
+
+            _hittedEntities.Add(ent);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        Entity ent = other.gameObject.GetComponent<Entity>();
+
+        if (ent != null)
+        {
+            _hittedEntities.Remove(ent);
         }
     }
     #endregion
