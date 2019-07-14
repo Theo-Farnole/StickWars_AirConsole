@@ -18,6 +18,7 @@ public class Entity : MonoBehaviour
     #region Properties
     public int MaxHp { get => _maxHp; }
     public int Hp { get => _hp; }
+    public bool IsAlive { get => _hp > 0 ? true : false; }
     #endregion
 
     protected virtual void Start()
@@ -47,7 +48,7 @@ public class Entity : MonoBehaviour
 
         UpdateHealthSlider();
 
-        if (!IsAlive())
+        if (!IsAlive)
         {
             Death();
         }
@@ -67,16 +68,7 @@ public class Entity : MonoBehaviour
         _healthSlider.value = _hp;
     }
 
-    public bool IsAlive()
-    {
-        if (_hp <= 0)
-            return false;
-
-        else
-            return true;
-    }
-
-    virtual protected void Death()
+    protected virtual void Death()
     {
         Destroy(gameObject);
     }

@@ -233,7 +233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3867000743114586797}
   - component: {fileID: 3867000743114586796}
-  - component: {fileID: 7278740688339818880}
+  - component: {fileID: 3268265160266172289}
   - component: {fileID: 3867000743114586799}
   - component: {fileID: 213832798930688072}
   m_Layer: 10
@@ -272,11 +272,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea8a57f3e921f84886256d451786c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerId: 1
+  playerId: 0
   _data: {fileID: 11400000, guid: 6a1d6a54f4485c34cafba676dbf12d0d, type: 2}
   _spriteRenderer: {fileID: 3867000743271930268}
   _animator: {fileID: 3867000743271930271}
---- !u!114 &7278740688339818880
+--- !u!114 &3268265160266172289
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3867000743114586834}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5f24b45d2f80cb4e9c7b14a47d6f3b4, type: 3}
+  m_Script: {fileID: 11500000, guid: 181db7d8cde505b45afffa2debfbfa6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 432695cf0fd869a4b84775f227c26ff2, type: 2}
