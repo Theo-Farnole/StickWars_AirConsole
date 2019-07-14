@@ -16,11 +16,11 @@ public class UIManager : Singleton<UIManager>
         _textSceneName.text = SceneManager.GetActiveScene().name;
     }
 
-    public void UpdateGamemodeData(string[] arrayStr)
+    public void UpdateGamemodeData(dynamic[] arrayStr)
     {
         for (int i = 0; i < arrayStr.Length && i < GameManager.MAX_PLAYERS; i++)
         {
-            _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i];
+            _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i].ToString();
             _gamemodeData[i].GetComponentInChildren<Image>().color = ((CharID)i).ToColor();
         }
     }
