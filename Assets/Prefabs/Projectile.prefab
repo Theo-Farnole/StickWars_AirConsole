@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6277080515121283892}
   - component: {fileID: 6277080515121283895}
   m_Layer: 0
-  m_Name: Projectile
+  m_Name: projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab076c4c143e6f24f85ba7428b51084c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data: {fileID: 0}
+  _data: {fileID: 11400000, guid: 6a40eff1649d24f449510d24bf298c3f, type: 2}
   damage: 0
   sender: {fileID: 0}
 --- !u!70 &6277080515121283895
@@ -58,7 +58,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

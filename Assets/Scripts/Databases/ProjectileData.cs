@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "TO Databases/Projectile")]
-public class ProjectileData : MonoBehaviour
+public class ProjectileData : ScriptableObject
 {
     [SerializeField] private int _speed = 3;
 

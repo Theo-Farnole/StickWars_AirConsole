@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO:
+// Projectile look at direction
+// Player can stick to projectile
+    
 [SelectionBase]
 public class Projectile : MonoBehaviour
 {

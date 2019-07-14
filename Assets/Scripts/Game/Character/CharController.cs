@@ -7,6 +7,10 @@ using System.Text;
 using UnityEngine;
 
 
+// TODO
+// Create variable for player orientation (instead of using sprite orientation)
+// Add cadence in projectile throw
+// Create enum for SpecialState { Sticked, Tackling, None }
 
 public class CharController : MonoBehaviour
 {
@@ -160,13 +164,15 @@ public class CharController : MonoBehaviour
         UpdateCollisions();
 
         ManageStick();
-        ManageJump();
+        ManageJumpCount();
+
+        ProcessThrowInput();
     }
 
     void FixedUpdate()
     {
         UpdateCollisions();
-        ProcessInputs();
+        ProcessMovementInputs();
     }
 
     void LateUpdate()
@@ -238,7 +244,7 @@ public class CharController : MonoBehaviour
         _collision.right = Physics2D.Raycast(position, Vector3.right, distX, _layerMask);
     }
 
-    void ManageJump()
+    void ManageJumpCount()
     {
         // reset jump count ?
         if (_collision.down || _isStick)
@@ -259,10 +265,23 @@ public class CharController : MonoBehaviour
             _isStick = false;
         }
     }
+
+    void ProcessThrowInput()
+    {
+        if (_throwPressed)
+        {
+            _throwPressed = false;
+
+            var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
+            projectile.damage = _data.DamageProjectile;
+            projectile.Direction = Vector3.right * (_spriteRenderer.flipX ? -1 : 1);
+            projectile.sender = GetComponent<Entity>();
+        }
+    }
     #endregion
 
     #region FixedUpdate
-    void ProcessInputs()
+    void ProcessMovementInputs()
     {
         ProcessHorizontalInput();
         ProcessVerticalInput();

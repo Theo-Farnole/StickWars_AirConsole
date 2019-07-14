@@ -21,4 +21,11 @@ public class PlayerControllerData : ScriptableObject
 
     [SerializeField] private int _damageTackle = 3;
     public int DamageTackle { get => _damageTackle; }
+
+    [SerializeField] private int _damageProjectile = 2;
+    public int DamageProjectile { get => _damageProjectile;  }
+
+    [SerializeField] private float _cadenceProjectile = 2;
+    public float CadenceProjectile { get => _cadenceProjectile; }
+
 }
