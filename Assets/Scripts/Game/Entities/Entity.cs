@@ -52,7 +52,7 @@ public class Entity : MonoBehaviour
         }
     }
 
-    private void UpdateHealthSlider()
+    protected void UpdateHealthSlider()
     {
         if (_healthSlider == null)
             return;

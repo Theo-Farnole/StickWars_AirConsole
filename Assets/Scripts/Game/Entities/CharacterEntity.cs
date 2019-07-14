@@ -32,5 +32,7 @@ public class CharacterEntity : Entity
         // respawn player
         transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
         _hp = MaxHp;
+
+        UpdateHealthSlider();
     }
 }
