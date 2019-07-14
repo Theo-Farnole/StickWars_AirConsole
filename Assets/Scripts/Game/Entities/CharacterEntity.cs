@@ -28,6 +28,9 @@ public class CharacterEntity : Entity
 
         // report kill to Gamemode
         GameManager.Instance.Gamemode.Kill(killerID, _myID);
-        Destroy(gameObject);
+
+        // respawn player
+        transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+        _hp = MaxHp;
     }
 }

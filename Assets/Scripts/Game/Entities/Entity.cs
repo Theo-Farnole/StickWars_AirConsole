@@ -11,7 +11,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected EntityData _entityData;
     [SerializeField] protected Slider _healthSlider;
 
-    private int _hp;
+    protected int _hp;
     private int _maxHp;
     #endregion
 
