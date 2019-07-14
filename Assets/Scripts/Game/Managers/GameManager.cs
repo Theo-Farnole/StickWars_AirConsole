@@ -4,14 +4,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public static readonly int MAX_PLAYERS = 4;
-    
+
     #region Fields
     [SerializeField] private GameObject _prefabPlayer;
 
+    private GamemodeType gamemodeType = GamemodeType.DeathMatch;
+    private AbstractGamemode _gamemode;
+
     private CharController[] _characters = new CharController[MAX_PLAYERS];
+    private Dictionary<CharController, int> _charControllerToDeviceID = new Dictionary<CharController, int>();
+    #endregion
+
+    #region Properties
+    public AbstractGamemode Gamemode { get => _gamemode; }
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -20,6 +28,11 @@ public class GameManager : MonoBehaviour
         AirConsole.instance.onMessage += OnMessage;
         AirConsole.instance.onConnect += OnConnect;
         AirConsole.instance.onReady += OnReady;
+    }
+
+    void Start()
+    {
+        _gamemode = gamemodeType.ToGamemodeClass();
     }
 
     void OnDestroy()

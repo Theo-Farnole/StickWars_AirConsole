@@ -39,10 +39,8 @@ public class Entity : MonoBehaviour
     /**
      * Reduce entity's HP.
      */
-    virtual public void GetDamage(int damage)
+    virtual public void GetDamage(int damage, Entity attacker)
     {
-        Debug.Log("<color=green>" + transform.name + "</color> a reçu <color=red>" + damage + " damages.</color>");
-
         _hp -= damage;
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 
@@ -50,7 +48,7 @@ public class Entity : MonoBehaviour
 
         if (!IsAlive)
         {
-            Death();
+            Death(attacker);
         }
     }
 
@@ -68,8 +66,9 @@ public class Entity : MonoBehaviour
         _healthSlider.value = _hp;
     }
 
-    protected virtual void Death()
+    protected virtual void Death(Entity killer)
     {
         Destroy(gameObject);
     }
+
 }

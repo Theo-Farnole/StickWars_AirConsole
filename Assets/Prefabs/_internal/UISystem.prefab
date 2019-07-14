@@ -440,11 +440,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textSceneName: {fileID: 5465835722725101789}
-  _textsGamemodeData:
-  - {fileID: 6515268260311359262}
-  - {fileID: 5523293097224254031}
-  - {fileID: 6579612362503334392}
-  - {fileID: 1405833508524601449}
+  _gamemodeData:
+  - {fileID: 5263653584130493938}
+  - {fileID: 3699153099514493668}
+  - {fileID: 5011259639082303709}
+  - {fileID: 9166534477415081555}
 --- !u!1 &2803347170632250479
 GameObject:
   m_ObjectHideFlags: 0
