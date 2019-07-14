@@ -288,7 +288,6 @@ public class CharController : MonoBehaviour
     #region FixedUpdate
     void ProcessInputs()
     {
-        Debug.Log("_horizontal " + _horizontal);
         ProcessHorizontalInput();
         ProcessVerticalInput();
     }

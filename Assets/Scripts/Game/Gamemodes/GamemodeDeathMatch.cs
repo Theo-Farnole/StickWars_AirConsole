@@ -12,8 +12,6 @@ public class GamemodeDeathMatch : AbstractGamemode
 
     public override void Kill(int killerPlayerNumber, int deadPlayerNumber)
     {
-        Debug.Log("DM kill");
-
         int killerIndex = AirConsole.instance.ConvertDeviceIdToPlayerNumber(killerPlayerNumber);
         _charactersValue[killerPlayerNumber]++;
 
