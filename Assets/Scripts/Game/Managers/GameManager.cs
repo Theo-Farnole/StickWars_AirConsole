@@ -99,8 +99,6 @@ public class GameManager : Singleton<GameManager>
         // convert device id to player numer
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
 
-        Debug.Log(AirConsole.instance.GetNickname(device_id) + "'s playerNumber > " + playerNumber);
-
         // instantiate character is playerNumber is contains inside _characters 
         // and if character hasn't be instantiated
         if (playerNumber < MAX_PLAYERS && _characters[playerNumber] == null)
