@@ -52,6 +52,13 @@
             })
         }
 
+        function xPressed(pressed) {
+            airconsole.message(AirConsole.SCREEN, {
+                xPressed: pressed
+            })
+        }
+
+
         function aPressed(pressed) {
             airconsole.message(AirConsole.SCREEN, {
                 aPressed: pressed
@@ -108,8 +115,8 @@
         /* BUTTONS_ACTIONS */
         .button_actions
         {
-            width: 25vw;
-            height: 25vw;
+            width: 14vw;
+            height: 14vw;
 
             margin: 20px;
 
@@ -121,14 +128,23 @@
         {
             position: absolute;
             bottom: 0;
-            left: 0;
+
+  left: 50%;
+  margin-left: -7vw;
         }
 
         #button_B
         {
             position: absolute;
-            top: 0;
+            bottom: 50%;
             right: 0;
+        }
+
+        #button_X
+        {
+            position: absolute;
+            bottom: 50%;
+            left: 0;
         }
         /* END BUTTONS_ACTIONS */
 
@@ -164,6 +180,10 @@
 
         <div  class=button_actions id="button_B" ontouchstart="bPressed(true)" ontouchend="bPressed(false)" onmousedown="bPressed(true)" onmouseup="bPressed(false)">
             <div class="button_label">B</div>
+        </div>
+
+        <div  class=button_actions id="button_X" ontouchstart="xPressed(true)" ontouchend="xPressed(false)" onmousedown="xPressed(true)" onmouseup="xPressed(false)">
+            <div class="button_label">X</div>
         </div>
     </div>
 </body>
