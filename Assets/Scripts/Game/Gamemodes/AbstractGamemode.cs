@@ -15,7 +15,7 @@ public static class GamemodeTypeExtension
         switch (g)
         {
             case GamemodeType.DeathMatch:
-                return new GamemodeDeathMatch(10);
+                return new GamemodeDeathMatch(2);
         }
 
         return null;
@@ -26,6 +26,7 @@ public abstract class AbstractGamemode
 {
     protected dynamic _valueForVictory;
     protected dynamic[] _charactersValue = new dynamic[GameManager.MAX_PLAYERS];
+    protected int _indexMvp = -1;
 
     public AbstractGamemode(dynamic valueForVictory, dynamic initialValue)
     {
@@ -43,12 +44,26 @@ public abstract class AbstractGamemode
         {
             if (_charactersValue[i] >= _valueForVictory)
             {
-                var device_id = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
-                Victory(device_id);
+                Victory(i);
             }
         }
     }
 
-    protected abstract void Victory(int victory_device_id);
+    protected void CheckForNewMvp(int indexPlayerWithNewScore)
+    {
+        if (_indexMvp == -1 || _charactersValue[_indexMvp] < _charactersValue[indexPlayerWithNewScore])
+        {
+            if (_indexMvp != -1)
+            {
+                GameManager.Instance.Characters[_indexMvp].IsMVP = false;
+            }
+
+            _indexMvp = indexPlayerWithNewScore;
+
+            GameManager.Instance.Characters[_indexMvp].IsMVP = true;
+        }
+    }
+
+    protected abstract void Victory(int winnerPlayerNumber);
     public abstract void Kill(int killerPlayerNumber, int deadPlayerNumber);
 }

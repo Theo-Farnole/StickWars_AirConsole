@@ -52,6 +52,7 @@ public class CharController : MonoBehaviour
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
+    [SerializeField] private SpriteRenderer _crown;
     #endregion
 
     #region internals variables
@@ -61,6 +62,7 @@ public class CharController : MonoBehaviour
     private bool _isStick = false;
     private int _jumpsCount = 0;
     private float _horizontalVelocity = 0;
+    private bool _isMVP;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
@@ -110,6 +112,21 @@ public class CharController : MonoBehaviour
             });
         }
     }
+
+    public bool IsMVP
+    {
+        get
+        {
+            return _isMVP;
+        }
+
+        set
+        {
+            _isMVP = value;
+
+            _crown.enabled = _isMVP;
+        }
+    }
     #endregion
 
     #region MonoBehaviour callbacks
@@ -127,6 +144,7 @@ public class CharController : MonoBehaviour
         _spriteRenderer.color = playerId.ToColor();
         _controls = playerId.ToControls();
         _collision = new PlayerCollision();
+        _crown.enabled = false;
     }
     #endregion
 

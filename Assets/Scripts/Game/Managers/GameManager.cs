@@ -3,12 +3,14 @@ using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     public static readonly int MAX_PLAYERS = 4;
 
     #region Fields
+    [HideInInspector] public bool canRestart = false;
     [SerializeField] private GameObject _prefabPlayer;
 
     private GamemodeType gamemodeType = GamemodeType.DeathMatch;
@@ -20,6 +22,7 @@ public class GameManager : Singleton<GameManager>
 
     #region Properties
     public AbstractGamemode Gamemode { get => _gamemode; }
+    public CharController[] Characters { get => _characters; }
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -49,7 +52,35 @@ public class GameManager : Singleton<GameManager>
     void OnMessage(int device_id, JToken data)
     {
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
+        RegisterInput(playerNumber, data);
 
+        if (canRestart && AirConsole.instance.GetMasterControllerDeviceId() == device_id)
+        {
+            if ((bool)data["aPressed"])
+            {
+                SceneManager.LoadScene("_SC_menu");
+            }
+        }
+    }
+
+    void OnConnect(int device_id)
+    {
+        InstantiateCharacter(device_id);
+    }
+
+    void OnReady(string str)
+    {
+        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
+
+        for (int i = 0; i < devicesIds.Count; i++)
+        {
+            InstantiateCharacter(devicesIds[i]);
+        }
+    }
+    #endregion
+
+    void RegisterInput(int playerNumber, JToken data)
+    {
         if (playerNumber == -1)
             return;
 
@@ -73,22 +104,6 @@ public class GameManager : Singleton<GameManager>
             player.JumpPressed = (bool)data["aPressed"];
         }
     }
-
-    void OnConnect(int device_id)
-    {
-        InstantiateCharacter(device_id);
-    }
-
-    void OnReady(string str)
-    {
-        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
-
-        for (int i = 0; i < devicesIds.Count; i++)
-        {
-            InstantiateCharacter(devicesIds[i]);
-        }
-    }
-    #endregion
 
     void InstantiateCharacter(int device_id)
     {

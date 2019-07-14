@@ -17,11 +17,12 @@ public class GamemodeDeathMatch : AbstractGamemode
 
         UIManager.Instance.UpdateGamemodeData(_charactersValue);
 
+        CheckForNewMvp(killerPlayerNumber);
         CheckForVictory();
     }
 
-    protected override void Victory(int winnerDeviceId)
+    protected override void Victory(int winnerPlayerNumber)
     {
-        Debug.Log("Victory!");
+        UIManager.Instance.LaunchVictoryAnimation(winnerPlayerNumber);
     }
 }
