@@ -107,6 +107,8 @@ public class GameManager : Singleton<GameManager>
 
             player.playerId = (CharID)playerNumber;
             _characters[playerNumber] = player;
+
+            player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
         }
 
         UIManager.Instance.SetColorsGamemodeData();
