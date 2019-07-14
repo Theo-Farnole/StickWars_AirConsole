@@ -6,34 +6,33 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static readonly int MAX_PLAYERS = 4;
+    
     #region Fields
     [SerializeField] private GameObject _prefabPlayer;
 
-    private CharController[] _characters = new CharController[4];
+    private CharController[] _characters = new CharController[MAX_PLAYERS];
     #endregion
 
     #region MonoBehaviour Callbacks
-#if !DISABLE_AIRCONSOLE
     void Awake()
     {
         AirConsole.instance.onMessage += OnMessage;
+        AirConsole.instance.onConnect += OnConnect;
+        AirConsole.instance.onReady += OnReady;
     }
 
-    void Start()
+    void OnDestroy()
     {
-        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
-        AirConsole.instance.SetActivePlayers(devicesIds.Count);
-
-        for (int i = 0; i < devicesIds.Count; i++)
+        // unregister airconsole events on scene change
+        if (AirConsole.instance != null)
         {
-            int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(devicesIds[i]);
-
-            var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
-            player.playerId = (CharID)playerNumber;
-            _characters[playerNumber] = player;
+            AirConsole.instance.onMessage -= OnMessage;
         }
     }
+    #endregion
 
+    #region AirConsole events
     void OnMessage(int device_id, JToken data)
     {
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
@@ -62,14 +61,41 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    void OnConnect(int device_id)
     {
-        // unregister airconsole events on scene change
-        if (AirConsole.instance != null)
+        InstantiateCharacter(device_id);
+    }
+
+    void OnReady(string str)
+    {
+        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
+
+        for (int i = 0; i < devicesIds.Count; i++)
         {
-            AirConsole.instance.onMessage -= OnMessage;
+            InstantiateCharacter(devicesIds[i]);
         }
     }
-#endif
     #endregion
+
+    void InstantiateCharacter(int device_id)
+    {
+        // set every player to active player
+        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
+        AirConsole.instance.SetActivePlayers(devicesIds.Count);
+
+        // convert device id to player numer
+        int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
+
+        Debug.Log(AirConsole.instance.GetNickname(device_id) + "'s playerNumber > " + playerNumber);
+
+        // instantiate character is playerNumber is contains inside _characters 
+        // and if character hasn't be instantiated
+        if (playerNumber < MAX_PLAYERS && _characters[playerNumber] == null)
+        {
+            var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
+
+            player.playerId = (CharID)playerNumber;
+            _characters[playerNumber] = player;
+        }
+    }
 }
