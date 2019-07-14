@@ -372,6 +372,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerId: 0
   _data: {fileID: 11400000, guid: 6a1d6a54f4485c34cafba676dbf12d0d, type: 2}
+  _prefabProjectile: {fileID: 6277080515121283850, guid: 1838053a672016a4885f6f2f06fac89e,
+    type: 3}
+  _projectileOrigin: {x: 0, y: 0, z: 0}
   _spriteRenderer: {fileID: 3867000743271930268}
   _animator: {fileID: 3867000743271930271}
   _crown: {fileID: 4180734011860687220}
