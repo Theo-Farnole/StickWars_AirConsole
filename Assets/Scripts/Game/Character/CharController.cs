@@ -191,13 +191,14 @@ public class CharController : MonoBehaviour
 
         Entity ent = other.gameObject.GetComponent<Entity>();
 
-        bool hasBeenHitted = (_hittedEntities.Find(x => x == ent) != null);
-        if (ent != null && hasBeenHitted == false)
+        bool isEntHittedPreviously = (_hittedEntities.Find(x => x == ent) != null);
+        if (ent != null && isEntHittedPreviously == false)
         {
             Debug.Log("<color=green>" + transform.name + "</color> hit with <color=red>" + other.transform.name + "</color> + other.collider.IsTrigger? " + other.isTrigger);
             ent.GetDamage(_data.DamageTackle);
 
             _hittedEntities.Add(ent);
+            //GameManager.Instance.Gamemode
         }
     }
 
