@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
 
         if (data["horizontal"] != null)
         {
-            player.Horizontal = (float)data["horizontal"];
+            player.HorizontalInput = (float)data["horizontal"];
         }
 
         if (data["bPressed"] != null)

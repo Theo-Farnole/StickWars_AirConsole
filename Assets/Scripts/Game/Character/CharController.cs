@@ -9,7 +9,7 @@ using UnityEngine;
 public class CharController : MonoBehaviour
 {
     #region Classes & Struct
-    [System.Serializable]
+    [Serializable]
     class PlayerCollision
     {
         const string FORMAT = "^: {0}, v {1} \n {2} < > {3}";
@@ -36,21 +36,6 @@ public class CharController : MonoBehaviour
             return string.Format(FORMAT, up, down, left, right);
         }
     }
-
-    [System.Serializable]
-    public struct PlayerInput
-    {
-        public bool tacklePressed;
-        public float horizontalInput;
-        public bool jumpPressed;
-
-        public PlayerInput(float horizontalInput = 0, bool jumpPressed = false, bool tacklePressed = false)
-        {
-            this.horizontalInput = horizontalInput;
-            this.jumpPressed = jumpPressed;
-            this.tacklePressed = tacklePressed;
-        }
-    }
     #endregion
 
     #region Fields
@@ -75,13 +60,13 @@ public class CharController : MonoBehaviour
     private PlayerCollision _collision;
     private bool _isStick = false;
     private int _jumpsCount = 0;
-    private Vector3 _velocity = Vector3.zero;
+    private float _horizontalVelocity = 0;
 
     // attack variables
-    private List<Entity> _hittedEntities = new List<Entity>();
+    private List<Entity> _entitiesHit = new List<Entity>();
 
     // input
-    private float _horizontal = 0;
+    private float _horizontalInput = 0;
     private bool _jumpPressed = false;
     private bool _tacklePressed = false;
 
@@ -100,7 +85,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Properties
-    public float Horizontal { get => _horizontal; set => _horizontal = value; }
+    public float HorizontalInput { get => _horizontalInput; set => _horizontalInput = value; }
     public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
     public bool TacklePressed
     {
@@ -115,12 +100,12 @@ public class CharController : MonoBehaviour
             if (value == false)
                 return;
 
+            _horizontalVelocity = _spriteRenderer.flipX ? -1 : 1;
             _tacklePressed = value;
 
             this.ExecuteAfterTime(TACKLE_DURATION, () =>
             {
                 _tacklePressed = false;
-                _horizontal = 0;
             });
         }
     }
@@ -149,7 +134,6 @@ public class CharController : MonoBehaviour
     {
         UpdateCollisions();
 
-        //ManageInput();
         ManageStick();
         ManageJump();
     }
@@ -157,15 +141,14 @@ public class CharController : MonoBehaviour
     void FixedUpdate()
     {
         UpdateCollisions();
-
         ProcessInputs();
     }
 
-    // update Animator state
     void LateUpdate()
     {
+        // update Animator state
         _animator.SetBool(_hashWallSliding, _isStick);
-        _animator.SetBool(_hashRunning, (_horizontal != 0));
+        _animator.SetBool(_hashRunning, (_horizontalInput != 0));
         _animator.SetBool(_hashJump, !_collision.down);
         _animator.SetBool(_hashTackle, _tacklePressed);
     }
@@ -191,11 +174,11 @@ public class CharController : MonoBehaviour
 
         Entity ent = other.gameObject.GetComponent<Entity>();
 
-        bool isEntHittedPreviously = (_hittedEntities.Find(x => x == ent) != null);
+        bool isEntHittedPreviously = (_entitiesHit.Find(x => x == ent) != null);
         if (ent != null && isEntHittedPreviously == false)
         {
             ent.GetDamage(_data.DamageTackle, GetComponent<Entity>());
-            _hittedEntities.Add(ent);
+            _entitiesHit.Add(ent);
         }
     }
 
@@ -205,7 +188,7 @@ public class CharController : MonoBehaviour
 
         if (ent != null)
         {
-            _hittedEntities.Remove(ent);
+            _entitiesHit.Remove(ent);
         }
     }
     #endregion
@@ -226,42 +209,6 @@ public class CharController : MonoBehaviour
         _collision.right = Physics2D.Raycast(position, Vector3.right, distX, _layerMask);
     }
 
-    void ManageInput()
-    {
-        if (Input.GetKeyDown(_controls.Tackle))
-        {
-            _tacklePressed = true;
-
-            this.ExecuteAfterTime(TACKLE_DURATION, () =>
-            {
-                _tacklePressed = false;
-            });
-        }
-
-        if (Input.GetKeyDown(_controls.Jump))
-        {
-            _jumpPressed = true;
-        }
-
-        if (Input.GetKeyUp(_controls.Jump))
-        {
-            _jumpPressed = false;
-        }
-
-        // horizontal input
-        _horizontal = 0;
-
-        if (Input.GetKey(_controls.Left))
-        {
-            _horizontal--;
-        }
-
-        if (Input.GetKey(_controls.Right))
-        {
-            _horizontal++;
-        }
-    }
-
     void ManageJump()
     {
         // reset jump count ?
@@ -274,7 +221,7 @@ public class CharController : MonoBehaviour
     void ManageStick()
     {
         // sticking system
-        if (!_collision.down && (_horizontal < 0 && _collision.left) || (_horizontal > 0 && _collision.right))
+        if (!_collision.down && (_horizontalVelocity < 0 && _collision.left) || (_horizontalVelocity > 0 && _collision.right))
         {
             _isStick = true;
         }
@@ -294,17 +241,16 @@ public class CharController : MonoBehaviour
 
     void ProcessHorizontalInput()
     {
-        // ... override horizontal if he's talcking ...
-        if (_tacklePressed)
+        // set velocity
+        if (!_tacklePressed)
         {
-            // horizontal in function of flipX
-            _horizontal = (_spriteRenderer.flipX ? -1 : 1);
+            _horizontalVelocity = _horizontalInput;
         }
 
         // ... added to velocity ...
-        if (!_isStick || (_horizontal < 0 && _collision.left == false) || (_horizontal > 0 && _collision.right == false))
+        if (!_isStick || (_horizontalVelocity < 0 && _collision.left == false) || (_horizontalVelocity > 0 && _collision.right == false))
         {
-            _rb.velocity = new Vector2(_data.Speed * _horizontal, _rb.velocity.y);
+            _rb.velocity = new Vector2(_data.Speed * _horizontalVelocity, _rb.velocity.y);
         }
         else
         {
@@ -312,9 +258,9 @@ public class CharController : MonoBehaviour
         }
 
         // ... modify face of the sprite
-        if (_horizontal != 0)
+        if (_horizontalVelocity != 0)
         {
-            _spriteRenderer.flipX = (_horizontal < 0) ? true : false;
+            _spriteRenderer.flipX = (_horizontalVelocity < 0) ? true : false;
         }
     }
 
