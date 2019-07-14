@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NDream.AirConsole;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,11 +17,26 @@ public class UIManager : Singleton<UIManager>
         _textSceneName.text = SceneManager.GetActiveScene().name;
     }
 
+    void Start()
+    {
+        SetColorsGamemodeData();
+    }
+
+    public void SetColorsGamemodeData()
+    {
+        for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
+        {
+            _gamemodeData[i].GetComponentInChildren<Image>().color = ((CharID)i).ToColor();
+
+            bool isPlayerActive = (i < AirConsole.instance.GetActivePlayerDeviceIds.Count);
+            _gamemodeData[i].SetActive(isPlayerActive);
+        }
+    }
+
     public void UpdateGamemodeData(dynamic[] arrayStr)
     {
         for (int i = 0; i < arrayStr.Length && i < GameManager.MAX_PLAYERS; i++)
         {
-            _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i].ToString();
             _gamemodeData[i].GetComponentInChildren<Image>().color = ((CharID)i).ToColor();
         }
     }

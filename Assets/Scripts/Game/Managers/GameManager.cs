@@ -110,5 +110,7 @@ public class GameManager : Singleton<GameManager>
             player.playerId = (CharID)playerNumber;
             _characters[playerNumber] = player;
         }
+
+        UIManager.Instance.SetColorsGamemodeData();
     }
 }
