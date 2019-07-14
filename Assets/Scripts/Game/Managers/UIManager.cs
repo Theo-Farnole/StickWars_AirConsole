@@ -37,7 +37,7 @@ public class UIManager : Singleton<UIManager>
     {
         for (int i = 0; i < arrayStr.Length && i < GameManager.MAX_PLAYERS; i++)
         {
-            _gamemodeData[i].GetComponentInChildren<Image>().color = ((CharID)i).ToColor();
+            _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i].ToString();
         }
     }
 }
