@@ -25,7 +25,7 @@ public class MenuManager : MonoBehaviour
 
     void OnDestroy()
     {
-        AirConsole.instance.onMessage -= OnMessage;
+        //AirConsole.instance.onMessage -= OnMessage;
         AirConsole.instance.onConnect -= OnConnect;
         AirConsole.instance.onDisconnect -= OnDisconnect;
     }
