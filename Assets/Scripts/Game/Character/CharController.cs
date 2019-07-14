@@ -106,6 +106,7 @@ public class CharController : MonoBehaviour
             this.ExecuteAfterTime(TACKLE_DURATION, () =>
             {
                 _tacklePressed = false;
+                _entitiesHit.Clear();
             });
         }
     }
@@ -167,28 +168,32 @@ public class CharController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if (!_tacklePressed)
             return;
 
-        Entity ent = other.gameObject.GetComponent<Entity>();
+        Entity otherEntity = other.gameObject.GetComponent<Entity>();
 
-        bool isEntHittedPreviously = (_entitiesHit.Find(x => x == ent) != null);
-        if (ent != null && isEntHittedPreviously == false)
+        if (otherEntity != null)
         {
-            ent.GetDamage(_data.DamageTackle, GetComponent<Entity>());
-            _entitiesHit.Add(ent);
+            bool isEntityHittedPreviously = (_entitiesHit.Find(x => x == otherEntity) != null);
+
+            if (!isEntityHittedPreviously)
+            {
+                otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>());
+                _entitiesHit.Add(otherEntity);
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        Entity ent = other.gameObject.GetComponent<Entity>();
+        Entity otherEntity = other.gameObject.GetComponent<Entity>();
 
-        if (ent != null)
+        if (otherEntity != null)
         {
-            _entitiesHit.Remove(ent);
+            _entitiesHit.Remove(otherEntity);
         }
     }
     #endregion
