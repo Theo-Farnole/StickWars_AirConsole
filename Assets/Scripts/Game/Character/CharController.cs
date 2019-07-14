@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NDream.AirConsole;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -49,6 +51,9 @@ public class CharController : MonoBehaviour
     public CharID playerId;
     [Space]
     [SerializeField] private PlayerControllerData _data;
+    [Header("Attacking")]
+    [SerializeField] private GameObject _prefabProjectile;
+    [SerializeField] private Vector3 _projectileOrigin;
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
@@ -71,6 +76,7 @@ public class CharController : MonoBehaviour
     private float _horizontalInput = 0;
     private bool _jumpPressed = false;
     private bool _tacklePressed = false;
+    private bool _throwPressed = false;
 
     // caching variables
     private Rigidbody2D _rb;
@@ -87,9 +93,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Properties
-    public float HorizontalInput { get => _horizontalInput; set => _horizontalInput = value; }
-    public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
-    public bool TacklePressed
+    private bool TacklePressed
     {
         get
         {
@@ -137,6 +141,8 @@ public class CharController : MonoBehaviour
         _collider = GetComponent<Collider2D>();
 
         _layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision");
+
+        AirConsole.instance.onMessage += HandleInput;
     }
 
     void Start()
@@ -316,4 +322,38 @@ public class CharController : MonoBehaviour
     }
     #endregion
     #endregion
+
+    void HandleInput(int device_id, JToken data)
+    {
+        int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
+
+        if (playerNumber == -1 || playerNumber != (int)playerId)
+            return;
+
+        if (data["horizontal"] != null)
+        {
+            _horizontalInput = (float)data["horizontal"];
+        }
+
+        if (data["bPressed"] != null)
+        {
+            TacklePressed = (bool)data["bPressed"];
+        }
+
+        if (data["aPressed"] != null)
+        {
+            _jumpPressed = (bool)data["aPressed"];
+        }
+
+        if (data["xPressed"] != null)
+        {
+            _throwPressed = (bool)data["xPressed"];
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = playerId.ToColor();
+        Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);
+    }
 }

@@ -51,9 +51,6 @@ public class GameManager : Singleton<GameManager>
     #region AirConsole events
     void OnMessage(int device_id, JToken data)
     {
-        int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-        RegisterInput(playerNumber, data);
-
         if (canRestart && AirConsole.instance.GetMasterControllerDeviceId() == device_id)
         {
             if ((bool)data["aPressed"])
@@ -78,32 +75,6 @@ public class GameManager : Singleton<GameManager>
         }
     }
     #endregion
-
-    void RegisterInput(int playerNumber, JToken data)
-    {
-        if (playerNumber == -1)
-            return;
-
-        var player = _characters[playerNumber];
-
-        if (player == null || data == null)
-            return;
-
-        if (data["horizontal"] != null)
-        {
-            player.HorizontalInput = (float)data["horizontal"];
-        }
-
-        if (data["bPressed"] != null)
-        {
-            player.TacklePressed = (bool)data["bPressed"];
-        }
-
-        if (data["aPressed"] != null)
-        {
-            player.JumpPressed = (bool)data["aPressed"];
-        }
-    }
 
     void InstantiateCharacter(int device_id)
     {
