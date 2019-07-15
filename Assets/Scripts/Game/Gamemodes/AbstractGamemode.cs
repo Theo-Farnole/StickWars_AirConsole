@@ -15,7 +15,7 @@ public static class GamemodeTypeExtension
         switch (g)
         {
             case GamemodeType.DeathMatch:
-                return new GamemodeDeathMatch(2);
+                return new GamemodeDeathMatch(3);
         }
 
         return null;

@@ -68,10 +68,13 @@ public class MenuManager : MonoBehaviour
 
     void OnDestroy()
     {
-        AirConsole.instance.onConnect -= OnConnect;
-        AirConsole.instance.onMessage -= OnMessage;
-        AirConsole.instance.onDisconnect -= OnDisconnect;
-        AirConsole.instance.onReady -= OnReady;
+        if (AirConsole.instance != null)
+        {
+            AirConsole.instance.onConnect -= OnConnect;
+            AirConsole.instance.onMessage -= OnMessage;
+            AirConsole.instance.onDisconnect -= OnDisconnect;
+            AirConsole.instance.onReady -= OnReady;
+        }
     }
     #endregion
 

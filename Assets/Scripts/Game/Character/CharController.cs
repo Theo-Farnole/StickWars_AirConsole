@@ -211,6 +211,16 @@ public class CharController : MonoBehaviour
     }
     #endregion
 
+    #region Destroy
+    void OnDestroy()
+    {
+        if (AirConsole.instance != null)
+        {
+            AirConsole.instance.onMessage -= HandleInput;
+        }
+    }
+    #endregion
+
     #region OnCollision callbacks
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -373,7 +383,6 @@ public class CharController : MonoBehaviour
     void HandleInput(int device_id, JToken data)
     {
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-        Debug.Log("HandleInput " + playerNumber + " data " + data);
 
         if (playerNumber == -1 || playerNumber != (int)playerId)
             return;

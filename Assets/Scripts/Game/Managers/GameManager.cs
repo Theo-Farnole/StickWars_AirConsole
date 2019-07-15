@@ -58,7 +58,13 @@ public class GameManager : Singleton<GameManager>
 
     void OnDestroy()
     {
-        AirConsole.instance.onConnect -= OnConnect;
+        if (AirConsole.instance != null)
+        {
+
+            AirConsole.instance.onConnect -= OnConnect;
+            AirConsole.instance.onMessage -= OnMessage;
+            AirConsole.instance.onReady -= OnReady;
+        }
     }
     #endregion
 
@@ -67,7 +73,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (canRestart && AirConsole.instance.GetMasterControllerDeviceId() == device_id)
         {
-            if ((bool)data["aPressed"])
+            if (data["aPressed"] != null && (bool)data["aPressed"])
             {
                 SceneManager.LoadScene("_SC_menu");
             }
