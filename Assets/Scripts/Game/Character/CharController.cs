@@ -349,6 +349,7 @@ public class CharController : MonoBehaviour
     void HandleInput(int device_id, JToken data)
     {
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
+        Debug.Log("HandleInput " + playerNumber + " data " + data);
 
         if (playerNumber == -1 || playerNumber != (int)playerId)
             return;
@@ -377,10 +378,8 @@ public class CharController : MonoBehaviour
 #if UNITY_EDITOR
     void HandleKeyboardInput()
     {
-        _horizontalInput = 0;
-
-        if (Input.GetKey(_controls.Right)) _horizontalInput++;
-        if (Input.GetKey(_controls.Left)) _horizontalInput--;
+        if (Input.GetKey(_controls.Right)) _horizontalInput = 1;
+        if (Input.GetKey(_controls.Left)) _horizontalInput = -1;
         
         if (Input.GetKeyDown(_controls.Jump)) _jumpPressed = true;
         if (Input.GetKeyUp(_controls.Jump)) _jumpPressed = false;

@@ -7,15 +7,16 @@ public class LevelData : Singleton<LevelData>
     public static readonly float SPAWN_REUSE_TIME = 1f;
 
     [SerializeField] private Transform[] _spawnPoints = new Transform[4];
-    private List<Transform> _availableSpawnPoints = new List<Transform>();
-
-    void Awake()
-    {
-        _availableSpawnPoints = new List<Transform>(_spawnPoints);
-    }
+    private List<Transform> _availableSpawnPoints = null;
 
     public Transform GetRandomSpawnPoint()
     {
+        // init spawn points
+        if (_availableSpawnPoints == null)
+        {
+            _availableSpawnPoints = new List<Transform>(_spawnPoints);
+        }
+
         Transform point;
 
         if (_availableSpawnPoints != null)
@@ -36,6 +37,8 @@ public class LevelData : Singleton<LevelData>
         // take random one in original array
         else
         {
+            Debug.Log("Not available spawn point, taking one random");
+
             int randomIndex = Random.Range(0, _spawnPoints.Length);
             point = _spawnPoints[randomIndex];
         }

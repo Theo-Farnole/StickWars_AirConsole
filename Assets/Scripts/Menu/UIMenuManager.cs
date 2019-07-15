@@ -16,13 +16,16 @@ public class UIMenuManager : Singleton<UIMenuManager>
     #region MonoBehaviour Callbacks
     void Start()
     {
-        // hide avatar until player join
-        for (int i = 0; i < _playersAvatar.Length; i++)
+        if (!AirConsole.instance.IsAirConsoleUnityPluginReady())
         {
-            _playersAvatar[i].transform.ActionForEachChildren((GameObject c) =>
+            // hide avatar until player join
+            for (int i = 0; i < _playersAvatar.Length; i++)
             {
-                c.SetActive(false);
-            });
+                _playersAvatar[i].transform.ActionForEachChildren((GameObject c) =>
+                {
+                    c.SetActive(false);
+                });
+            }
         }
     }
     #endregion
@@ -30,16 +33,14 @@ public class UIMenuManager : Singleton<UIMenuManager>
     public void UpdatePlayersAvatar()
     {
         var devices = AirConsole.instance.GetControllerDeviceIds();
-
+        
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
 
             if (i < devices.Count)
             {
-                var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
-                DisplayPlayer(i, deviceId);
+                DisplayPlayerAvatar(i);
             }
-
             else
             {
                 // hide childs
@@ -55,31 +56,29 @@ public class UIMenuManager : Singleton<UIMenuManager>
         _textWaitingForPlayers.gameObject.SetActive(shouldDisplayTextWaiting);
     }
 
-    private void DisplayPlayer(int index, int device_id)
+    private void DisplayPlayerAvatar(int index)
     {
-        // update image
-        var image = GetComponentInChildren<Image>();
-
-        if (image)
-        {
-            var url = AirConsole.instance.GetProfilePicture(device_id);
-            //WWW www = new WWW(url);
-
-            image.color = ((CharID)index).ToColor();
-        }
-
-        // update text
-        var text = GetComponentInChildren<TextMeshProUGUI>();
-
-        if (text)
-        {
-            text.text = AirConsole.instance.GetNickname(device_id);
-        }
-
         // activate childs
         _playersAvatar[index].transform.ActionForEachChildren((GameObject child) =>
         {
             child.SetActive(true);
         });
+
+        // update image
+        var image = _playersAvatar[index].GetComponentInChildren<Image>();
+
+        if (image)
+        {
+            image.color = ((CharID)index).ToColor();
+        }
+
+        // update text
+        var text = _playersAvatar[index].GetComponentInChildren<TextMeshProUGUI>();
+
+        if (text)
+        {
+            var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(index);
+            text.text = AirConsole.instance.GetNickname(deviceId);
+        }
     }
 }

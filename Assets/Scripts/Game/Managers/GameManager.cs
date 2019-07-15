@@ -30,7 +30,15 @@ public class GameManager : Singleton<GameManager>
     {
         AirConsole.instance.onMessage += OnMessage;
         AirConsole.instance.onConnect += OnConnect;
-        AirConsole.instance.onReady += OnReady;
+
+        if (AirConsole.instance.IsAirConsoleUnityPluginReady())
+        {
+            OnReady(string.Empty);
+        }
+        else
+        {
+            AirConsole.instance.onReady += OnReady;
+        }
     }
 
     void Start()
@@ -50,11 +58,7 @@ public class GameManager : Singleton<GameManager>
 
     void OnDestroy()
     {
-        // unregister airconsole events on scene change
-        if (AirConsole.instance != null)
-        {
-            AirConsole.instance.onMessage -= OnMessage;
-        }
+        AirConsole.instance.onConnect -= OnConnect;
     }
     #endregion
 
@@ -105,6 +109,10 @@ public class GameManager : Singleton<GameManager>
             player.playerId = (CharID)playerNumber;
             _characters[playerNumber] = player;
 
+            if (LevelData.Instance == null)
+            {
+                Debug.LogError("No LevelData on Scene!");
+            }
             player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
         }
 

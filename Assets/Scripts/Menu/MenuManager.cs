@@ -44,7 +44,15 @@ public class MenuManager : MonoBehaviour
         AirConsole.instance.onMessage += OnMessage;
         AirConsole.instance.onConnect += OnConnect;
         AirConsole.instance.onDisconnect += OnDisconnect;
-        AirConsole.instance.onReady += OnReady;
+
+        if (AirConsole.instance.IsAirConsoleUnityPluginReady())
+        {
+            OnReady(string.Empty);
+        }
+        else
+        {
+            AirConsole.instance.onReady += OnReady;
+        }
     }
 
 #if UNITY_EDITOR
@@ -52,16 +60,18 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.A))
         {
-            SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
+            SceneManager.LoadScene("SC_Windows");
+            //SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
         }
     }
 #endif 
 
     void OnDestroy()
     {
-        //AirConsole.instance.onMessage -= OnMessage;
         AirConsole.instance.onConnect -= OnConnect;
+        AirConsole.instance.onMessage -= OnMessage;
         AirConsole.instance.onDisconnect -= OnDisconnect;
+        AirConsole.instance.onReady -= OnReady;
     }
     #endregion
 
@@ -78,7 +88,8 @@ public class MenuManager : MonoBehaviour
 
             if (data["aPressed"] != null && (bool)data["aPressed"])
             {
-                SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
+                SceneManager.LoadScene("SC_Windows");
+                //SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
             }
         }
     }
@@ -95,7 +106,6 @@ public class MenuManager : MonoBehaviour
 
     void OnDisconnect(int device_id)
     {
-        var devices = AirConsole.instance.GetControllerDeviceIds();
         UIMenuManager.Instance.UpdatePlayersAvatar();
     }
 }
