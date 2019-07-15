@@ -72,6 +72,7 @@ public class CharController : MonoBehaviour
     private int _jumpsCount = 0;
     private float _horizontalVelocity = 0;
     private bool _isMVP;
+    private bool _canThrow = true;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
@@ -133,6 +134,27 @@ public class CharController : MonoBehaviour
             _isMVP = value;
 
             _crown.enabled = _isMVP;
+        }
+    }
+
+    public bool CanThrow
+    {
+        get
+        {
+            return _canThrow;
+        }
+
+        set
+        {
+            if (value == true)
+                return;
+
+            _canThrow = false;
+
+            this.ExecuteAfterTime(_data.CadenceProjectile, () =>
+            {
+                _canThrow = true;
+            });
         }
     }
     #endregion
@@ -272,11 +294,13 @@ public class CharController : MonoBehaviour
 
     void ProcessThrowInput()
     {
-        if (_throwPressed)
+        if (_throwPressed && _canThrow)
         {
             _throwPressed = false;
+            CanThrow = false;
 
             var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
+
             projectile.damage = _data.DamageProjectile;
             projectile.Direction = Vector3.right * (_spriteRenderer.flipX ? -1 : 1);
             projectile.sender = GetComponent<Entity>();
@@ -378,9 +402,11 @@ public class CharController : MonoBehaviour
 #if UNITY_EDITOR
     void HandleKeyboardInput()
     {
-        if (Input.GetKey(_controls.Right)) _horizontalInput = 1;
-        if (Input.GetKey(_controls.Left)) _horizontalInput = -1;
-        
+        if (Input.GetKeyDown(_controls.Right)) _horizontalInput = 1;
+        if (Input.GetKeyUp(_controls.Right) && _horizontalInput != -1) _horizontalInput = 0;
+        if (Input.GetKeyDown(_controls.Left)) _horizontalInput = -1;
+        if (Input.GetKeyUp(_controls.Left) && _horizontalInput != 1) _horizontalInput = 0;
+
         if (Input.GetKeyDown(_controls.Jump)) _jumpPressed = true;
         if (Input.GetKeyUp(_controls.Jump)) _jumpPressed = false;
 
