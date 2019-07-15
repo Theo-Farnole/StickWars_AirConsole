@@ -388,8 +388,7 @@ public class CharController : MonoBehaviour
         if (Input.GetKeyDown(_controls.Throw)) _throwPressed = true;
         if (Input.GetKeyUp(_controls.Throw)) _throwPressed = false;
 
-        if (Input.GetKeyDown(_controls.Tackle)) _tacklePressed = true;
-        if (Input.GetKeyUp(_controls.Tackle)) _tacklePressed = false;
+        if (Input.GetKeyDown(_controls.Tackle)) TacklePressed = true;
     }
 #endif
 

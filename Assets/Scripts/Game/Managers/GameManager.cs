@@ -38,6 +38,16 @@ public class GameManager : Singleton<GameManager>
         _gamemode = gamemodeType.ToGamemodeClass();
     }
 
+#if UNITY_EDITOR
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            SceneManager.LoadScene("_SC_menu");
+        }
+    }
+#endif
+
     void OnDestroy()
     {
         // unregister airconsole events on scene change
@@ -62,6 +72,7 @@ public class GameManager : Singleton<GameManager>
 
     void OnConnect(int device_id)
     {
+        Debug.Log("Connect du device_id " + device_id);
         InstantiateCharacter(device_id);
     }
 
