@@ -167,6 +167,10 @@ public class CharController : MonoBehaviour
         ManageJumpCount();
 
         ProcessThrowInput();
+
+#if UNITY_EDITOR
+        HandleKeyboardInput();
+#endif
     }
 
     void FixedUpdate()
@@ -369,6 +373,25 @@ public class CharController : MonoBehaviour
             _throwPressed = (bool)data["xPressed"];
         }
     }
+
+#if UNITY_EDITOR
+    void HandleKeyboardInput()
+    {
+        _horizontalInput = 0;
+
+        if (Input.GetKey(_controls.Right)) _horizontalInput++;
+        if (Input.GetKey(_controls.Left)) _horizontalInput--;
+        
+        if (Input.GetKeyDown(_controls.Jump)) _jumpPressed = true;
+        if (Input.GetKeyUp(_controls.Jump)) _jumpPressed = false;
+
+        if (Input.GetKeyDown(_controls.Throw)) _throwPressed = true;
+        if (Input.GetKeyUp(_controls.Throw)) _throwPressed = false;
+
+        if (Input.GetKeyDown(_controls.Tackle)) _tacklePressed = true;
+        if (Input.GetKeyUp(_controls.Tackle)) _tacklePressed = false;
+    }
+#endif
 
     private void OnDrawGizmosSelected()
     {
