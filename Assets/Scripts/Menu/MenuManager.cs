@@ -15,13 +15,47 @@ public class MenuManager : MonoBehaviour
     private bool _canChangeLevel = true;
     #endregion
 
+    #region Properties
+    private bool CanChangeLevel
+    {
+        get
+        {
+            return _canChangeLevel;
+        }
+
+        set
+        {
+            if (value == true)
+                return;
+
+            _canChangeLevel = false;
+
+            this.ExecuteAfterTime(CHANGE_LEVEL_TIME_DELAY, () =>
+            {
+                _canChangeLevel = true;
+            });
+        }
+    }
+    #endregion
+
     #region MonoBehaviour Callbacks
     void Awake()
     {
         AirConsole.instance.onMessage += OnMessage;
         AirConsole.instance.onConnect += OnConnect;
         AirConsole.instance.onDisconnect += OnDisconnect;
+        AirConsole.instance.onReady += OnReady;
     }
+
+#if UNITY_EDITOR
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
+        }
+    }
+#endif 
 
     void OnDestroy()
     {
@@ -39,12 +73,7 @@ public class MenuManager : MonoBehaviour
             {
                 LevelSelector.Instance.SelectedLevel += (int)data["horizontal"];
 
-                _canChangeLevel = false;
-
-                this.ExecuteAfterTime(CHANGE_LEVEL_TIME_DELAY, () =>
-                {
-                    _canChangeLevel = true;
-                });
+                CanChangeLevel = false;
             }
 
             if (data["aPressed"] != null && (bool)data["aPressed"])
@@ -54,15 +83,19 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    
     void OnConnect(int device_id)
     {
-        var playerAvatarIndex = AirConsole.instance.GetControllerDeviceIds().Count - 1;
-        UIMenuManager.Instance.DisplayPlayer(playerAvatarIndex, device_id);
+        UIMenuManager.Instance.UpdatePlayersAvatar();
+    }
+
+    void OnReady(string str)
+    {
+        UIMenuManager.Instance.UpdatePlayersAvatar();
     }
 
     void OnDisconnect(int device_id)
     {
-        Debug.LogError("OnDisconnect not implemented");
+        var devices = AirConsole.instance.GetControllerDeviceIds();
+        UIMenuManager.Instance.UpdatePlayersAvatar();
     }
 }
