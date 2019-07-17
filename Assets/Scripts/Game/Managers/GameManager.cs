@@ -7,10 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    public static readonly int MAX_PLAYERS = 4;
+    public static readonly int MAX_PLAYERS = 4;    
 
     #region Fields
-    [HideInInspector] public bool canRestart = false;
     [SerializeField] private GameObject _prefabPlayer;
 
     private GamemodeType gamemodeType = GamemodeType.DeathMatch;
@@ -28,7 +27,6 @@ public class GameManager : Singleton<GameManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        AirConsole.instance.onMessage += OnMessage;
         AirConsole.instance.onConnect += OnConnect;
 
         if (AirConsole.instance.IsAirConsoleUnityPluginReady())
@@ -46,40 +44,18 @@ public class GameManager : Singleton<GameManager>
         _gamemode = gamemodeType.ToGamemodeClass();
     }
 
-#if UNITY_EDITOR
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            SceneManager.LoadScene("_SC_menu");
-        }
-    }
-#endif
-
     void OnDestroy()
     {
         if (AirConsole.instance != null)
         {
 
             AirConsole.instance.onConnect -= OnConnect;
-            AirConsole.instance.onMessage -= OnMessage;
             AirConsole.instance.onReady -= OnReady;
         }
     }
     #endregion
 
     #region AirConsole events
-    void OnMessage(int device_id, JToken data)
-    {
-        if (canRestart && AirConsole.instance.GetMasterControllerDeviceId() == device_id)
-        {
-            if (data["aPressed"] != null && (bool)data["aPressed"])
-            {
-                SceneManager.LoadScene("_SC_menu");
-            }
-        }
-    }
-
     void OnConnect(int device_id)
     {
         InstantiateCharacter(device_id);

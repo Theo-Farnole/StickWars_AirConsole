@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
+    public static readonly float VICTORY_SCREEN_DURATION = 1.8f;
+
     #region Fields
     [SerializeField] private Canvas _mainCanvas;
     [Header("Game Panel")]
@@ -80,6 +82,9 @@ public class UIManager : Singleton<UIManager>
         _winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
 
         _victoryPanel.SetActive(true);
-        GameManager.Instance.canRestart = true;
+        this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
+        {
+            SceneManager.LoadScene("_SC_menu");
+        });
     }
 }
