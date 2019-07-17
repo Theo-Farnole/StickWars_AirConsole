@@ -55,21 +55,12 @@ public class UIManager : Singleton<UIManager>
 
     public void LaunchVictoryAnimation(int winnerPlayerNumber)
     {
-        for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
-        {
-            if (_gamemodeData[i].activeInHierarchy)
-            {
-                _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().Fade(FadeType.FadeOut, 0.3f);
-                _gamemodeData[i].GetComponentInChildren<Image>().Fade(FadeType.FadeOut, 0.3f);
-            }
+        string winnerNickname = AirConsole.instance.GetNickname(AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber));
+        _winnerWrapper.GetComponentInChildren<TextMeshProUGUI>().text = winnerNickname;
 
-            // copy winner's data into victory wrapper
-            if (i == winnerPlayerNumber)
-            {
-                _winnerWrapper.GetComponentInChildren<TextMeshProUGUI>().text = _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().text;
-                _winnerWrapper.GetComponentInChildren<Image>().sprite = _gamemodeData[i].GetComponentInChildren<Image>().sprite;
-            }
-        }
+        int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber);
+        string url = AirConsole.instance.GetProfilePicture(deviceId);
+        _winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
 
         _victoryPanel.SetActive(true);
         GameManager.Instance.canRestart = true;
