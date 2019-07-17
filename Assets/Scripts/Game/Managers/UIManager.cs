@@ -26,21 +26,38 @@ public class UIManager : Singleton<UIManager>
     {
         _textSceneName.text = SceneManager.GetActiveScene().name;
         _victoryPanel.SetActive(false);
-    }
 
-    void Start()
-    {
-        SetColorsGamemodeData();
+        // hide avatar wrappers
+        for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
+        {
+            _gamemodeData[i].SetActive(false);
+        }
     }
     #endregion
 
-    public void SetColorsGamemodeData()
+    public void SetAvatars()
     {
+        var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
+
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
-            _gamemodeData[i].GetComponentInChildren<Image>().color = ((CharID)i).ToColor();
+            var image = _gamemodeData[i].GetComponentInChildren<Image>();
 
-            bool isPlayerActive = (i < AirConsole.instance.GetActivePlayerDeviceIds.Count);
+            if (image != null)
+            {
+                image.color = Color.white;
+
+                // add image loader
+                if (image.GetComponent<ImageLoader>() == null)
+                {
+                    int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
+                    string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
+                    image.gameObject.AddComponent<ImageLoader>().url = url;
+                }
+            }
+
+            // active or not wrapper
+            bool isPlayerActive = (i < activePlayers);
             _gamemodeData[i].SetActive(isPlayerActive);
         }
     }

@@ -82,7 +82,6 @@ public class GameManager : Singleton<GameManager>
 
     void OnConnect(int device_id)
     {
-        Debug.Log("Connect du device_id " + device_id);
         InstantiateCharacter(device_id);
     }
 
@@ -122,6 +121,6 @@ public class GameManager : Singleton<GameManager>
             player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
         }
 
-        UIManager.Instance.SetColorsGamemodeData();
+        UIManager.Instance.SetAvatars();
     }
 }

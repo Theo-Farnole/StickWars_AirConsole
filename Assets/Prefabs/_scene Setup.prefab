@@ -99,6 +99,56 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5465835722725101789, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465835722725101789, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1405833508524601449, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1405833508524601449, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5523293097224254031, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5523293097224254031, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6515268260311359262, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6515268260311359262, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579612362503334392, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6579612362503334392, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
 --- !u!4 &8197301231925428887 stripped
