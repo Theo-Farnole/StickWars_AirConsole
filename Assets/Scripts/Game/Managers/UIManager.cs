@@ -59,7 +59,7 @@ public class UIManager : Singleton<UIManager>
         _winnerWrapper.GetComponentInChildren<TextMeshProUGUI>().text = winnerNickname;
 
         int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber);
-        string url = AirConsole.instance.GetProfilePicture(deviceId);
+        string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
         _winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
 
         _victoryPanel.SetActive(true);
