@@ -54,7 +54,7 @@ public class CharController : MonoBehaviour
     #region serialized variables
     public CharID playerId;
     [Space]
-    [SerializeField] private PlayerControllerData _data;
+    [SerializeField] private CharacterControllerData _data;
     [Header("Attacking")]
     [SerializeField] private GameObject _prefabProjectile;
     [SerializeField] private Vector3 _projectileOrigin;
