@@ -44,6 +44,24 @@ public class CharController : MonoBehaviour
     }
     #endregion
 
+    #region Enum
+    private enum SpecialState
+    {
+        None = 0,
+        Sticked,
+        Tackle
+    }
+
+    //private static class SpecialStateExtension
+    //{
+    //    public static void SetToNone(this SpecialState ss)
+    //    {
+    //        if (ss )
+    //    }
+    //}
+    #endregion
+
+
     #region Fields
     #region static readonly
     public readonly static int MAX_JUMPS_COUNT = 2;
@@ -68,11 +86,11 @@ public class CharController : MonoBehaviour
     // state variables
     private CharControls _controls;
     private PlayerCollision _collision;
-    private bool _isStick = false;
     private int _jumpsCount = 0;
     private float _horizontalVelocity = 0;
     private bool _isMVP;
-    private bool _canThrow = true;
+    private bool _fireRateCanThrow = true;
+    private SpecialState _state = SpecialState.None;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
@@ -98,27 +116,28 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Properties
-    private bool TacklePressed
+    private SpecialState State
     {
         get
         {
-            return _tacklePressed;
+            return _state;
         }
 
         set
         {
-            // can't externally set _tacklePressed to false
-            if (value == false)
+            if (_state == SpecialState.Tackle)
                 return;
 
-            _horizontalVelocity = _spriteRenderer.flipX ? -1 : 1;
-            _tacklePressed = value;
-
-            this.ExecuteAfterTime(TACKLE_DURATION, () =>
+            if (value == SpecialState.Tackle)
             {
-                _tacklePressed = false;
-                _entitiesHit.Clear();
-            });
+                this.ExecuteAfterTime(TACKLE_DURATION, () =>
+                {
+                    _state = SpecialState.None;
+                    _entitiesHit.Clear();
+                });
+            }
+
+            _state = value;
         }
     }
 
@@ -137,11 +156,11 @@ public class CharController : MonoBehaviour
         }
     }
 
-    public bool CanThrow
+    public bool FireRateCanThrow
     {
         get
         {
-            return _canThrow;
+            return _fireRateCanThrow;
         }
 
         set
@@ -149,11 +168,11 @@ public class CharController : MonoBehaviour
             if (value == true)
                 return;
 
-            _canThrow = false;
+            _fireRateCanThrow = false;
 
             this.ExecuteAfterTime(_data.CadenceProjectile, () =>
             {
-                _canThrow = true;
+                _fireRateCanThrow = true;
             });
         }
     }
@@ -188,7 +207,7 @@ public class CharController : MonoBehaviour
         ManageStick();
         ManageJumpCount();
 
-        ProcessThrowInput();
+        ProcessAttacksInputs();
 
 #if UNITY_EDITOR
         HandleKeyboardInput();
@@ -204,10 +223,10 @@ public class CharController : MonoBehaviour
     void LateUpdate()
     {
         // update Animator state
-        _animator.SetBool(_hashWallSliding, _isStick);
+        _animator.SetBool(_hashWallSliding, (State == SpecialState.Sticked));
         _animator.SetBool(_hashRunning, (_horizontalInput != 0));
         _animator.SetBool(_hashJump, !_collision.down);
-        _animator.SetBool(_hashTackle, _tacklePressed);
+        _animator.SetBool(_hashTackle, (State == SpecialState.Tackle));
     }
     #endregion
 
@@ -224,19 +243,16 @@ public class CharController : MonoBehaviour
     #region OnCollision callbacks
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // sticking system
-        bool isStickOld = _isStick;
-
         // if we just get sticked, reset velocity
-        if (_isStick && !isStickOld)
+        if (State != SpecialState.Sticked)
         {
-            _rb.velocity = _isStick ? Vector2.zero : _rb.velocity;
+            _rb.velocity = Vector2.zero;
         }
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (!_tacklePressed)
+        if (State != SpecialState.Tackle)
             return;
 
         Entity otherEntity = other.gameObject.GetComponent<Entity>();
@@ -283,7 +299,7 @@ public class CharController : MonoBehaviour
     void ManageJumpCount()
     {
         // reset jump count ?
-        if (_collision.down || _isStick)
+        if (_collision.down || State == SpecialState.Sticked)
         {
             _jumpsCount = 0;
         }
@@ -291,29 +307,38 @@ public class CharController : MonoBehaviour
 
     void ManageStick()
     {
-        // sticking system
         if (!_collision.down && (_horizontalVelocity < 0 && _collision.left) || (_horizontalVelocity > 0 && _collision.right))
         {
-            _isStick = true;
+            if (State != SpecialState.Tackle)
+            {
+                State = SpecialState.Sticked;
+            }
         }
         else
         {
-            _isStick = false;
+            if (State == SpecialState.Sticked)
+            {
+                State = SpecialState.None;
+            }
         }
     }
 
-    void ProcessThrowInput()
+    void ProcessAttacksInputs()
     {
-        if (_throwPressed && _canThrow)
+        if (_throwPressed && _fireRateCanThrow && State == SpecialState.None)
         {
-            _throwPressed = false;
-            CanThrow = false;
+            FireRateCanThrow = false;
 
             var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
 
             projectile.damage = _data.DamageProjectile;
             projectile.Direction = Vector3.right * (_spriteRenderer.flipX ? -1 : 1);
             projectile.sender = GetComponent<Entity>();
+        }
+
+        if (_tacklePressed && State != SpecialState.Sticked)
+        {
+            State = SpecialState.Tackle;
         }
     }
     #endregion
@@ -328,13 +353,17 @@ public class CharController : MonoBehaviour
     void ProcessHorizontalInput()
     {
         // set velocity
-        if (!_tacklePressed)
+        if (State != SpecialState.Tackle)
         {
             _horizontalVelocity = _horizontalInput;
         }
+        else if (_horizontalVelocity == 0)
+        {
+            _horizontalVelocity = _spriteRenderer.flipX ? -1 : 1;
+        }
 
         // ... added to velocity ...
-        if (!_isStick || (_horizontalVelocity < 0 && _collision.left == false) || (_horizontalVelocity > 0 && _collision.right == false))
+        if (State != SpecialState.Sticked || (_horizontalVelocity < 0 && _collision.left == false) || (_horizontalVelocity > 0 && _collision.right == false))
         {
             _rb.velocity = new Vector2(_data.Speed * _horizontalVelocity, _rb.velocity.y);
         }
@@ -352,7 +381,7 @@ public class CharController : MonoBehaviour
 
     void ProcessVerticalInput()
     {
-        if (_isStick)
+        if (State == SpecialState.Sticked)
         {
             _rb.gravityScale = 0;
             _rb.velocity = new Vector2(_rb.velocity.x, _data.SlidingDownSpeed);
@@ -361,7 +390,7 @@ public class CharController : MonoBehaviour
         {
             _rb.gravityScale = 1;
 
-            if (_jumpPressed && !_tacklePressed && _jumpsCount < MAX_JUMPS_COUNT)
+            if (_jumpPressed && State != SpecialState.Tackle && _jumpsCount < MAX_JUMPS_COUNT)
             {
                 _jumpPressed = false;
 
@@ -394,7 +423,7 @@ public class CharController : MonoBehaviour
 
         if (data["bPressed"] != null)
         {
-            TacklePressed = (bool)data["bPressed"];
+            _tacklePressed = (bool)data["bPressed"];
         }
 
         if (data["aPressed"] != null)
@@ -422,7 +451,8 @@ public class CharController : MonoBehaviour
         if (Input.GetKeyDown(_controls.Throw)) _throwPressed = true;
         if (Input.GetKeyUp(_controls.Throw)) _throwPressed = false;
 
-        if (Input.GetKeyDown(_controls.Tackle)) TacklePressed = true;
+        if (Input.GetKeyDown(_controls.Tackle)) _tacklePressed = true;
+        if (Input.GetKeyUp(_controls.Tackle)) _tacklePressed = false;
     }
 #endif
 
