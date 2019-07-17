@@ -47,7 +47,6 @@ public class CharController : MonoBehaviour
     }
     #endregion
 
-
     #region Fields
     #region static readonly
     public readonly static int MAX_JUMPS_COUNT = 2;
@@ -77,6 +76,7 @@ public class CharController : MonoBehaviour
     private bool _isMVP;
     private bool _fireRateCanThrow = true;
     private SpecialState _state = SpecialState.None;
+    private int _directionX = -1;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
@@ -102,6 +102,30 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Properties
+    private int DirectionX
+    {
+        get
+        {
+            return _directionX;
+        }
+
+        set
+        {
+            _directionX = Mathf.Clamp(value, -1, 1);
+
+            switch (_directionX)
+            {
+                case -1:
+                    _spriteRenderer.flipX = true;
+                    break;
+
+                case 1:
+                    _spriteRenderer.flipX = false;
+                    break;
+            }
+        }
+    }
+
     private SpecialState State
     {
         get
@@ -318,7 +342,7 @@ public class CharController : MonoBehaviour
             var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
 
             projectile.damage = _data.DamageProjectile;
-            projectile.Direction = Vector3.right * (_spriteRenderer.flipX ? -1 : 1);
+            projectile.Direction = Vector3.right * DirectionX;
             projectile.sender = GetComponent<Entity>();
         }
 
@@ -345,8 +369,10 @@ public class CharController : MonoBehaviour
         }
         else if (_horizontalVelocity == 0)
         {
-            _horizontalVelocity = _spriteRenderer.flipX ? -1 : 1;
+            _horizontalVelocity = DirectionX;
         }
+
+        DirectionX = (int)_horizontalVelocity;
 
         // ... added to velocity ...
         if (State != SpecialState.Sticked || (_horizontalVelocity < 0 && _collision.left == false) || (_horizontalVelocity > 0 && _collision.right == false))
@@ -356,12 +382,6 @@ public class CharController : MonoBehaviour
         else
         {
             _rb.velocity = new Vector2(0, _rb.velocity.y);
-        }
-
-        // ... modify face of the sprite
-        if (_horizontalVelocity != 0)
-        {
-            _spriteRenderer.flipX = (_horizontalVelocity < 0) ? true : false;
         }
     }
 
