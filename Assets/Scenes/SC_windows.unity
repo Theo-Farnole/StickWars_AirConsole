@@ -812,11 +812,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7456931107786699328, guid: 27fac3f66b328e140b63d4ffdc881be8,
-        type: 3}
-      propertyPath: browserStartMode
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27fac3f66b328e140b63d4ffdc881be8, type: 3}
 --- !u!1001 &1706380686275447361
@@ -1085,6 +1080,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122511546372985422, guid: 56e4bfdcc04159c4c9576894308a5b86,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122511546372985422, guid: 56e4bfdcc04159c4c9576894308a5b86,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.3679245
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122511546372985422, guid: 56e4bfdcc04159c4c9576894308a5b86,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.3679245
+      objectReference: {fileID: 0}
+    - target: {fileID: 3122511546372985422, guid: 56e4bfdcc04159c4c9576894308a5b86,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.3679245
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56e4bfdcc04159c4c9576894308a5b86, type: 3}
