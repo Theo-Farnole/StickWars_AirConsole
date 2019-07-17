@@ -33,6 +33,7 @@ public class UIManager : Singleton<UIManager>
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
             _gamemodeData[i].SetActive(false);
+            _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().color = ((CharID)i).ToColor();
         }
     }
     #endregion
