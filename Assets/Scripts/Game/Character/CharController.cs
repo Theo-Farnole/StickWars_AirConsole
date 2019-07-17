@@ -6,12 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-
-// TODO
-// Create variable for player orientation (instead of using sprite orientation)
-// Add cadence in projectile throw
-// Create enum for SpecialState { Sticked, Tackling, None }
-
 public class CharController : MonoBehaviour
 {
     #region Classes & Struct
@@ -51,14 +45,6 @@ public class CharController : MonoBehaviour
         Sticked,
         Tackle
     }
-
-    //private static class SpecialStateExtension
-    //{
-    //    public static void SetToNone(this SpecialState ss)
-    //    {
-    //        if (ss )
-    //    }
-    //}
     #endregion
 
 
