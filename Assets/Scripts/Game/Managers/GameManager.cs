@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    public static readonly int MAX_PLAYERS = 4;    
+    public static readonly int MAX_PLAYERS = 4;
 
     #region Fields
     [SerializeField] private GameObject _prefabPlayer;
@@ -58,12 +58,20 @@ public class GameManager : Singleton<GameManager>
     #region AirConsole events
     void OnConnect(int device_id)
     {
-        InstantiateCharacter(device_id);
+#if UNITY_EDITOR
+        var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
+
+        if (activePlayers < MAX_PLAYERS)
+        {
+            AirConsole.instance.SetActivePlayers(activePlayers + 1);
+            InstantiateCharacter(device_id);
+        }
+#endif
     }
 
     void OnReady(string str)
     {
-        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
+        var devicesIds = AirConsole.instance.GetActivePlayerDeviceIds;
 
         for (int i = 0; i < devicesIds.Count; i++)
         {
@@ -74,16 +82,12 @@ public class GameManager : Singleton<GameManager>
 
     void InstantiateCharacter(int device_id)
     {
-        // set every player to active player
-        var devicesIds = AirConsole.instance.GetControllerDeviceIds();
-        AirConsole.instance.SetActivePlayers(devicesIds.Count);
-
         // convert device id to player numer
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
 
         // instantiate character is playerNumber is contains inside _characters 
         // and if character hasn't be instantiated
-        if (playerNumber < MAX_PLAYERS && _characters[playerNumber] == null)
+        if (playerNumber != -1 && playerNumber < MAX_PLAYERS && _characters[playerNumber] == null)
         {
             var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
 
