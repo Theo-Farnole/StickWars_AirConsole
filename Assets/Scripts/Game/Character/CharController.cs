@@ -251,15 +251,6 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region OnCollision callbacks
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // if we just get sticked, reset velocity
-        if (State != SpecialState.Sticked)
-        {
-            _rb.velocity = Vector2.zero;
-        }
-    }
-
     void OnTriggerStay2D(Collider2D other)
     {
         if (State != SpecialState.Tackle)
