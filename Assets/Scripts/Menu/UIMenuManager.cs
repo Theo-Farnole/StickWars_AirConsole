@@ -32,11 +32,10 @@ public class UIMenuManager : Singleton<UIMenuManager>
 
     public void UpdatePlayersAvatar()
     {
-        var devices = AirConsole.instance.GetControllerDeviceIds();
+        var devices = AirConsole.instance.GetActivePlayerDeviceIds;
 
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
-
             if (i < devices.Count)
             {
                 DisplayPlayerAvatar(i);
@@ -56,10 +55,10 @@ public class UIMenuManager : Singleton<UIMenuManager>
         _textWaitingForPlayers.gameObject.SetActive(shouldDisplayTextWaiting);
     }
 
-    private void DisplayPlayerAvatar(int index)
+    private void DisplayPlayerAvatar(int playerNumber)
     {
         // activate childs
-        _playersWrappers[index].transform.ActionForEachChildren((GameObject child) =>
+        _playersWrappers[playerNumber].transform.ActionForEachChildren((GameObject child) =>
         {
             child.SetActive(true);
         });
@@ -69,11 +68,11 @@ public class UIMenuManager : Singleton<UIMenuManager>
         //_playersWrappers[index].Avatar.sprite = ((CharID)index).ToColor();
 
         // update outline
-        _playersWrappers[index].Outline.effectColor = ((CharID)index).ToColor();
+        _playersWrappers[playerNumber].Outline.effectColor = ((CharID)playerNumber).ToColor();
 
         // update text
-        var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(index);
-        _playersWrappers[index].Name.text = AirConsole.instance.GetNickname(deviceId);
+        var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(playerNumber);
+        _playersWrappers[playerNumber].Name.text = AirConsole.instance.GetNickname(deviceId);
     }
 }
 

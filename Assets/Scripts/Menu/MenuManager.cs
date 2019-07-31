@@ -93,22 +93,89 @@ public class MenuManager : MonoBehaviour
             {
                 SceneManager.LoadScene("SC_Windows");
                 //SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
+
+                var token = new
+                {
+                    view = ControllerView.Play.ToString(),
+                };
+
+                AirConsole.instance.Broadcast(token);
             }
         }
     }
 
     void OnConnect(int device_id)
     {
+        int activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
+        if (activePlayers < GameManager.MAX_PLAYERS)
+        {
+            AirConsole.instance.SetActivePlayers(activePlayers + 1);
+        }
+
         UIMenuManager.Instance.UpdatePlayersAvatar();
+        UpdateControllerView();
     }
 
     void OnReady(string str)
     {
         UIMenuManager.Instance.UpdatePlayersAvatar();
+        UpdateControllerView();
     }
 
     void OnDisconnect(int device_id)
     {
+        // is part of active players ?
+        if (AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id) != -1)
+        {
+            int activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
+
+            if (AirConsole.instance.GetControllerDeviceIds().Count > GameManager.MAX_PLAYERS)
+            {
+                AirConsole.instance.SetActivePlayers(activePlayers);
+            }
+            else
+            {
+                AirConsole.instance.SetActivePlayers(activePlayers - 1);
+            }
+        }
+
         UIMenuManager.Instance.UpdatePlayersAvatar();
+        UpdateControllerView();
+    }
+
+    void UpdateControllerView()
+    {
+        var playersNumber = AirConsole.instance.GetControllerDeviceIds().Count;
+
+        for (int i = 0; i < playersNumber; i++)
+        {
+            var device_id = AirConsole.instance.GetControllerDeviceIds()[i];
+
+            string bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToString();
+            string view = string.Empty;
+
+            if (device_id == AirConsole.instance.GetMasterControllerDeviceId())
+            {
+                view = ControllerView.Play.ToString();
+            }
+            else if (AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id) == -1)
+            {
+                view = ControllerView.NoPlace.ToString();
+            }
+            else
+            {
+                view = ControllerView.Wait.ToString();
+            }
+
+            Debug.Log(bgColor + " view = " + view);
+
+            var token = new
+            {
+                view,
+                bgColor
+            };
+
+            AirConsole.instance.Message(device_id, token);
+        }
     }
 }
