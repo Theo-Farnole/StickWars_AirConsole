@@ -15,7 +15,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Game Panel")]
     [SerializeField] private TextMeshProUGUI _textSceneName;
     [Space]
-    [SerializeField] private GameObject[] _gamemodeData = new GameObject[GameManager.MAX_PLAYERS];
+    [SerializeField] private PlayerWrapper[] _gamemodeData = new PlayerWrapper[GameManager.MAX_PLAYERS];
     [Header("Victory Animation")]
     [SerializeField] private GameObject _victoryPanel;
     [SerializeField] private TextMeshProUGUI _textVictory;
@@ -32,8 +32,10 @@ public class UIManager : Singleton<UIManager>
         // hide avatar wrappers
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
-            _gamemodeData[i].SetActive(false);
-            _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().color = ((CharID)i).ToColor();
+            _gamemodeData[i].gameObject.SetActive(false);
+            //_gamemodeData[i].Name.color = ((CharID)i).ToColor(); // image loader
+            Debug.LogWarning("Add image loader");
+            _gamemodeData[i].Outline.effectColor = ((CharID)i).ToColor();
         }
     }
     #endregion
@@ -62,7 +64,7 @@ public class UIManager : Singleton<UIManager>
 
             // active or not wrapper
             bool isPlayerActive = (i < activePlayers);
-            _gamemodeData[i].SetActive(isPlayerActive);
+            _gamemodeData[i].gameObject.SetActive(isPlayerActive);
         }
     }
 
