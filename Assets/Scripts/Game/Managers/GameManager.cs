@@ -65,6 +65,15 @@ public class GameManager : Singleton<GameManager>
         {
             AirConsole.instance.SetActivePlayers(activePlayers + 1);
             InstantiateCharacter(device_id);
+
+            // update controller
+            var token = new
+            {
+                view = ControllerView.Play.ToString(),
+                bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToString()
+            };
+
+            AirConsole.instance.Message(device_id, token);
         }
 #endif
     }
@@ -99,6 +108,7 @@ public class GameManager : Singleton<GameManager>
                 Debug.LogError("No LevelData on Scene!");
             }
             player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+
         }
 
         UIManager.Instance.SetAvatars();
