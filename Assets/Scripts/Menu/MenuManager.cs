@@ -167,8 +167,6 @@ public class MenuManager : MonoBehaviour
                 view = ControllerView.Wait.ToString();
             }
 
-            Debug.Log(bgColor + " view = " + view);
-
             var token = new
             {
                 view,
