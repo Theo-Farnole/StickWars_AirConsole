@@ -47,7 +47,7 @@
             }); 
 
             ViewManager.init();
-            ViewManager.show("Load");
+            ViewManager.show("Play");
 
             airconsole.onMessage = function(from, data) {
                 if (from == AirConsole.SCREEN)
@@ -117,109 +117,51 @@
             vertical-align: middle;
         }
 
-        /* WRAPPERS */
-        #move_wrapper
+        #Play > div
         {
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 50%;
             height: 100%;
-        }
-
-        #buttons_wrapper
-        {
-            position: absolute;
-            top: 0;
-            right: 0;
-
-            width: 50%;
-            height: 100%;
-        }
-        /* END WRAPPERS */
-        
-        .button_label {
-            position: absolute;
-            left: 0px;
             width: 100%;
-            top: 50%;
-            margin-top: -6px;
+
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            grid-template-rows: repeat(2, auto);
+            grid-gap: 15px;
         }
 
-        /* BUTTONS_ACTIONS */
-        .button_actions
+        .buttons
         {
-            width: 14vw;
-            height: 14vw;
-
-            margin: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
 
             background-color: #222;
-            position: relative;
+            line-height: 100%;
         }
-
-        #button_A
-        {
-            position: absolute;
-            bottom: 0;
-
-            left: 50%;
-            margin-left: -7vw;
-        }
-
-        #button_B
-        {
-            position: absolute;
-            bottom: 50%;
-            right: 0;
-        }
-
-        #button_X
-        {
-            position: absolute;
-            bottom: 50%;
-            left: 0;
-        }
-        /* END BUTTONS_ACTIONS */
-
-        /* BUTTONS_HORIZONTAL */
-        .button_horizontal {
-            display: inline-block;
-            height: calc(100% - 40px);
-            width: 45%;
-            background-color: #222;
-            position: relative;
-            top: 20px;
-        }
-        /* END BUTTONS_HORIZONTAL */
     </style>
 </head>
 
 <body onload="init()">
     
     <div id="Play" class="view">
-        <div id="move_wrapper">
-            <div class=button_horizontal ontouchstart="horizontal(-1)" ontouchend="horizontal(0)" onmousedown="horizontal(-1)" onmouseup="horizontal(0)">
+        <div>
+            <div style="grid-row: 1 / 3;" class=buttons ontouchstart="horizontal(-1)" ontouchend="horizontal(0)" onmousedown="horizontal(-1)" onmouseup="horizontal(0)">
                 <div class="button_label">LEFT</div>
             </div>
 
-            <div class=button_horizontal ontouchstart="horizontal(1)" ontouchend="horizontal(0)" onmousedown="horizontal(1)" onmouseup="horizontal(0)">
+            <div style="grid-row: 1 / 3;" class=buttons ontouchstart="horizontal(1)" ontouchend="horizontal(0)" onmousedown="horizontal(1)" onmouseup="horizontal(0)">
                 <div class="button_label">RIGHT</div>
             </div>
-        </div>
 
-        <div id="buttons_wrapper">
-            <div  class=button_actions id="button_A"ontouchstart="aPressed(true)" ontouchend="aPressed(false)" onmousedown="aPressed(true)" onmouseup="aPressed(false)">
-                <div class="button_label">A</div>
-            </div>
-
-            <div  class=button_actions id="button_B" ontouchstart="bPressed(true)" ontouchend="bPressed(false)" onmousedown="bPressed(true)" onmouseup="bPressed(false)">
+            <div  class=buttons id="button_B" ontouchstart="bPressed(true)" ontouchend="bPressed(false)" onmousedown="bPressed(true)" onmouseup="bPressed(false)">
                 <div class="button_label">B</div>
             </div>
 
-            <div  class=button_actions id="button_X" ontouchstart="xPressed(true)" ontouchend="xPressed(false)" onmousedown="xPressed(true)" onmouseup="xPressed(false)">
+            <div  class=buttons id="button_X" ontouchstart="xPressed(true)" ontouchend="xPressed(false)" onmousedown="xPressed(true)" onmouseup="xPressed(false)">
                 <div class="button_label">X</div>
+            </div>
+
+            <div style="grid-row: 2 / 3; grid-column: 3 / 5;" class=buttons id="button_A"ontouchstart="aPressed(true)" ontouchend="aPressed(false)" onmousedown="aPressed(true)" onmouseup="aPressed(false)">
+                <div class="button_label">A</div>
             </div>
         </div>
     </div>
