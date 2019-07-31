@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UIMenuManager : Singleton<UIMenuManager>
 {
     #region Fields
-    [SerializeField] private GameObject[] _playersAvatar = new GameObject[4];
+    [SerializeField] private PlayerWrapper[] _playersWrappers = new PlayerWrapper[4];
     [Space]
     [SerializeField] private TextMeshProUGUI _textWaitingForPlayers;
     #endregion
@@ -19,9 +19,9 @@ public class UIMenuManager : Singleton<UIMenuManager>
         if (!AirConsole.instance.IsAirConsoleUnityPluginReady())
         {
             // hide avatar until player join
-            for (int i = 0; i < _playersAvatar.Length; i++)
+            for (int i = 0; i < _playersWrappers.Length; i++)
             {
-                _playersAvatar[i].transform.ActionForEachChildren((GameObject c) =>
+                _playersWrappers[i].transform.ActionForEachChildren((GameObject c) =>
                 {
                     c.SetActive(false);
                 });
@@ -33,7 +33,7 @@ public class UIMenuManager : Singleton<UIMenuManager>
     public void UpdatePlayersAvatar()
     {
         var devices = AirConsole.instance.GetControllerDeviceIds();
-        
+
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
 
@@ -44,7 +44,7 @@ public class UIMenuManager : Singleton<UIMenuManager>
             else
             {
                 // hide childs
-                _playersAvatar[i].transform.ActionForEachChildren((GameObject child) =>
+                _playersWrappers[i].transform.ActionForEachChildren((GameObject child) =>
                 {
                     child.SetActive(false);
                 });
@@ -59,26 +59,21 @@ public class UIMenuManager : Singleton<UIMenuManager>
     private void DisplayPlayerAvatar(int index)
     {
         // activate childs
-        _playersAvatar[index].transform.ActionForEachChildren((GameObject child) =>
+        _playersWrappers[index].transform.ActionForEachChildren((GameObject child) =>
         {
             child.SetActive(true);
         });
 
         // update image
-        var image = _playersAvatar[index].GetComponentInChildren<Image>();
+        Debug.LogWarning("Add ImageLoader here");
+        //_playersWrappers[index].Avatar.sprite = ((CharID)index).ToColor();
 
-        if (image)
-        {
-            image.color = ((CharID)index).ToColor();
-        }
+        // update outline
+        _playersWrappers[index].Outline.effectColor = ((CharID)index).ToColor();
 
         // update text
-        var text = _playersAvatar[index].GetComponentInChildren<TextMeshProUGUI>();
-
-        if (text)
-        {
-            var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(index);
-            text.text = AirConsole.instance.GetNickname(deviceId);
-        }
+        var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(index);
+        _playersWrappers[index].Name.text = AirConsole.instance.GetNickname(deviceId);
     }
 }
+

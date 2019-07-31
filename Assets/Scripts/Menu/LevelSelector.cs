@@ -36,7 +36,7 @@ public class LevelSelector : Singleton<LevelSelector>
 
         set
         {
-            _selectedLevel = MyMath.InverseClamp(value, 0, _levels.Length - 1);
+            //_selectedLevel = MyMath.InverseClamp(value, 0, _levels.Length - 1);
             UpdateUI();
         }
     }
@@ -49,12 +49,13 @@ public class LevelSelector : Singleton<LevelSelector>
 
     private void UpdateUI()
     {
-        int leftIndex = MyMath.InverseClamp(_selectedLevel - 1, 0, _levels.Length - 1);
-        int rightIndex = MyMath.InverseClamp(_selectedLevel + 1, 0, _levels.Length - 1);
+        Debug.LogWarning("Temporary broken function");
+        //int leftIndex = MyMath.InverseClamp(_selectedLevel - 1, 0, _levels.Length - 1);
+        //int rightIndex = MyMath.InverseClamp(_selectedLevel + 1, 0, _levels.Length - 1);
 
-        _selectedImageLevel.sprite = _levels[_selectedLevel].sprite;
-        _leftImageLevel.sprite = _levels[leftIndex].sprite;
-        _rightImageLevel.sprite = _levels[rightIndex].sprite;
+        //_selectedImageLevel.sprite = _levels[_selectedLevel].sprite;
+        //_leftImageLevel.sprite = _levels[leftIndex].sprite;
+        //_rightImageLevel.sprite = _levels[rightIndex].sprite;
     }
 
     public LevelData GetSelectedLevelData()

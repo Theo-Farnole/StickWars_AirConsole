@@ -50,13 +50,14 @@ public class UIManager : Singleton<UIManager>
             {
                 image.color = Color.white;
 
-                // add image loader
-                if (image.GetComponent<ImageLoader>() == null)
-                {
-                    int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
-                    string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-                    image.gameObject.AddComponent<ImageLoader>().url = url;
-                }
+                Debug.LogWarning("Commented usefull code block");
+                //// add image loader
+                //if (image.GetComponent<ImageLoader>() == null)
+                //{
+                //    int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
+                //    string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
+                //    image.gameObject.AddComponent<ImageLoader>().url = url;
+                //}
             }
 
             // active or not wrapper
@@ -80,7 +81,8 @@ public class UIManager : Singleton<UIManager>
 
         int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber);
         string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-        _winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
+        //_winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
+        Debug.LogWarning("tamer");
 
         _victoryPanel.SetActive(true);
         this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
