@@ -76,7 +76,7 @@ public class CharController : MonoBehaviour
     private bool _isMVP;
     private bool _fireRateCanThrow = true;
     private SpecialState _state = SpecialState.None;
-    private int _directionX = -1;
+    private int _directionX = 1;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
@@ -372,8 +372,6 @@ public class CharController : MonoBehaviour
             _horizontalVelocity = DirectionX;
         }
 
-        DirectionX = (int)_horizontalVelocity;
-
         // ... added to velocity ...
         if (State != SpecialState.Sticked || (_horizontalVelocity < 0 && _collision.left == false) || (_horizontalVelocity > 0 && _collision.right == false))
         {
@@ -382,6 +380,11 @@ public class CharController : MonoBehaviour
         else
         {
             _rb.velocity = new Vector2(0, _rb.velocity.y);
+        }
+
+        if (_horizontalInput != 0)
+        {
+            DirectionX = (int)_horizontalVelocity;
         }
     }
 
