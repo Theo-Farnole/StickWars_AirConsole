@@ -1,0 +1,8 @@
+contre si 2 tacles se rencontrent
+faire fenêtre FB
+
+lancer projectile = stop velocity en Y
+tester selection de la map
+
+créer gamemode CTF
+selection du gamemode
