@@ -79,7 +79,7 @@ public class CharController : MonoBehaviour
     private int _jumpsCount = 0;
     private float _horizontalVelocity = 0;
     private bool _isMVP;
-    private bool _fireRateCanThrow = true;
+    private bool _canThrowProjectile = true;
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private SpecialState _state = SpecialState.None;
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private int _directionX = 1;
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private Collider2D _currentCollider;
@@ -204,6 +204,27 @@ public class CharController : MonoBehaviour
             return _currentCollider;
         }
     }
+
+    private bool CanThrowProjectile
+    {
+        get
+        {
+            return _canThrowProjectile;
+        }
+
+        set
+        {
+            if (value == true)
+                return;
+
+            _canThrowProjectile = false;
+
+            this.ExecuteAfterTime(_data.CadenceProjectile, () =>
+            {
+                _canThrowProjectile = true;
+            });
+        }
+    }
     #endregion
 
     #region Public
@@ -219,27 +240,6 @@ public class CharController : MonoBehaviour
             _isMVP = value;
 
             _crown.enabled = _isMVP;
-        }
-    }
-
-    public bool FireRateCanThrow
-    {
-        get
-        {
-            return _fireRateCanThrow;
-        }
-
-        set
-        {
-            if (value == true)
-                return;
-
-            _fireRateCanThrow = false;
-
-            this.ExecuteAfterTime(_data.CadenceProjectile, () =>
-            {
-                _fireRateCanThrow = true;
-            });
         }
     }
     #endregion
@@ -383,9 +383,9 @@ public class CharController : MonoBehaviour
 
     void ProcessAttacksInputs()
     {
-        if (_throwPressed && _fireRateCanThrow && State == SpecialState.None)
+        if (_throwPressed && _canThrowProjectile && State == SpecialState.None)
         {
-            FireRateCanThrow = false;
+            CanThrowProjectile = false;
 
             var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
 
