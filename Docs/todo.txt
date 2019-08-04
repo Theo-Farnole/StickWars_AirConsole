@@ -1,8 +1,12 @@
-contre si 2 tacles se rencontrent
-faire fenêtre FB
+﻿faire fenêtre FB
 
-lancer projectile = stop velocity en Y
 tester selection de la map
 
 créer gamemode CTF
 selection du gamemode
+
+TEST GAMEPLAY:
+lancer projectile = stop velocity en Y
+contre si 2 tacles se rencontrent
+projectile avec de la gravité ?
+

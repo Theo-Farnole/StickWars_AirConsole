@@ -311,30 +311,20 @@ public class CharController : MonoBehaviour
     #region OnCollision callbacks
     void OnTriggerStay2D(Collider2D other)
     {
-        if (State != SpecialState.Tackle)
-            return;
-
-        Entity otherEntity = other.gameObject.GetComponent<Entity>();
-
-        if (otherEntity != null)
+        if (State == SpecialState.Tackle)
         {
-            bool isEntityHittedPreviously = (_entitiesHit.Find(x => x == otherEntity) != null);
+            Entity otherEntity = other.gameObject.GetComponent<Entity>();
 
-            if (!isEntityHittedPreviously)
+            if (otherEntity != null)
             {
-                otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>());
-                _entitiesHit.Add(otherEntity);
+                bool isEntityHittedPreviously = (_entitiesHit.Find(x => x == otherEntity) != null);
+
+                if (!isEntityHittedPreviously)
+                {
+                    otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>());
+                    _entitiesHit.Add(otherEntity);
+                }
             }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        Entity otherEntity = other.gameObject.GetComponent<Entity>();
-
-        if (otherEntity != null)
-        {
-            _entitiesHit.Remove(otherEntity);
         }
     }
     #endregion
