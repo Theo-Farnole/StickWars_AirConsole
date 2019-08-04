@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel;
 using UnityEngine;
 
 public class CharController : MonoBehaviour
@@ -80,9 +81,9 @@ public class CharController : MonoBehaviour
     private float _horizontalVelocity = 0;
     private bool _isMVP;
     private bool _canThrowProjectile = true;
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private SpecialState _state = SpecialState.None;
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private int _directionX = 1;
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private Collider2D _currentCollider;
+    [EditorBrowsable(EditorBrowsableState.Never)] private SpecialState _state = SpecialState.None;
+    [EditorBrowsable(EditorBrowsableState.Never)] private int _directionX = 1;
+    [EditorBrowsable(EditorBrowsableState.Never)] private Collider2D _currentCollider;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
