@@ -1,15 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-// TODO:
-// Projectile look at direction
-// Player can stick to projectile
-    
+  
 [SelectionBase]
 public class Projectile : MonoBehaviour
 {
     #region Fields
+    public static readonly float LIFETIME = 10f;
+
     [SerializeField] private ProjectileData _data;
 
     [HideInInspector] public int damage = 10;
@@ -33,6 +31,11 @@ public class Projectile : MonoBehaviour
         }
     }
     #endregion
+
+    void Start()
+    {
+        Destroy(gameObject, LIFETIME);
+    }
 
     void Update()
     {
