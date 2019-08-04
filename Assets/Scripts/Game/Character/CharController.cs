@@ -52,6 +52,7 @@ public class CharController : MonoBehaviour
     public readonly static int MAX_JUMPS_COUNT = 2;
     public readonly static float TACKLE_DURATION = 1.1f / 2f;
     public readonly static float RAYCAST_DISTANCE = 0.1f;
+    public readonly static float TACKLE_TRANSITION_TIME = 0.1f;
     #endregion
 
     #region serialized variables
@@ -61,6 +62,10 @@ public class CharController : MonoBehaviour
     [Header("Attacking")]
     [SerializeField] private GameObject _prefabProjectile;
     [SerializeField] private Vector3 _projectileOrigin;
+    [Header("Collisions")]
+    [SerializeField] private Collider2D _normalCollider;
+    [SerializeField] private Collider2D _tackleCollider;
+    [SerializeField, Tooltip("Collider between normal & tackle collider")] private Collider2D _transitionCollider;
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
@@ -75,8 +80,9 @@ public class CharController : MonoBehaviour
     private float _horizontalVelocity = 0;
     private bool _isMVP;
     private bool _fireRateCanThrow = true;
-    private SpecialState _state = SpecialState.None;
-    private int _directionX = 1;
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private SpecialState _state = SpecialState.None;
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private int _directionX = 1;
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] private Collider2D _currentCollider;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
@@ -89,7 +95,6 @@ public class CharController : MonoBehaviour
 
     // caching variables
     private Rigidbody2D _rb;
-    private Collider2D _collider;
 
     private int _layerMask;
 
@@ -102,6 +107,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Properties
+    #region Private
     private int DirectionX
     {
         get
@@ -123,6 +129,13 @@ public class CharController : MonoBehaviour
                     _spriteRenderer.flipX = false;
                     break;
             }
+
+            // update collider direction
+            float offsetX = Mathf.Abs(_tackleCollider.offset.x) * _directionX * -1;
+            _tackleCollider.offset = new Vector2(offsetX, _tackleCollider.offset.y);
+
+            offsetX = Mathf.Abs(_transitionCollider.offset.x) * _directionX * -1;
+            _transitionCollider.offset = new Vector2(offsetX, _transitionCollider.offset.y);
         }
     }
 
@@ -140,8 +153,17 @@ public class CharController : MonoBehaviour
 
             if (value == SpecialState.Tackle)
             {
+                CurrentCollider = _transitionCollider;
+
+                this.ExecuteAfterTime(TACKLE_TRANSITION_TIME, () =>
+                {
+                    CurrentCollider = _tackleCollider;
+                });
+
                 this.ExecuteAfterTime(TACKLE_DURATION, () =>
                 {
+                    CurrentCollider = _normalCollider;
+
                     _state = SpecialState.None;
                     _entitiesHit.Clear();
                 });
@@ -151,6 +173,40 @@ public class CharController : MonoBehaviour
         }
     }
 
+    private Collider2D CurrentCollider
+    {
+        set
+        {
+            _currentCollider = value;
+
+            if (_currentCollider == _tackleCollider)
+            {
+                _tackleCollider.enabled = true;
+                _normalCollider.enabled = false;
+                _transitionCollider.enabled = false;
+            }
+            else if (_currentCollider == _normalCollider)
+            {
+                _normalCollider.enabled = true;
+                _tackleCollider.enabled = false;
+                _transitionCollider.enabled = false;
+            }
+            else if (_currentCollider == _transitionCollider)
+            {
+                _transitionCollider.enabled = true;
+                _normalCollider.enabled = true;
+                _tackleCollider.enabled = false;
+            }
+        }
+
+        get
+        {
+            return _currentCollider;
+        }
+    }
+    #endregion
+
+    #region Public
     public bool IsMVP
     {
         get
@@ -187,13 +243,14 @@ public class CharController : MonoBehaviour
         }
     }
     #endregion
+    #endregion
 
     #region MonoBehaviour callbacks
     #region Initialization
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<Collider2D>();
+        CurrentCollider = _tackleCollider;
 
         _layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision");
 
@@ -286,10 +343,10 @@ public class CharController : MonoBehaviour
     #region Update
     void UpdateCollisions()
     {
-        float distY = _collider.bounds.extents.y + RAYCAST_DISTANCE;
-        float distX = _collider.bounds.extents.x + RAYCAST_DISTANCE;
+        float distY = CurrentCollider.bounds.extents.y + RAYCAST_DISTANCE;
+        float distX = CurrentCollider.bounds.extents.x + RAYCAST_DISTANCE;
 
-        Vector3 position = _collider.bounds.center;
+        Vector3 position = CurrentCollider.bounds.center;
 
         _collision.up = Physics2D.Raycast(position, Vector3.up, distY, _layerMask);
         _collision.down = Physics2D.Raycast(position, Vector3.down, distY, _layerMask);
