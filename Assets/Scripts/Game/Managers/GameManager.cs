@@ -27,7 +27,9 @@ public class GameManager : Singleton<GameManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
+#if UNITY_EDITOR
         AirConsole.instance.onConnect += OnConnect;
+#endif
 
         if (AirConsole.instance.IsAirConsoleUnityPluginReady())
         {
@@ -48,17 +50,18 @@ public class GameManager : Singleton<GameManager>
     {
         if (AirConsole.instance != null)
         {
-
+#if UNITY_EDITOR
             AirConsole.instance.onConnect -= OnConnect;
+#endif
             AirConsole.instance.onReady -= OnReady;
         }
     }
     #endregion
 
     #region AirConsole events
+#if UNITY_EDITOR
     void OnConnect(int device_id)
     {
-#if UNITY_EDITOR
         var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
 
         if (activePlayers < MAX_PLAYERS)
@@ -75,8 +78,8 @@ public class GameManager : Singleton<GameManager>
 
             AirConsole.instance.Message(device_id, token);
         }
-#endif
     }
+#endif
 
     void OnReady(string str)
     {
