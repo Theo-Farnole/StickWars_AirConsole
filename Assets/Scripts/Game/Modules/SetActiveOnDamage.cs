@@ -16,8 +16,6 @@ public class SetActiveOnDamage : Entity
 
     public override void GetDamage(int damage, Entity attacker)
     {
-        Debug.Log("GetDamage ");
-
         for (int i = 0; i < _activeOnDamage.Length; i++)
         {
             _activeOnDamage[i].SetActive(true);

@@ -55,11 +55,11 @@ public class Projectile : MonoBehaviour
         transform.position += _direction * _data.Speed * Time.deltaTime;
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collision w/ " + collider.name);
+        Debug.Log("Collision w/ " + other.name);
 
-        var entity = collider.GetComponent<Entity>();
+        var entity = other.GetComponent<Entity>();
 
         if (entity != null && entity != sender)
         {
@@ -67,8 +67,9 @@ public class Projectile : MonoBehaviour
         }
 
         // destroy projectile on first collision, if touched sender
-        if ((entity == null && collider.gameObject.layer != LayerMask.NameToLayer("Ignore Collision")) ||
-            (entity != null && entity != sender))
+        if ((entity == null && other.gameObject.layer != LayerMask.NameToLayer("Ignore Collision")) ||
+            (entity != null && entity != sender) ||
+            other.GetComponent<Projectile>() == null)
         {
             StopProjectile();
         }
