@@ -57,6 +57,8 @@ public class UIMenuManager : Singleton<UIMenuManager>
 
     private void DisplayPlayerAvatar(int playerNumber)
     {
+        var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(playerNumber);
+
         // activate childs
         _playersWrappers[playerNumber].transform.ActionForEachChildren((GameObject child) =>
         {
@@ -64,14 +66,25 @@ public class UIMenuManager : Singleton<UIMenuManager>
         });
 
         // update image
-        Debug.LogWarning("Add ImageLoader here");
-        //_playersWrappers[index].Avatar.sprite = ((CharID)index).ToColor();
+        string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
+        var imageLoader = _playersWrappers[playerNumber].Avatar.gameObject.GetComponent<ImageLoader>();
+
+        // reload image loader
+        if (!imageLoader || (imageLoader && imageLoader.url != url))
+        {
+            if (imageLoader)
+            {
+                Destroy(imageLoader);
+                _playersWrappers[playerNumber].Avatar.sprite = null;
+            }
+
+            _playersWrappers[playerNumber].Avatar.gameObject.AddComponent<ImageLoader>().url = url;
+        }
 
         // update outline
         _playersWrappers[playerNumber].Outline.effectColor = ((CharID)playerNumber).ToColor();
 
         // update text
-        var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(playerNumber);
         _playersWrappers[playerNumber].Name.text = AirConsole.instance.GetNickname(deviceId);
     }
 }

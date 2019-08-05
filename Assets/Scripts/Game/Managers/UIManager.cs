@@ -15,7 +15,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Game Panel")]
     [SerializeField] private TextMeshProUGUI _textSceneName;
     [Space]
-    [SerializeField] private PlayerWrapper[] _gamemodeData = new PlayerWrapper[GameManager.MAX_PLAYERS];
+    [SerializeField] private PlayerWrapper[] _playersWrappers = new PlayerWrapper[GameManager.MAX_PLAYERS];
     [Header("Victory Animation")]
     [SerializeField] private GameObject _victoryPanel;
     [SerializeField] private TextMeshProUGUI _textVictory;
@@ -32,10 +32,10 @@ public class UIManager : Singleton<UIManager>
         // hide avatar wrappers
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
-            _gamemodeData[i].gameObject.SetActive(false);
+            _playersWrappers[i].gameObject.SetActive(false);
             //_gamemodeData[i].Name.color = ((CharID)i).ToColor(); // image loader
             Debug.LogWarning("Add image loader");
-            _gamemodeData[i].Outline.effectColor = ((CharID)i).ToColor();
+            _playersWrappers[i].Outline.effectColor = ((CharID)i).ToColor();
         }
     }
     #endregion
@@ -46,25 +46,30 @@ public class UIManager : Singleton<UIManager>
 
         for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
         {
-            var image = _gamemodeData[i].GetComponentInChildren<Image>();
-
-            if (image != null)
-            {
-                image.color = Color.white;
-
-                Debug.LogWarning("Commented usefull code block");
-                //// add image loader
-                //if (image.GetComponent<ImageLoader>() == null)
-                //{
-                //    int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
-                //    string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-                //    image.gameObject.AddComponent<ImageLoader>().url = url;
-                //}
-            }
-
             // active or not wrapper
             bool isPlayerActive = (i < activePlayers);
-            _gamemodeData[i].gameObject.SetActive(isPlayerActive);
+            _playersWrappers[i].gameObject.SetActive(isPlayerActive);
+
+            // load avatar
+            if (isPlayerActive)
+            {
+                int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
+
+                string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
+                var imageLoader = _playersWrappers[i].Avatar.gameObject.GetComponent<ImageLoader>();
+
+                // reload image loader
+                if (!imageLoader || (imageLoader && imageLoader.url != url))
+                {
+                    if (imageLoader)
+                    {
+                        Destroy(imageLoader);
+                        _playersWrappers[i].Avatar.sprite = null;
+                    }
+
+                    _playersWrappers[i].Avatar.gameObject.AddComponent<ImageLoader>().url = url;
+                }
+            }
         }
     }
 
@@ -72,7 +77,7 @@ public class UIManager : Singleton<UIManager>
     {
         for (int i = 0; i < arrayStr.Length && i < GameManager.MAX_PLAYERS; i++)
         {
-            _gamemodeData[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i].ToString();
+            _playersWrappers[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i].ToString();
         }
     }
 
@@ -83,7 +88,7 @@ public class UIManager : Singleton<UIManager>
 
         int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber);
         string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-        //_winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
+        _winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
         Debug.LogWarning("tamer");
 
         _victoryPanel.SetActive(true);

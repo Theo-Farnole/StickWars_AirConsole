@@ -129,7 +129,7 @@ public class MenuManager : MonoBehaviour
         {
             int activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
 
-            if (AirConsole.instance.GetControllerDeviceIds().Count > GameManager.MAX_PLAYERS)
+            if (AirConsole.instance.GetControllerDeviceIds().Count >= GameManager.MAX_PLAYERS)
             {
                 AirConsole.instance.SetActivePlayers(activePlayers);
             }
