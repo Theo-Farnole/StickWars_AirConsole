@@ -268,7 +268,7 @@ public class CharController : MonoBehaviour
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision");
+        _layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision", "Ignore Raycast");
 
         _collisions.SetCollider(CharacterCollisions.Collider.Normal);
 
