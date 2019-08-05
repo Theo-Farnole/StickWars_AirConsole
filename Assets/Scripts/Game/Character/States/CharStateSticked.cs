@@ -25,8 +25,9 @@ public class CharStateSticked : CharState
     public override void Tick()
     {
         if (_charController.Raycast.down ||
-            _charController.Inputs.horizontalInput < 0 && !_charController.Raycast.left ||
-            _charController.Inputs.horizontalInput > 0 && !_charController.Raycast.right)
+            _charController.Inputs.horizontalInput == 0 ||
+            (_charController.Inputs.horizontalInput < 0 && !_charController.Raycast.left) ||
+            (_charController.Inputs.horizontalInput > 0 && !_charController.Raycast.right))
         {
             _charController.State = new CharStateNormal(_charController);
         }

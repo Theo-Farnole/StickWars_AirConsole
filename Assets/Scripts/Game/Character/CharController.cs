@@ -96,7 +96,7 @@ public class CharController : MonoBehaviour
 
     public class PlayerInputs
     {
-        public float horizontalInput = 0;
+        public int horizontalInput = 0;
         public bool jumpPressed = false;
         public bool tacklePressed = false;
         public bool throwPressed = false;
@@ -377,12 +377,12 @@ public class CharController : MonoBehaviour
         StopAllCoroutines();
 
         _inputs.Reset();
-
         _entitiesHit.Clear();
-        _canThrowProjectile = true;
 
-        _collisions.SetCollider(CharacterCollisions.Collider.Normal);
         OrientationX = Orientation.Right;
+        _collisions.SetCollider(CharacterCollisions.Collider.Normal);
+
+        _canThrowProjectile = true;
 
         State = new CharStateNormal(this);
     }
@@ -397,7 +397,8 @@ public class CharController : MonoBehaviour
 
         if (data["horizontal"] != null)
         {
-            _inputs.horizontalInput = (float)data["horizontal"];
+            _inputs.horizontalInput = (int)data["horizontal"];
+            Debug.Log("_inputs.horizontalInput  " + _inputs.horizontalInput);
         }
 
         if (data["bPressed"] != null)
@@ -436,7 +437,7 @@ public class CharController : MonoBehaviour
 #endif
     #endregion
 
-    private void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = playerId.ToColor();
         Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);

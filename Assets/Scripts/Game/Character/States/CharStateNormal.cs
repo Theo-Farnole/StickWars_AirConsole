@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharStateNormal : CharState
 {
     private int _jumpCount = 0;
-    
+
     public CharStateNormal(CharController charController) : base(charController)
     { }
 
@@ -45,9 +45,9 @@ public class CharStateNormal : CharState
 
     void ManageStick()
     {
-        if (!_charController.Raycast.down && 
-            (_charController.Rigidbody.velocity.x < 0 && _charController.Raycast.left) || 
-            (_charController.Rigidbody.velocity.x > 0 && _charController.Raycast.right))
+        if (_charController.Raycast.down == false &&
+            ((_charController.Inputs.horizontalInput < 0 && _charController.Raycast.left) ||
+            (_charController.Inputs.horizontalInput > 0 && _charController.Raycast.right)))
         {
             _charController.State = new CharStateSticked(_charController);
         }
