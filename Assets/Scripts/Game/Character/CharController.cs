@@ -9,9 +9,9 @@ using UnityEngine;
 
 public class CharController : MonoBehaviour
 {
-    #region Classes & Struct
+    #region Classes
     [Serializable]
-    class PlayerCollision
+    public class CharacterRaycast
     {
         const string FORMAT = "^: {0}, v {1} \n {2} < > {3}";
 
@@ -20,11 +20,11 @@ public class CharController : MonoBehaviour
         public bool up = false;
         public bool down = false;
 
-        public PlayerCollision() : this(false, false, false, false)
+        public CharacterRaycast() : this(false, false, false, false)
         {
         }
 
-        public PlayerCollision(bool left, bool right, bool up, bool down)
+        public CharacterRaycast(bool left, bool right, bool up, bool down)
         {
             this.left = left;
             this.right = right;
@@ -37,12 +37,90 @@ public class CharController : MonoBehaviour
             return string.Format(FORMAT, up, down, left, right);
         }
     }
+
+    [Serializable]
+    public class CharacterCollisions
+    {
+        public enum Collider
+        {
+            Normal,
+            Transition,
+            Tackle
+        }
+
+        private Collider2D _currentCollider;
+
+        [SerializeField] private Collider2D _normalCollider;
+        [SerializeField] private Collider2D _tackleCollider;
+        [SerializeField, Tooltip("Collider between normal & tackle collider")] public Collider2D _transitionCollider;
+
+        public Collider2D CurrentCollider { get => _currentCollider; }
+
+        public void SetCollider(Collider c)
+        {
+            switch (c)
+            {
+                case Collider.Normal:
+                    _currentCollider = _normalCollider;
+
+                    _normalCollider.enabled = true;
+                    _tackleCollider.enabled = false;
+                    _transitionCollider.enabled = false;
+                    break;
+                case Collider.Transition:
+                    _currentCollider = _transitionCollider;
+
+                    _transitionCollider.enabled = true;
+                    _normalCollider.enabled = false;
+                    _tackleCollider.enabled = false;
+                    break;
+                case Collider.Tackle:
+                    _currentCollider = _tackleCollider;
+
+                    _tackleCollider.enabled = true;
+                    _transitionCollider.enabled = false;
+                    _normalCollider.enabled = false;
+                    break;
+            }
+        }
+
+        public void UpdateCollisionOffset(Orientation o)
+        {
+            float offsetX = Mathf.Abs(_tackleCollider.offset.x) * (int)o * -1;
+            _tackleCollider.offset = new Vector2(offsetX, _tackleCollider.offset.y);
+
+            offsetX = Mathf.Abs(_transitionCollider.offset.x) * (int)o* -1;
+            _transitionCollider.offset = new Vector2(offsetX, _transitionCollider.offset.y);
+        }
+    }
+
+    public class PlayerInputs
+    {
+        public float horizontalInput = 0;
+        public bool jumpPressed = false;
+        public bool tacklePressed = false;
+        public bool throwPressed = false;
+
+        public void Reset()
+        {
+            horizontalInput = 0;
+            jumpPressed = false;
+            tacklePressed = false;
+            throwPressed = false;
+        }
+    }
     #endregion
 
     #region Enum
-    private enum SpecialState
+    public enum Orientation
     {
-        None = 0,
+        Left = -1,
+        Right = 1
+    }
+
+    public enum SpecialState
+    {
+        None,
         Sticked,
         Tackle
     }
@@ -51,9 +129,7 @@ public class CharController : MonoBehaviour
     #region Fields
     #region static readonly
     public readonly static int MAX_JUMPS_COUNT = 2;
-    public readonly static float TACKLE_DURATION = 1.1f / 2f;
     public readonly static float RAYCAST_DISTANCE = 0.1f;
-    public readonly static float TACKLE_TRANSITION_TIME = 0.1f;
     #endregion
 
     #region serialized variables
@@ -64,9 +140,7 @@ public class CharController : MonoBehaviour
     [SerializeField] private GameObject _prefabProjectile;
     [SerializeField] private Vector3 _projectileOrigin;
     [Header("Collisions")]
-    [SerializeField] private Collider2D _normalCollider;
-    [SerializeField] private Collider2D _tackleCollider;
-    [SerializeField, Tooltip("Collider between normal & tackle collider")] private Collider2D _transitionCollider;
+    [SerializeField] private CharacterCollisions _collisions;
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
@@ -74,28 +148,20 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region internals variables
-    // state variables
-    private CharControls _controls;
-    private PlayerCollision _collision;
-    private int _jumpsCount = 0;
-    private float _horizontalVelocity = 0;
-    private bool _isMVP;
+    private CharacterRaycast _raycast = new CharacterRaycast();
+    private CharState _state;
+
+    private CharControls _keyboardControls;
+    private bool _isMVP = false;
     private bool _canThrowProjectile = true;
-    [EditorBrowsable(EditorBrowsableState.Never)] private SpecialState _state = SpecialState.None;
-    [EditorBrowsable(EditorBrowsableState.Never)] private int _directionX = 1;
-    [EditorBrowsable(EditorBrowsableState.Never)] private Collider2D _currentCollider;
+    private Orientation _orientationX = Orientation.Right;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();
+    private PlayerInputs _inputs = new PlayerInputs();
 
-    // input
-    private float _horizontalInput = 0;
-    private bool _jumpPressed = false;
-    private bool _tacklePressed = false;
-    private bool _throwPressed = false;
-
-    // caching variables
-    private Rigidbody2D _rb;
+    #region cache variables
+    private Rigidbody2D _rigidbody;
 
     private int _layerMask;
 
@@ -106,107 +172,43 @@ public class CharController : MonoBehaviour
     private readonly int _hashRunning = Animator.StringToHash("running");
     #endregion
     #endregion
+    #endregion
 
     #region Properties
-    #region Private
-    private int DirectionX
+    public Rigidbody2D Rigidbody { get => _rigidbody; }
+    public CharacterControllerData Data { get => _data; }
+    public CharacterRaycast Raycast { get => _raycast; }
+    public CharacterCollisions Collisions { get => _collisions; }
+    public PlayerInputs Inputs { get => _inputs; }
+    public List<Entity> EntitiesHit { get => _entitiesHit; }
+
+    public Orientation OrientationX
     {
         get
         {
-            return _directionX;
+            return _orientationX;
         }
 
         set
         {
-            _directionX = Mathf.Clamp(value, -1, 1);
+            _orientationX = value;
 
-            switch (_directionX)
+            switch (_orientationX)
             {
-                case -1:
+                case Orientation.Left:
                     _spriteRenderer.flipX = true;
                     break;
 
-                case 1:
+                case Orientation.Right:
                     _spriteRenderer.flipX = false;
                     break;
             }
 
-            // update collider direction
-            float offsetX = Mathf.Abs(_tackleCollider.offset.x) * _directionX * -1;
-            _tackleCollider.offset = new Vector2(offsetX, _tackleCollider.offset.y);
-
-            offsetX = Mathf.Abs(_transitionCollider.offset.x) * _directionX * -1;
-            _transitionCollider.offset = new Vector2(offsetX, _transitionCollider.offset.y);
+            _collisions.UpdateCollisionOffset(_orientationX);
         }
     }
 
-    private SpecialState State
-    {
-        get
-        {
-            return _state;
-        }
-
-        set
-        {
-            if (_state == SpecialState.Tackle)
-                return;
-
-            if (value == SpecialState.Tackle)
-            {
-                CurrentCollider = _transitionCollider;
-
-                this.ExecuteAfterTime(TACKLE_TRANSITION_TIME, () =>
-                {
-                    CurrentCollider = _tackleCollider;
-                });
-
-                this.ExecuteAfterTime(TACKLE_DURATION, () =>
-                {
-                    CurrentCollider = _normalCollider;
-
-                    _state = SpecialState.None;
-                    _entitiesHit.Clear();
-                });
-            }
-
-            _state = value;
-        }
-    }
-
-    private Collider2D CurrentCollider
-    {
-        set
-        {
-            _currentCollider = value;
-
-            if (_currentCollider == _tackleCollider)
-            {
-                _tackleCollider.enabled = true;
-                _normalCollider.enabled = false;
-                _transitionCollider.enabled = false;
-            }
-            else if (_currentCollider == _normalCollider)
-            {
-                _normalCollider.enabled = true;
-                _tackleCollider.enabled = false;
-                _transitionCollider.enabled = false;
-            }
-            else if (_currentCollider == _transitionCollider)
-            {
-                _transitionCollider.enabled = true;
-                _normalCollider.enabled = true;
-                _tackleCollider.enabled = false;
-            }
-        }
-
-        get
-        {
-            return _currentCollider;
-        }
-    }
-
-    private bool CanThrowProjectile
+    public bool CanThrowProjectile
     {
         get
         {
@@ -226,9 +228,7 @@ public class CharController : MonoBehaviour
             });
         }
     }
-    #endregion
 
-    #region Public
     public bool IsMVP
     {
         get
@@ -239,30 +239,47 @@ public class CharController : MonoBehaviour
         set
         {
             _isMVP = value;
-
             _crown.enabled = _isMVP;
         }
     }
-    #endregion
+
+    public CharState State
+    {
+        get
+        {
+            return _state;
+        }
+
+        set
+        {
+            if (_state != null)
+                _state.OnStateExit();
+
+            _state = value;
+
+            if (_state != null)
+                _state.OnStateEnter();
+        }
+    }
     #endregion
 
     #region MonoBehaviour callbacks
     #region Initialization
     void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        CurrentCollider = _tackleCollider;
-
+        _rigidbody = GetComponent<Rigidbody2D>();
         _layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision");
 
+        _collisions.SetCollider(CharacterCollisions.Collider.Normal);
+
+        State = new CharStateNormal(this);
         AirConsole.instance.onMessage += HandleInput;
     }
 
     void Start()
     {
         _spriteRenderer.color = playerId.ToColor();
-        _controls = playerId.ToControls();
-        _collision = new PlayerCollision();
+        _keyboardControls = playerId.ToControls();
         _crown.enabled = false;
     }
     #endregion
@@ -270,31 +287,30 @@ public class CharController : MonoBehaviour
     #region Tick
     void Update()
     {
-        UpdateCollisions();
-
-        ManageStick();
-        ManageJumpCount();
-
-        ProcessAttacksInputs();
-
 #if UNITY_EDITOR
         HandleKeyboardInput();
 #endif
+
+        UpdateCollisions();
+        State?.Tick();
     }
 
     void FixedUpdate()
     {
         UpdateCollisions();
-        ProcessMovementInputs();
+        State?.FixedTick();
     }
 
     void LateUpdate()
     {
-        // update Animator state
-        _animator.SetBool(_hashWallSliding, (State == SpecialState.Sticked));
-        _animator.SetBool(_hashRunning, (_horizontalInput != 0));
-        _animator.SetBool(_hashJump, !_collision.down);
-        _animator.SetBool(_hashTackle, (State == SpecialState.Tackle));
+        _animator.SetBool(_hashRunning, (_inputs.horizontalInput != 0));
+        _animator.SetBool(_hashJump, !_raycast.down);
+
+        if (_state != null)
+        {
+            _animator.SetBool(_hashWallSliding, _state is CharStateSticked);
+            _animator.SetBool(_hashTackle, _state is CharStateTackle);
+        }
     }
     #endregion
 
@@ -311,7 +327,7 @@ public class CharController : MonoBehaviour
     #region OnCollision callbacks
     void OnTriggerStay2D(Collider2D other)
     {
-        if (State == SpecialState.Tackle)
+        if (_state is CharStateTackle)
         {
             Entity otherEntity = other.gameObject.GetComponent<Entity>();
 
@@ -331,132 +347,47 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Tick Methods
-    #region Update
     void UpdateCollisions()
     {
-        float distY = CurrentCollider.bounds.extents.y + RAYCAST_DISTANCE;
-        float distX = CurrentCollider.bounds.extents.x + RAYCAST_DISTANCE;
+        float distY = _collisions.CurrentCollider.bounds.extents.y + RAYCAST_DISTANCE;
+        float distX = _collisions.CurrentCollider.bounds.extents.x + RAYCAST_DISTANCE;
 
-        Vector3 position = CurrentCollider.bounds.center;
+        Vector3 position = _collisions.CurrentCollider.bounds.center;
 
-        _collision.up = Physics2D.Raycast(position, Vector3.up, distY, _layerMask);
-        _collision.down = Physics2D.Raycast(position, Vector3.down, distY, _layerMask);
-        _collision.left = Physics2D.Raycast(position, Vector3.left, distX, _layerMask);
-        _collision.right = Physics2D.Raycast(position, Vector3.right, distX, _layerMask);
-    }
-
-    void ManageJumpCount()
-    {
-        // reset jump count ?
-        if (_collision.down || State == SpecialState.Sticked)
-        {
-            _jumpsCount = 0;
-        }
-    }
-
-    void ManageStick()
-    {
-        if (!_collision.down && (_horizontalVelocity < 0 && _collision.left) || (_horizontalVelocity > 0 && _collision.right))
-        {
-            if (State != SpecialState.Tackle)
-            {
-                State = SpecialState.Sticked;
-            }
-        }
-        else
-        {
-            if (State == SpecialState.Sticked)
-            {
-                State = SpecialState.None;
-            }
-        }
-    }
-
-    void ProcessAttacksInputs()
-    {
-        if (_throwPressed && _canThrowProjectile && State == SpecialState.None)
-        {
-            CanThrowProjectile = false;
-
-            var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
-
-            projectile.damage = _data.DamageProjectile;
-            projectile.Direction = Vector3.right * DirectionX;
-            projectile.sender = GetComponent<Entity>();
-        }
-
-        if (_tacklePressed && State != SpecialState.Sticked)
-        {
-            State = SpecialState.Tackle;
-        }
+        _raycast.up = Physics2D.Raycast(position, Vector3.up, distY, _layerMask);
+        _raycast.down = Physics2D.Raycast(position, Vector3.down, distY, _layerMask);
+        _raycast.left = Physics2D.Raycast(position, Vector3.left, distX, _layerMask);
+        _raycast.right = Physics2D.Raycast(position, Vector3.right, distX, _layerMask);
     }
     #endregion
 
-    #region FixedUpdate
-    void ProcessMovementInputs()
+    public void ThrowProjectile()
     {
-        ProcessHorizontalInput();
-        ProcessVerticalInput();
+        CanThrowProjectile = false;
+
+        var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
+
+        projectile.damage = _data.DamageProjectile;
+        projectile.Direction = Vector3.right * (int)OrientationX;
+        projectile.sender = GetComponent<Entity>();
     }
 
-    void ProcessHorizontalInput()
+    public void Respawn()
     {
-        // set velocity
-        if (State != SpecialState.Tackle)
-        {
-            _horizontalVelocity = _horizontalInput;
-        }
-        else if (_horizontalVelocity == 0)
-        {
-            _horizontalVelocity = DirectionX;
-        }
+        StopAllCoroutines();
 
-        // ... added to velocity ...
-        if (State != SpecialState.Sticked || (_horizontalVelocity < 0 && _collision.left == false) || (_horizontalVelocity > 0 && _collision.right == false))
-        {
-            _rb.velocity = new Vector2(_data.Speed * _horizontalVelocity, _rb.velocity.y);
-        }
-        else
-        {
-            _rb.velocity = new Vector2(0, _rb.velocity.y);
-        }
+        _inputs.Reset();
 
-        if (_horizontalInput != 0)
-        {
-            DirectionX = (int)_horizontalVelocity;
-        }
+        _entitiesHit.Clear();
+        _canThrowProjectile = true;
+
+        _collisions.SetCollider(CharacterCollisions.Collider.Normal);
+        OrientationX = Orientation.Right;
+
+        State = new CharStateNormal(this);
     }
 
-    void ProcessVerticalInput()
-    {
-        if (State == SpecialState.Sticked)
-        {
-            _rb.gravityScale = 0;
-            _rb.velocity = new Vector2(_rb.velocity.x, _data.SlidingDownSpeed);
-        }
-        else
-        {
-            _rb.gravityScale = 1;
-
-            if (_jumpPressed && State != SpecialState.Tackle && _jumpsCount < MAX_JUMPS_COUNT)
-            {
-                _jumpPressed = false;
-
-                Jump();
-            }
-        }
-    }
-
-    void Jump()
-    {
-        _jumpsCount++;
-
-        _rb.velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
-        _rb.AddForce(Vector2.up * _data.JumpForce);
-    }
-    #endregion
-    #endregion
-
+    #region Inputs Management
     void HandleInput(int device_id, JToken data)
     {
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
@@ -466,43 +397,44 @@ public class CharController : MonoBehaviour
 
         if (data["horizontal"] != null)
         {
-            _horizontalInput = (float)data["horizontal"];
+            _inputs.horizontalInput = (float)data["horizontal"];
         }
 
         if (data["bPressed"] != null)
         {
-            _tacklePressed = (bool)data["bPressed"];
+            _inputs.tacklePressed = (bool)data["bPressed"];
         }
 
         if (data["aPressed"] != null)
         {
-            _jumpPressed = (bool)data["aPressed"];
+            _inputs.jumpPressed = (bool)data["aPressed"];
         }
 
         if (data["xPressed"] != null)
         {
-            _throwPressed = (bool)data["xPressed"];
+            _inputs.throwPressed = (bool)data["xPressed"];
         }
     }
 
 #if UNITY_EDITOR
     void HandleKeyboardInput()
     {
-        if (Input.GetKeyDown(_controls.Right)) _horizontalInput = 1;
-        if (Input.GetKeyUp(_controls.Right) && _horizontalInput != -1) _horizontalInput = 0;
-        if (Input.GetKeyDown(_controls.Left)) _horizontalInput = -1;
-        if (Input.GetKeyUp(_controls.Left) && _horizontalInput != 1) _horizontalInput = 0;
+        if (Input.GetKeyDown(_keyboardControls.Right)) _inputs.horizontalInput = 1;
+        if (Input.GetKeyUp(_keyboardControls.Right) && _inputs.horizontalInput != -1) _inputs.horizontalInput = 0;
+        if (Input.GetKeyDown(_keyboardControls.Left)) _inputs.horizontalInput = -1;
+        if (Input.GetKeyUp(_keyboardControls.Left) && _inputs.horizontalInput != 1) _inputs.horizontalInput = 0;
 
-        if (Input.GetKeyDown(_controls.Jump)) _jumpPressed = true;
-        if (Input.GetKeyUp(_controls.Jump)) _jumpPressed = false;
+        if (Input.GetKeyDown(_keyboardControls.Jump)) _inputs.jumpPressed = true;
+        if (Input.GetKeyUp(_keyboardControls.Jump)) _inputs.jumpPressed = false;
 
-        if (Input.GetKeyDown(_controls.Throw)) _throwPressed = true;
-        if (Input.GetKeyUp(_controls.Throw)) _throwPressed = false;
+        if (Input.GetKeyDown(_keyboardControls.Throw)) _inputs.throwPressed = true;
+        if (Input.GetKeyUp(_keyboardControls.Throw)) _inputs.throwPressed = false;
 
-        if (Input.GetKeyDown(_controls.Tackle)) _tacklePressed = true;
-        if (Input.GetKeyUp(_controls.Tackle)) _tacklePressed = false;
+        if (Input.GetKeyDown(_keyboardControls.Tackle)) _inputs.tacklePressed = true;
+        if (Input.GetKeyUp(_keyboardControls.Tackle)) _inputs.tacklePressed = false;
     }
 #endif
+    #endregion
 
     private void OnDrawGizmosSelected()
     {

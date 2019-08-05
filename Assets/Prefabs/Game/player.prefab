@@ -359,9 +359,10 @@ MonoBehaviour:
   _prefabProjectile: {fileID: 6277080515121283850, guid: 1838053a672016a4885f6f2f06fac89e,
     type: 3}
   _projectileOrigin: {x: 0, y: 0.24, z: 0}
-  _normalCollider: {fileID: 213832798930688072}
-  _tackleCollider: {fileID: 6673862226120638196}
-  _transitionCollider: {fileID: 6930517680566605738}
+  _collisions:
+    _normalCollider: {fileID: 213832798930688072}
+    _tackleCollider: {fileID: 6673862226120638196}
+    _transitionCollider: {fileID: 6930517680566605738}
   _spriteRenderer: {fileID: 3867000743271930268}
   _animator: {fileID: 3867000743271930271}
   _crown: {fileID: 4180734011860687220}

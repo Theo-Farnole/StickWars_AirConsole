@@ -34,5 +34,8 @@ public class CharacterEntity : Entity
         _hp = MaxHp;
 
         UpdateHealthSlider();
+
+        // report death to CharController
+        GetComponent<CharController>().Respawn();
     }
 }
