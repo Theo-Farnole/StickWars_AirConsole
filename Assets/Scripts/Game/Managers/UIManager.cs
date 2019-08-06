@@ -30,7 +30,7 @@ public class UIManager : Singleton<UIManager>
         _victoryPanel.SetActive(false);
 
         // hide avatar wrappers
-        for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
+        for (int i = 0; i < _playersWrappers.Length; i++)
         {
             _playersWrappers[i].gameObject.SetActive(false);
             //_gamemodeData[i].Name.color = ((CharID)i).ToColor(); // image loader
@@ -44,7 +44,7 @@ public class UIManager : Singleton<UIManager>
     {
         var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
 
-        for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
+        for (int i = 0; i < _playersWrappers.Length; i++)
         {
             // active or not wrapper
             bool isPlayerActive = (i < activePlayers);
@@ -73,9 +73,9 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void UpdateGamemodeData(dynamic[] arrayStr)
+    public void UpdateGamemodeData(int[] arrayStr)
     {
-        for (int i = 0; i < arrayStr.Length && i < GameManager.MAX_PLAYERS; i++)
+        for (int i = 0; i < arrayStr.Length && i < _playersWrappers.Length; i++)
         {
             _playersWrappers[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i].ToString();
         }

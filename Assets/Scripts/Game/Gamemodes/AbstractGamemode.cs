@@ -24,11 +24,11 @@ public static class GamemodeTypeExtension
 
 public abstract class AbstractGamemode
 {
-    protected dynamic _valueForVictory;
-    protected dynamic[] _charactersValue = new dynamic[GameManager.MAX_PLAYERS];
+    protected int _valueForVictory;
+    protected int[] _charactersValue = new int[GameManager.MAX_PLAYERS];
     protected int _indexMvp = -1;
 
-    public AbstractGamemode(dynamic valueForVictory, dynamic initialValue)
+    public AbstractGamemode(int valueForVictory, int initialValue)
     {
         _valueForVictory = valueForVictory;
 

@@ -398,7 +398,6 @@ public class CharController : MonoBehaviour
         if (data["horizontal"] != null)
         {
             _inputs.horizontalInput = (int)data["horizontal"];
-            Debug.Log("_inputs.horizontalInput  " + _inputs.horizontalInput);
         }
 
         if (data["bPressed"] != null)

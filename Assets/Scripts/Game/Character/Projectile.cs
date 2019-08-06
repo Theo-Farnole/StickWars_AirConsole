@@ -15,7 +15,6 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public Entity sender;
 
     private Vector3 _direction = Vector3.right;
-    private bool _stickedInWall = false;
 
     private Rigidbody2D _rb;
     #endregion
@@ -49,9 +48,6 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        if (_stickedInWall)
-            return;
-
         transform.position += _direction * _data.Speed * Time.deltaTime;
     }
 
@@ -64,23 +60,7 @@ public class Projectile : MonoBehaviour
         if (entity != null && entity != sender)
         {
             entity.GetDamage(damage, sender);
+            Destroy(gameObject);
         }
-
-        // destroy projectile on first collision, if touched sender
-        if ((entity == null && other.gameObject.layer != LayerMask.NameToLayer("Ignore Collision")) ||
-            (entity != null && entity != sender) ||
-            other.GetComponent<Projectile>() == null)
-        {
-            StopProjectile();
-        }
-    }
-
-    void StopProjectile()
-    {
-        _stickedInWall = true;
-        Destroy(gameObject, STICKED_LIFETIME);
-
-        _rb.velocity = Vector3.zero;
-        _rb.isKinematic = true;
     }
 }
