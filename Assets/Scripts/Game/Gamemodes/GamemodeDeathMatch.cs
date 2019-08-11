@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GamemodeDeathMatch : AbstractGamemode
 {
-    public GamemodeDeathMatch(int killsForVictory) : base(killsForVictory, 0)
+    public GamemodeDeathMatch() : base()
     {
         UIManager.Instance.UpdateGamemodeData(_charactersValue);
     }

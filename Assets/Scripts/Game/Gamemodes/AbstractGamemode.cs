@@ -1,6 +1,8 @@
 ﻿using NDream.AirConsole;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum GamemodeType
@@ -15,7 +17,7 @@ public static class GamemodeTypeExtension
         switch (g)
         {
             case GamemodeType.DeathMatch:
-                return new GamemodeDeathMatch(3);
+                return new GamemodeDeathMatch();
         }
 
         return null;
@@ -24,25 +26,20 @@ public static class GamemodeTypeExtension
 
 public abstract class AbstractGamemode
 {
-    protected int _valueForVictory;
+    public static int valueForVictory = 3;
     protected int[] _charactersValue = new int[GameManager.MAX_PLAYERS];
     protected int _indexMvp = -1;
 
-    public AbstractGamemode(int valueForVictory, int initialValue)
+    public AbstractGamemode()
     {
-        _valueForVictory = valueForVictory;
-
-        for (int i = 0; i < _charactersValue.Length; i++)
-        {
-            _charactersValue[i] = initialValue;
-        }
+        _charactersValue = Enumerable.Repeat(0, GameManager.MAX_PLAYERS).ToArray();
     }
 
     public void CheckForVictory()
     {
         for (int i = 0; i < _charactersValue.Length; i++)
         {
-            if (_charactersValue[i] >= _valueForVictory)
+            if (_charactersValue[i] >= valueForVictory)
             {
                 Victory(i);
             }

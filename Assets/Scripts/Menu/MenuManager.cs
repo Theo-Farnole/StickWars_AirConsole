@@ -1,5 +1,6 @@
 ﻿using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,12 +8,27 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : Singleton<MenuManager>
 {
     public readonly static float CHANGE_LEVEL_TIME_DELAY = 0.3f;
 
+    #region Enum
+    public enum State
+    {
+        PlayerPanel,
+        GamemodePanel,
+        Loading
+    }
+    #endregion
+
     #region Fields
+    [EnumNamedArray(typeof(GamemodeType))]
+    [SerializeField] private GamemodeData[] _gamemodeData = new GamemodeData[Enum.GetValues(typeof(GamemodeType)).Length];
+
     private bool _canChangeLevel = true;
+    private GamemodeType _selectedGamemode = GamemodeType.DeathMatch;
+
+    private State _currentState = State.PlayerPanel;
     #endregion
 
     #region Properties
@@ -36,8 +52,12 @@ public class MenuManager : MonoBehaviour
             });
         }
     }
+
+    public State CurrentState { get => _currentState; }
+    public GamemodeData[] GamemodeData { get => _gamemodeData; }
     #endregion
 
+    #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
@@ -60,9 +80,10 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.A))
         {
-            SceneManager.LoadScene("SC_Windows");
-            //SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
+            NextPressed();
         }
+
+        HorizontalPressed(Input.GetAxis("Horizontal"));
     }
 #endif 
 
@@ -78,28 +99,19 @@ public class MenuManager : MonoBehaviour
     }
     #endregion
 
+    #region AirConsole Callbacks
     void OnMessage(int device_id, JToken data)
     {
         if (device_id == AirConsole.instance.GetMasterControllerDeviceId())
         {
-            if (_canChangeLevel && data["horizontal"] != null)
+            if (data["horizontal"] != null)
             {
-                LevelSelector.Instance.SelectedLevel += (int)data["horizontal"];
-
-                CanChangeLevel = false;
+                HorizontalPressed((float)data["horizontal"]);
             }
 
             if (data["aPressed"] != null && (bool)data["aPressed"])
             {
-                SceneManager.LoadScene("SC_Windows");
-                //SceneManager.LoadScene("SC_" + LevelSelector.Instance.GetSelectedLevelData().key);
-
-                var token = new
-                {
-                    view = ControllerView.Play.ToString(),
-                };
-
-                AirConsole.instance.Broadcast(token);
+                NextPressed();
             }
         }
     }
@@ -142,6 +154,7 @@ public class MenuManager : MonoBehaviour
         UIMenuManager.Instance.UpdatePlayersAvatar();
         UpdateControllerView();
     }
+    #endregion
 
     void UpdateControllerView()
     {
@@ -176,4 +189,55 @@ public class MenuManager : MonoBehaviour
             AirConsole.instance.Message(device_id, token);
         }
     }
+
+    #region Handle Input
+    void NextPressed()
+    {
+        _currentState++;
+
+        UIMenuManager.Instance.UpdatePanel();
+
+        // load scene
+        if (_currentState == State.Loading)
+        {
+            // pass the gamemode settings 
+            var gamemodeData = _gamemodeData[(int)_selectedGamemode];
+            int sliderIndex = (int)UIMenuManager.Instance.SliderGamemodeSettings.value;
+            AbstractGamemode.valueForVictory = gamemodeData.ValuesSettings[sliderIndex];
+
+            // display play view on controllers
+            var token = new
+            {
+                view = ControllerView.Play.ToString(),
+            };
+
+            AirConsole.instance.Broadcast(token);
+
+            // then, finally load the scene
+            SceneManager.LoadScene("SC_Windows");
+        }
+    }
+
+    void HorizontalPressed(float value)
+    {
+        if (value == 0)
+            return;
+
+        switch (_currentState)
+        {
+            case State.PlayerPanel:
+                if (_canChangeLevel)
+                {
+                    LevelSelector.Instance.SelectedLevel += (int)value;
+                    CanChangeLevel = false;
+                }
+                break;
+
+            case State.GamemodePanel:
+                UIMenuManager.Instance.SliderGamemodeSettings.value += (int)value;
+                break;
+        }
+    }
+    #endregion
+    #endregion
 }
