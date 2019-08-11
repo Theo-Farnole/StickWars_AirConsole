@@ -96,7 +96,8 @@ public class UIManager : Singleton<UIManager>
         _victoryPanel.SetActive(true);
         this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
         {
-            SceneManager.LoadScene("_SC_menu");
+            AirConsole.instance.ShowAd();
+            AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("_SC_menu");
         });
     }
     #endregion

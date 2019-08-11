@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class MenuManager : Singleton<MenuManager>
 {
@@ -22,7 +23,7 @@ public class MenuManager : Singleton<MenuManager>
     #endregion
 
     #region Fields
-    [EnumNamedArray(typeof(GamemodeType))]
+    [EnumNamedArrayAttribute(typeof(GamemodeType))]
     [SerializeField] private GamemodeData[] _gamemodeData = new GamemodeData[Enum.GetValues(typeof(GamemodeType)).Length];
 
     private bool _canChangeLevel = true;
