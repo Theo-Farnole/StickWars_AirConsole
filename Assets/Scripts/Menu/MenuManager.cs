@@ -84,7 +84,7 @@ public class MenuManager : Singleton<MenuManager>
             NextPressed();
         }
 
-        HorizontalPressed(Input.GetAxis("Horizontal"));
+        HorizontalPressed((int)Input.GetAxis("Horizontal"));
     }
 #endif 
 

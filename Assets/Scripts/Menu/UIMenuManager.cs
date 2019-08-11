@@ -81,27 +81,14 @@ public class UIMenuManager : Singleton<UIMenuManager>
             child.SetActive(true);
         });
 
-        // update image
-        string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-        var imageLoader = _playersWrappers[playerNumber].Avatar.gameObject.GetComponent<ImageLoader>();
-
-        // reload image loader
-        if (!imageLoader || (imageLoader && imageLoader.url != url))
-        {
-            if (imageLoader)
-            {
-                Destroy(imageLoader);
-                _playersWrappers[playerNumber].Avatar.sprite = null;
-            }
-
-            _playersWrappers[playerNumber].Avatar.gameObject.AddComponent<ImageLoader>().url = url;
-        }
-
         // update outline
         _playersWrappers[playerNumber].Outline.effectColor = ((CharID)playerNumber).ToColor();
 
         // update text
         _playersWrappers[playerNumber].Name.text = AirConsole.instance.GetNickname(deviceId);
+
+        // update image
+        ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[playerNumber].Avatar);
     }
     #endregion
 

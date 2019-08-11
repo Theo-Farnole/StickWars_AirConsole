@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 270425415587321793}
   - component: {fileID: 7456931107786699328}
+  - component: {fileID: 2389316943973080185}
   m_Layer: 0
-  m_Name: AirConsole
+  m_Name: P_AirConsole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,6 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d83ebce05ad74683fd3228dde9e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  browserStartMode: 3
+  browserStartMode: 0
   controllerHtml: {fileID: 4900000, guid: 9f40fa301cbd98b4cab86b4b7509f01d, type: 3}
   autoScaleCanvas: 1
+--- !u!114 &2389316943973080185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6911258057837128170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19bd137f864962419a025434870fb36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

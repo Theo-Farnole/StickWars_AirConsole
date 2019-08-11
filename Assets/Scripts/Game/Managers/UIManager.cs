@@ -40,15 +40,11 @@ public class UIManager : Singleton<UIManager>
     {
         var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
 
-        Debug.Log("SetAvatars > " + activePlayers);
-
         for (int i = 0; i < _playersWrappers.Length; i++)
         {
             // active or not wrapper
             bool isPlayerActive = (i < activePlayers);
             _playersWrappers[i].gameObject.SetActive(isPlayerActive);
-
-            Debug.Log(i + " < " + activePlayers + " = " + isPlayerActive);
 
             // load avatar
             if (isPlayerActive)
@@ -56,21 +52,9 @@ public class UIManager : Singleton<UIManager>
                 int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
 
                 string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-                var imageLoader = _playersWrappers[i].Avatar.gameObject.GetComponent<ImageLoader>();
+                ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[i].Avatar);
 
-                _playersWrappers[i].Outline.effectColor = ((CharID)i).ToColor(); 
-
-                // reload image loader
-                if (!imageLoader || (imageLoader && imageLoader.url != url))
-                {
-                    if (imageLoader)
-                    {
-                        Destroy(imageLoader);
-                        _playersWrappers[i].Avatar.sprite = null;
-                    }
-
-                    _playersWrappers[i].Avatar.gameObject.AddComponent<ImageLoader>().url = url;
-                }
+                _playersWrappers[i].Outline.effectColor = ((CharID)i).ToColor();
             }
         }
     }
@@ -89,9 +73,7 @@ public class UIManager : Singleton<UIManager>
         _winnerWrapper.GetComponentInChildren<TextMeshProUGUI>().text = winnerNickname;
 
         int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber);
-        string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-        _winnerWrapper.GetComponentInChildren<Image>().gameObject.AddComponent<ImageLoader>().url = url;
-        Debug.LogWarning("tamer");
+        ProfilePictureManager.Instance.SetProfilePicture(deviceId, _winnerWrapper.GetComponentInChildren<Image>());
 
         _victoryPanel.SetActive(true);
         this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
