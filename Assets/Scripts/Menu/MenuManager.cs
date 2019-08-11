@@ -206,12 +206,15 @@ public class MenuManager : Singleton<MenuManager>
             AbstractGamemode.valueForVictory = gamemodeData.ValuesSettings[sliderIndex];
 
             // display play view on controllers
-            var token = new
+            if (AirConsole.instance.IsAirConsoleUnityPluginReady())
             {
-                view = ControllerView.Play.ToString(),
-            };
+                var token = new
+                {
+                    view = ControllerView.Play.ToString(),
+                };
 
-            AirConsole.instance.Broadcast(token);
+                AirConsole.instance.Broadcast(token);
+            }
 
             // then, finally load the scene
             SceneManager.LoadScene("SC_Windows");

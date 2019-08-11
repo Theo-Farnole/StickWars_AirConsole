@@ -53,8 +53,6 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collision w/ " + other.name);
-
         var entity = other.GetComponent<Entity>();
 
         if (entity != null && entity != sender)

@@ -23,20 +23,16 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _winnerWrapper;
     #endregion
 
+    #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
+        Debug.Log("Awake");
         _textSceneName.text = SceneManager.GetActiveScene().name;
         _victoryPanel.SetActive(false);
 
         // hide avatar wrappers
-        for (int i = 0; i < _playersWrappers.Length; i++)
-        {
-            _playersWrappers[i].gameObject.SetActive(false);
-            //_gamemodeData[i].Name.color = ((CharID)i).ToColor(); // image loader
-            Debug.LogWarning("Add image loader");
-            _playersWrappers[i].Outline.effectColor = ((CharID)i).ToColor();
-        }
+        SetAvatars();
     }
     #endregion
 
@@ -44,11 +40,15 @@ public class UIManager : Singleton<UIManager>
     {
         var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
 
+        Debug.Log("SetAvatars > " + activePlayers);
+
         for (int i = 0; i < _playersWrappers.Length; i++)
         {
             // active or not wrapper
             bool isPlayerActive = (i < activePlayers);
             _playersWrappers[i].gameObject.SetActive(isPlayerActive);
+
+            Debug.Log(i + " < " + activePlayers + " = " + isPlayerActive);
 
             // load avatar
             if (isPlayerActive)
@@ -57,6 +57,8 @@ public class UIManager : Singleton<UIManager>
 
                 string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
                 var imageLoader = _playersWrappers[i].Avatar.gameObject.GetComponent<ImageLoader>();
+
+                _playersWrappers[i].Outline.effectColor = ((CharID)i).ToColor(); 
 
                 // reload image loader
                 if (!imageLoader || (imageLoader && imageLoader.url != url))
@@ -97,4 +99,5 @@ public class UIManager : Singleton<UIManager>
             SceneManager.LoadScene("_SC_menu");
         });
     }
+    #endregion
 }
