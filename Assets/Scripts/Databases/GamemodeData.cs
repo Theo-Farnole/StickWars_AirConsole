@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "TO/Databases/Gamemode")]
 public class GamemodeData : ScriptableObject
 {
-    [SerializeField] private int[] _valuesSettings = new int[5];
+    [SerializeField] private int _defaultValue = 3;
 
-    public int[] ValuesSettings { get => _valuesSettings; }
+    public int DefaultValue { get => _defaultValue; }
 }

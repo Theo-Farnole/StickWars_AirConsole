@@ -9,27 +9,23 @@ using UnityEngine.UI;
 public class UIMenuManager : Singleton<UIMenuManager>
 {
     #region Fields
-    [Header("Panel Players & Map")]
-    [SerializeField] private GameObject _panelPlayers;
+    [Header("Panel Level Select")]
+    [SerializeField] private GameObject _panelLevelSelection;
     [Space]
     [SerializeField] private TextMeshProUGUI _textWaitingForPlayers;
     [SerializeField] private PlayerWrapper[] _playersWrappers = new PlayerWrapper[4];
-    [Header("Panel Gamemode")]
-    [SerializeField] private GameObject _panelGamemode;
+    [Header("Loading")]
+    [SerializeField] private GameObject _panelLoading;
     [Space]
-    [SerializeField] private Slider _sliderGamemodeSettings;
-    [SerializeField] private TextMeshProUGUI[] _textValuesSlider = new TextMeshProUGUI[5];
-    #endregion
-
-    #region Properties
-    public Slider SliderGamemodeSettings { get => _sliderGamemodeSettings;}
+    [SerializeField] private TextMeshProUGUI _textLoading;
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Start()
     {
-        UpdatePanel();        
+        _panelLevelSelection.SetActive(true);
+        _panelLoading.SetActive(false);
 
         if (!AirConsole.instance.IsAirConsoleUnityPluginReady())
         {
@@ -45,7 +41,7 @@ public class UIMenuManager : Singleton<UIMenuManager>
     }
     #endregion
 
-    #region Panel Players & Map
+    #region Panel Level Selection
     public void UpdatePlayersAvatar()
     {
         var devices = AirConsole.instance.GetActivePlayerDeviceIds;
@@ -92,40 +88,15 @@ public class UIMenuManager : Singleton<UIMenuManager>
     }
     #endregion
 
-    #region Panel Gamemode
-    void UpdateSliderValues()
+    #region Panel Loading
+    public void SetActivePanelLoading()
     {
-        var values = MenuManager.Instance.GamemodeData[(int)GamemodeType.DeathMatch].ValuesSettings;
+        _textLoading.text = _textLoading.text.Replace("$value$", MenuManager.Instance.SelectedGamemodeDefaultValue.ToString());
 
-        for (int i = 0; i < _textValuesSlider.Length; i++)
-        {
-            _textValuesSlider[i].text = values[i].ToString();
-        }
-
+        _panelLevelSelection.SetActive(false);
+        _panelLoading.SetActive(true);
     }
     #endregion
-
-    public void UpdatePanel()
-    {
-        _panelPlayers.SetActive(false);
-        _panelGamemode.SetActive(false);
-
-        switch (MenuManager.Instance.CurrentState)
-        {
-            case MenuManager.State.PlayerPanel:
-                _panelPlayers.SetActive(true);
-                break;
-
-            case MenuManager.State.GamemodePanel:
-                UpdateSliderValues();
-                _panelGamemode.SetActive(true);
-                break;
-
-            case MenuManager.State.Loading:
-                _panelGamemode.SetActive(true);
-                break;
-        }
-    }
     #endregion
 }
 

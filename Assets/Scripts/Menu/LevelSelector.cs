@@ -106,8 +106,6 @@ public class LevelSelector : Singleton<LevelSelector>
         // update position
         _cursor.localPosition = _levels[_selectedLevel].rectTransform.localPosition;
 
-        Debug.Log(_levels[_selectedLevel].rectTransform.localPosition);
-
         // update color
         if (_levels[_selectedLevel].key == "lock")
         {

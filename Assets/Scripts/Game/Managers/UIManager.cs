@@ -27,7 +27,6 @@ public class UIManager : Singleton<UIManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        Debug.Log("Awake");
         _textSceneName.text = SceneManager.GetActiveScene().name;
         _victoryPanel.SetActive(false);
 
