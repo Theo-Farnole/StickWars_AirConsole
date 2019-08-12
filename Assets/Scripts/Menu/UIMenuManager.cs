@@ -120,6 +120,10 @@ public class UIMenuManager : Singleton<UIMenuManager>
                 UpdateSliderValues();
                 _panelGamemode.SetActive(true);
                 break;
+
+            case MenuManager.State.Loading:
+                _panelGamemode.SetActive(true);
+                break;
         }
     }
     #endregion

@@ -11,8 +11,6 @@ using UnityEditor;
 
 public class MenuManager : Singleton<MenuManager>
 {
-    public readonly static float CHANGE_LEVEL_TIME_DELAY = 0.3f;
-
     #region Enum
     public enum State
     {
@@ -23,37 +21,14 @@ public class MenuManager : Singleton<MenuManager>
     #endregion
 
     #region Fields
-    [EnumNamedArrayAttribute(typeof(GamemodeType))]
+    [EnumNamedArray(typeof(GamemodeType))]
     [SerializeField] private GamemodeData[] _gamemodeData = new GamemodeData[Enum.GetValues(typeof(GamemodeType)).Length];
 
-    private bool _canChangeLevel = true;
     private GamemodeType _selectedGamemode = GamemodeType.DeathMatch;
-
     private State _currentState = State.PlayerPanel;
     #endregion
 
     #region Properties
-    private bool CanChangeLevel
-    {
-        get
-        {
-            return _canChangeLevel;
-        }
-
-        set
-        {
-            if (value == true)
-                return;
-
-            _canChangeLevel = false;
-
-            this.ExecuteAfterTime(CHANGE_LEVEL_TIME_DELAY, () =>
-            {
-                _canChangeLevel = true;
-            });
-        }
-    }
-
     public State CurrentState { get => _currentState; }
     public GamemodeData[] GamemodeData { get => _gamemodeData; }
     #endregion
@@ -81,7 +56,7 @@ public class MenuManager : Singleton<MenuManager>
     {
         if (Input.GetKeyUp(KeyCode.A))
         {
-            NextPressed();
+            APressed();
         }
 
         HorizontalPressed((int)Input.GetAxis("Horizontal"));
@@ -101,9 +76,9 @@ public class MenuManager : Singleton<MenuManager>
     #endregion
 
     #region AirConsole Callbacks
-    void OnMessage(int device_id, JToken data)
+    void OnMessage(int deviceId, JToken data)
     {
-        if (device_id == AirConsole.instance.GetMasterControllerDeviceId())
+        if (deviceId == AirConsole.instance.GetMasterControllerDeviceId())
         {
             if (data["horizontal"] != null)
             {
@@ -112,12 +87,12 @@ public class MenuManager : Singleton<MenuManager>
 
             if (data["aPressed"] != null && (bool)data["aPressed"])
             {
-                NextPressed();
+                APressed();
             }
         }
     }
 
-    void OnConnect(int device_id)
+    void OnConnect(int deviceId)
     {
         int activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
         if (activePlayers < GameManager.MAX_PLAYERS)
@@ -192,56 +167,61 @@ public class MenuManager : Singleton<MenuManager>
     }
 
     #region Handle Input
-    void NextPressed()
+    void APressed()
     {
         _currentState++;
 
-        UIMenuManager.Instance.UpdatePanel();
-
-        // load scene
-        if (_currentState == State.Loading)
+        switch (_currentState)
         {
-            // pass the gamemode settings 
-            var gamemodeData = _gamemodeData[(int)_selectedGamemode];
-            int sliderIndex = (int)UIMenuManager.Instance.SliderGamemodeSettings.value;
-            AbstractGamemode.valueForVictory = gamemodeData.ValuesSettings[sliderIndex];
-
-            // display play view on controllers
-            if (AirConsole.instance.IsAirConsoleUnityPluginReady())
-            {
-                var token = new
+            case State.GamemodePanel:
+                // if player selected LOCKED level, redo currentState
+                if (LevelSelector.Instance.GetSelectedLevelData().key == "lock")
                 {
-                    view = ControllerView.Play.ToString(),
-                };
+                    _currentState--;
+                }
+                break;
 
-                AirConsole.instance.Broadcast(token);
-            }
-
-            // then, finally load the scene
-            SceneManager.LoadScene("SC_Windows");
+            case State.Loading:
+                LoadScene();
+                break;
         }
+
+        UIMenuManager.Instance.UpdatePanel();
     }
 
     void HorizontalPressed(float value)
     {
-        if (value == 0)
-            return;
-
-        switch (_currentState)
+        if (_currentState == State.GamemodePanel)
         {
-            case State.PlayerPanel:
-                if (_canChangeLevel)
-                {
-                    LevelSelector.Instance.SelectedLevel += (int)value;
-                    CanChangeLevel = false;
-                }
-                break;
-
-            case State.GamemodePanel:
-                UIMenuManager.Instance.SliderGamemodeSettings.value += (int)value;
-                break;
+            UIMenuManager.Instance.SliderGamemodeSettings.value += (int)value;
         }
     }
     #endregion
+
+    void LoadScene()
+    {
+        // pass the gamemode settings 
+        var gamemodeData = _gamemodeData[(int)_selectedGamemode];
+        int sliderIndex = (int)UIMenuManager.Instance.SliderGamemodeSettings.value;
+        AbstractGamemode.valueForVictory = gamemodeData.ValuesSettings[sliderIndex];
+
+        // display play view on controllers
+        if (AirConsole.instance.IsAirConsoleUnityPluginReady())
+        {
+            var token = new
+            {
+                view = ControllerView.Play.ToString(),
+            };
+
+            AirConsole.instance.Broadcast(token);
+        }
+
+        // then, finally load the scene
+
+        string level = "SC_" + LevelSelector.Instance.GetSelectedLevelData().key;
+
+        Debug.Log("Loading level named " + level);
+        SceneManager.LoadScene(level);
+    }
     #endregion
 }

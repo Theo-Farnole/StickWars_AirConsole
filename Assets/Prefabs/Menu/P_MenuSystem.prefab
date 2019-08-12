@@ -43,16 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3bf97f24879314b92e5a6024c68388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cursor: {fileID: 0}
   _levels:
-  - key: firefox
-    sprite: {fileID: 21300000, guid: c980ee74fad418947a430f0e7ba2cfc4, type: 3}
   - key: windows
-    sprite: {fileID: 21300000, guid: 1d86e455806387a46bb8a1afe0b018db, type: 3}
-  - key: 003
-    sprite: {fileID: 21300000, guid: dd5b6df627f8a3f46bc767d0bddb9482, type: 3}
-  _leftImageLevel: {fileID: 0}
-  _selectedImageLevel: {fileID: 0}
-  _rightImageLevel: {fileID: 0}
+    gameObject: {fileID: 0}
+  - key: lock
+    gameObject: {fileID: 0}
 --- !u!1 &8089560094173689792
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,8 +140,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _gamemodeData:
-  - {fileID: 11400000, guid: adbd7d8448cab3e45933f1793dc225c8, type: 2}
 --- !u!1 &8089560095293512427
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,3 +183,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5509880fee11f04db1cdc0893b3c51d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gamemodeData:
+  - {fileID: 11400000, guid: adbd7d8448cab3e45933f1793dc225c8, type: 2}
