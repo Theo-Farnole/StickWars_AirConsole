@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,6 +46,7 @@ public class Entity : MonoBehaviour
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 
         UpdateHealthSlider();
+        PopFloatingText(damage, attacker);
 
         if (!IsAlive)
         {
@@ -55,7 +57,10 @@ public class Entity : MonoBehaviour
     protected void UpdateHealthSlider()
     {
         if (_healthSlider == null)
+        {
+            Debug.LogWarning(transform.name + " doesn't have a health slider!");
             return;
+        }
 
         // active or not the slider
         bool isFullLife = (_hp == _maxHp);
@@ -71,4 +76,12 @@ public class Entity : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void PopFloatingText(int damage, Entity attacker)
+    {
+        float direction = transform.position.x - attacker.transform.position.x;
+
+        var text = Instantiate(GameManager.Instance.PrefabFloatingText, transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();
+        text.text = damage.ToString();
+        text.direction = (FloatingText.Direction)Mathf.Sign(direction);
+    }
 }

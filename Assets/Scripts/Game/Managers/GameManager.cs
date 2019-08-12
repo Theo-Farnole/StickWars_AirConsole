@@ -11,6 +11,8 @@ public class GameManager : Singleton<GameManager>
 
     #region Fields
     [SerializeField] private GameObject _prefabPlayer;
+    [Header("Feedback prefab")]
+    [SerializeField] private GameObject _prefabFloatingText;
 
     private GamemodeType gamemodeType = GamemodeType.DeathMatch;
     private AbstractGamemode _gamemode;
@@ -22,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     #region Properties
     public AbstractGamemode Gamemode { get => _gamemode; }
     public CharController[] Characters { get => _characters; }
+    public GameObject PrefabFloatingText { get => _prefabFloatingText; }
     #endregion
 
     #region MonoBehaviour Callbacks
