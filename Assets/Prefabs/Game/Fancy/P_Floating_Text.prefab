@@ -45,10 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff194f50a891ba14f834241f1ba80b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textColor: {r: 1, g: 1, b: 1, a: 1}
   _hitForce: 100
   _lifetime: 0.8
-  _textMeshPro: {fileID: 7494899587997060316}
+  _text: {fileID: 7494899587997060316}
 --- !u!50 &1868828290260530454
 Rigidbody2D:
   serializedVersion: 4
@@ -217,7 +216,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0

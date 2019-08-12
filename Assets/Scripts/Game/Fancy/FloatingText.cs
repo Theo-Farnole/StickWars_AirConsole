@@ -13,15 +13,16 @@ public class FloatingText : MonoBehaviour
     #region Fields
     public static readonly int ANGLE_OFFSET = 15;
 
-    [SerializeField] private Color _textColor = Color.white;
-    [Space]
     [SerializeField] private float _hitForce = 200;
     [SerializeField] private float _lifetime = 0.8f;
     [Header("Components linking")]
-    [SerializeField] private TextMeshPro _textMeshPro;
+    [SerializeField] private TextMeshPro _text;
 
-    [System.NonSerialized] public string text;
     [System.NonSerialized] public Direction direction;
+    #endregion
+
+    #region Properties
+    public TextMeshPro Text { get => _text;  }
     #endregion
 
     #region Methods
@@ -50,8 +51,7 @@ public class FloatingText : MonoBehaviour
         GetComponent<Rigidbody2D>().AddForce(forceAngle * _hitForce);
 
         // fade out
-        _textMeshPro.text = text;
-        _textMeshPro.Fade(FadeType.FadeOut, _lifetime);
+        _text.Fade(FadeType.FadeOut, _lifetime);
 
         Destroy(gameObject, _lifetime);
     }

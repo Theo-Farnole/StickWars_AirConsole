@@ -79,9 +79,14 @@ public class Entity : MonoBehaviour
     private void PopFloatingText(int damage, Entity attacker)
     {
         float direction = transform.position.x - attacker.transform.position.x;
+        
+        var floatingText = Instantiate(GameManager.Instance.PrefabFloatingText, transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();
+        floatingText.direction = (FloatingText.Direction)Mathf.Sign(direction);
+        floatingText.Text.text = damage.ToString();
 
-        var text = Instantiate(GameManager.Instance.PrefabFloatingText, transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();
-        text.text = damage.ToString();
-        text.direction = (FloatingText.Direction)Mathf.Sign(direction);
+        if (attacker.GetComponent<CharController>())
+        {
+            floatingText.Text.color = attacker.GetComponent<CharController>().playerId.ToColor();
+        }
     }
 }
