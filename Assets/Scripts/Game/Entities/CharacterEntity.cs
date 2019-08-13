@@ -11,7 +11,7 @@ public class CharacterEntity : Entity
     {
         base.Start();
 
-        _myID = (int)GetComponent<CharController>().playerId;
+        _myID = (int)GetComponent<CharController>().charID;
     }
 
     protected override void Death(Entity killer)
@@ -23,7 +23,7 @@ public class CharacterEntity : Entity
 
         if (killerCharController)
         {
-            killerID = (int)killerCharController.playerId;
+            killerID = (int)killerCharController.charID;
         }
 
         // report kill to Gamemode

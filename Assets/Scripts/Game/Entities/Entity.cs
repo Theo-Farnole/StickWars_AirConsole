@@ -86,7 +86,7 @@ public class Entity : MonoBehaviour
 
         if (attacker.GetComponent<CharController>())
         {
-            floatingText.Text.color = attacker.GetComponent<CharController>().playerId.ToColor();
+            floatingText.Text.color = attacker.GetComponent<CharController>().charID.ToColor();
         }
     }
 }

@@ -31,6 +31,15 @@ public class GameManager : Singleton<GameManager>
     void Awake()
     {
 #if UNITY_EDITOR
+        // add existing Prefab to _characters
+        var charControllers = FindObjectsOfType<CharController>();
+
+        for (int i = 0; i < charControllers.Length; i++)
+        {
+            CharID charID = charControllers[i].charID;
+            _characters[(int)charID] = charControllers[i];
+        }
+
         AirConsole.instance.onConnect += OnConnect;
 #endif
 
@@ -106,7 +115,7 @@ public class GameManager : Singleton<GameManager>
         {
             var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
 
-            player.playerId = (CharID)playerNumber;
+            player.charID = (CharID)playerNumber;
             _characters[playerNumber] = player;
 
             if (LevelData.Instance == null)
@@ -118,5 +127,16 @@ public class GameManager : Singleton<GameManager>
         }
 
         UIManager.Instance.SetAvatars();
+    }
+
+    public void Victory(int winnerPlayerNumber)
+    {
+        for (int i = 0; i < _characters.Length; i++)
+        {
+            if (_characters[i] != null)
+            {
+                _characters[i].CharAudio.EnableSound = false;
+            }
+        }
     }
 }

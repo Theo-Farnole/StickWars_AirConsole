@@ -41,6 +41,7 @@ public abstract class AbstractGamemode
         {
             if (_charactersValue[i] >= valueForVictory)
             {
+                GameManager.Instance.Victory(i);
                 Victory(i);
             }
         }

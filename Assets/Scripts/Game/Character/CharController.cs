@@ -133,7 +133,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region serialized variables
-    public CharID playerId;
+    public CharID charID;
     [Space]
     [SerializeField] private CharacterControllerData _data;
     [Header("Attacking")]
@@ -281,8 +281,8 @@ public class CharController : MonoBehaviour
 
     void Start()
     {
-        _spriteRenderer.color = playerId.ToColor();
-        _keyboardControls = playerId.ToControls();
+        _spriteRenderer.color = charID.ToColor();
+        _keyboardControls = charID.ToControls();
         _crown.enabled = false;
     }
     #endregion
@@ -397,7 +397,7 @@ public class CharController : MonoBehaviour
     {
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
 
-        if (playerNumber == -1 || playerNumber != (int)playerId)
+        if (playerNumber == -1 || playerNumber != (int)charID)
             return;
 
         if (data["horizontal"] != null)
@@ -443,7 +443,7 @@ public class CharController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = playerId.ToColor();
+        Gizmos.color = charID.ToColor();
         Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);
     }
 }
