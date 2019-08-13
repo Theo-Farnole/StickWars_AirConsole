@@ -46,7 +46,7 @@ public class Entity : MonoBehaviour
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 
         UpdateHealthSlider();
-        PopFloatingText(damage, attacker);
+        PopFloatingText(damage, attacker);        
 
         if (!IsAlive)
         {

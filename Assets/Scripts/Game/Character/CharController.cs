@@ -162,6 +162,7 @@ public class CharController : MonoBehaviour
 
     #region cache variables
     private Rigidbody2D _rigidbody;
+    private CharAudio _charAudio;
 
     private int _layerMask;
 
@@ -181,6 +182,7 @@ public class CharController : MonoBehaviour
     public CharacterCollisions Collisions { get => _collisions; }
     public PlayerInputs Inputs { get => _inputs; }
     public List<Entity> EntitiesHit { get => _entitiesHit; }
+    public CharAudio CharAudio { get => _charAudio; }
 
     public Orientation OrientationX
     {
@@ -268,6 +270,7 @@ public class CharController : MonoBehaviour
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _charAudio = GetComponent<CharAudio>();
         _layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision", "Ignore Raycast");
 
         _collisions.SetCollider(CharacterCollisions.Collider.Normal);
@@ -339,6 +342,8 @@ public class CharController : MonoBehaviour
                 {
                     otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>());
                     _entitiesHit.Add(otherEntity);
+
+                    _charAudio.PlaySound(CharAudio.Sound.HitTackle);
                 }
             }
         }

@@ -88,6 +88,7 @@ public class CharStateNormal : CharState
 
     void Jump()
     {
+        _charController.CharAudio.PlaySound(CharAudio.Sound.Jump);
         _jumpCount++;
 
         _charController.Rigidbody.velocity = new Vector2(_charController.Rigidbody.velocity.x, 0);

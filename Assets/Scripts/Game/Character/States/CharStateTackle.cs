@@ -17,6 +17,9 @@ public class CharStateTackle : CharState
     #region State Transitions Callbacks
     public override void OnStateEnter()
     {
+        _charController.CharAudio.PlaySound(CharAudio.Sound.Tackle);
+
+        // update collider
         _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Transition);
 
         _charController.ExecuteAfterTime(TACKLE_TRANSITION_TIME, () =>
