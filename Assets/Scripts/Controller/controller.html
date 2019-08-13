@@ -2,142 +2,10 @@
 
 <head>
     <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
-    <script type="text/javascript">
-        //the view manager finds all div containers with the "view" class and lets me show one view while hiding all others
-        //see also: https://github.com/AirConsole/airconsole-view-manager
-        var ViewManager = {
-          views: {},
-          current_view_id: null,
+    <script src="js/view-manager.js"></script> 
+    <script src="js/message-manager.js"></script> 
     
-          init: function() {
-            var views = document.querySelectorAll('.view');
-            for (var i = 0; i < views.length; i++) {
-              this.views[views[i].id] = views[i];
-            }
-            return this;
-          },
-    
-          show: function(id) {
-            console.log("Change view with " + id);
-
-            var view = this.views[id];
-            if (view) {
-              this.current_view_id = id;
-              this.hideAll();
-              view.style.display = "block";
-            } else {
-              console.warn("Could not find view with ID:", id);
-            }
-            return this;
-          },
-    
-          hideAll: function() {
-            for (var key in this.views) {
-              this.views[key].style.display = "none";
-            }
-          }
-        };
-      </script>
-    <script type="text/javascript">
-        var airconsole;
-
-        function init() {
-            airconsole = new AirConsole({
-                "orientation": "landscape"
-            }); 
-
-            ViewManager.init();
-            ViewManager.show("Load");
-
-            airconsole.onMessage = function(from, data) {
-                if (from == AirConsole.SCREEN)
-                {
-                    if (data.view)
-                    {
-                        ViewManager.show(data.view);
-                    }
-                    
-                    if (data.bgColor)
-                    {
-                        document.body.style.backgroundColor = data.bgColor;
-                    } 
-                }
-            };
-        }
-
-        function horizontal(amount) {
-            airconsole.message(AirConsole.SCREEN, {
-                horizontal: amount
-            })
-        }
-
-        function bPressed(pressed) {
-            airconsole.message(AirConsole.SCREEN, {
-                bPressed: pressed
-            })
-        }
-
-        function xPressed(pressed) {
-            airconsole.message(AirConsole.SCREEN, {
-                xPressed: pressed
-            })
-        }
-
-        function aPressed(pressed) {
-            airconsole.message(AirConsole.SCREEN, {
-                aPressed: pressed
-            })
-        }
-    </script>
-    <style type="text/css">
-        @font-face {
-            font-family: 'PressStart2P';
-            src: url('PressStart2P.ttf') format('truetype');
-            text-align: center;
-        }
-        
-        html,
-        body {
-            height: 100%;
-            margin: 0px;
-            font-family: 'PressStart2P', sans-serif;
-            color: white;
-            text-align: center;
-            background-color: black;
-        }
-
-        .view {
-           display:none;
-        }
-
-        .vertical_center
-        {
-            color:white;
-            position: absolute; top: 50%; bottom: 50%; width: 100%;
-            vertical-align: middle;
-        }
-
-        #Play > div
-        {
-            height: 100%;
-            width: 100%;
-
-            display: grid;
-            grid-template-columns: repeat(4, auto);
-            grid-template-rows: repeat(2, auto);
-            grid-gap: 15px;
-        }
-
-        .buttons
-        {
-            display: flex;
-            align-items: center;
-            justify-content: center; 
-
-            background-color: #222;
-            line-height: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body onload="init()">
@@ -171,7 +39,7 @@
     </div>
 
     <div id="Load" class="view">
-        <p class="vertical_center">Loading...</p>
+        <p class="vertical_center" style="color: black">Loading...</p>
     </div>
 
     <div id="NoPlace" class="view">
