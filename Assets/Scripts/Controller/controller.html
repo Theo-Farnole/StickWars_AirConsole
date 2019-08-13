@@ -12,24 +12,24 @@
     
     <div id="Play" class="view">
         <div>
-            <div style="grid-row: 1 / 3;" class=buttons ontouchstart="horizontal(-1)" ontouchend="horizontal(0)" onmousedown="horizontal(-1)" onmouseup="horizontal(0)">
-                <div class="button_label">LEFT</div>
+            <div class=buttons id=button_left style="grid-row: 1 / 3;">
+                LEFT
             </div>
 
-            <div style="grid-row: 1 / 3;" class=buttons ontouchstart="horizontal(1)" ontouchend="horizontal(0)" onmousedown="horizontal(1)" onmouseup="horizontal(0)">
-                <div class="button_label">RIGHT</div>
+            <div class=buttons id=button_right style="grid-row: 1 / 3;" ontouchstart="horizontal(1)" ontouchend="horizontal(0)" onmousedown="horizontal(1)" onmouseup="horizontal(0)">
+                RIGHT
             </div>
 
-            <div  class=buttons id="button_B" ontouchstart="bPressed(true)" ontouchend="bPressed(false)" onmousedown="bPressed(true)" onmouseup="bPressed(false)">
-                <div class="button_label">B</div>
+            <div class=buttons id=button_b ontouchstart="bPressed(true)" ontouchend="bPressed(false)" onmousedown="bPressed(true)" onmouseup="bPressed(false)">
+                B
             </div>
 
-            <div  class=buttons id="button_X" ontouchstart="xPressed(true)" ontouchend="xPressed(false)" onmousedown="xPressed(true)" onmouseup="xPressed(false)">
-                <div class="button_label">X</div>
+            <div class=buttons id=button_x ontouchstart="xPressed(true)" ontouchend="xPressed(false)" onmousedown="xPressed(true)" onmouseup="xPressed(false)">
+                X
             </div>
 
-            <div style="grid-row: 2 / 3; grid-column: 3 / 5;" class=buttons id="button_A"ontouchstart="aPressed(true)" ontouchend="aPressed(false)" onmousedown="aPressed(true)" onmouseup="aPressed(false)">
-                <div class="button_label">A</div>
+            <div class=buttons id=button_a style="grid-row: 2 / 3; grid-column: 3 / 5;" ontouchstart="aPressed(true)" ontouchend="aPressed(false)" onmousedown="aPressed(true)" onmouseup="aPressed(false)">
+                A
             </div>
         </div>
     </div>
