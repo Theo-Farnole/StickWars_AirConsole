@@ -4,46 +4,91 @@
     text-align: center;
 }
 
+/**
+CharID color:
+- red #c40233
+- blue #0088bf
+- green #00a568
+- yellow #ffd400
+*/
 html,
 body {
     height: 100%;
     margin: 0px;
     font-family: 'PressStart2P', sans-serif;
-    color: white;
+
     text-align: center;
     background-blend-mode: multiply;
     background-image: url("../img/background.jpg");
-    background-color: white;
+    background-color: #c40233;
+
+    font-size: 2em;
+    text-align: center;
 }
 
 .view {
-   display:none;
+    display: none;
 }
 
-.vertical_center
-{
-    color:white;
-    position: absolute; top: 50%; bottom: 50%; width: 100%;
+.vertical_center {
+
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    width: 100%;
     vertical-align: middle;
 }
 
-#Play > div
-{
-    height: 100%;
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    grid-template-rows: repeat(2, auto);
-    grid-gap: 15px;
+:root {
+    --button-padding-size: 30px;
 }
 
-.buttons
-{
+#Play>div {
+    padding: var(--button-padding-size);
+
+    height: calc(100vh - var(--button-padding-size)* 2);
+    width: calc(100vw - var(--button-padding-size)* 2);
+
+    display: grid;
+    grid-gap: var(--button-padding-size);
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(2, auto);
+}
+
+.buttons {
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
+    
+    color: #2c3e50;
+    font-size: 5em;
 
-    background-color: #222;
-    line-height: 100%;
+    background-size: 100% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    filter: brightness(100%);
+    -webkit-filter: brightness(100%);
+}
+
+.buttons:active {
+    filter: brightness(70%);
+    -webkit-filter: brightness(70%);
+    
+    transform: translateY(4px) translateX(4px);
+}
+
+.button_large
+{
+    background-image: url("../img/key_large.png");
+}
+
+.button_large_vertical
+{
+    background-image: url("../img/key_large_vertical.png");
+}
+
+.button_small
+{
+    background-image: url("../img/key_small.png");
 }

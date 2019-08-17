@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('PressStart2P.ttf') format('truetype');
+    text-align: center;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0px;
+    font-family: 'PressStart2P', sans-serif;
+    color: white;
+    text-align: center;
+    background-blend-mode: multiply;
+    background-image: url("../img/background.jpg");
+    background-color: white;
+}
+
+.view {
+    display: none;
+}
+
+.vertical_center {
+    color: white;
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    width: 100%;
+    vertical-align: middle;
+}
+
+#Play>div {
+    padding: 15px;
+
+    height: calc(100vh - 30px);
+    width: calc(100vw - 30px);
+
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(2, auto);
+    grid-gap: 15px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    line-height: 100%;
+
+    color: #626262;
+    font-size: 5em;
+    border-radius: 25px;
+    background-color: white;
+    border: 2px solid black;
+}
+
+.buttons:hover
+{
+    background-color: #d9d9d9;
+}

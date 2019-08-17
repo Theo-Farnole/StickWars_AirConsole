@@ -6,6 +6,7 @@ function init() {
     });
 
     ViewManager.init();
+    // ViewManager.show("Load");
     ViewManager.show("Play");
 
     airconsole.onMessage = function (from, data) {
@@ -49,7 +50,7 @@ function init() {
             xPressed(false)
         });
     addButton("button_a",
-        function () {
+        function () {            
             aPressed(true)
         },
         function () {
@@ -65,7 +66,7 @@ function addButton(id, activeFunction, disableFunction) {
     obj.addEventListener("touchstart", activeFunction);
     obj.addEventListener("touchend", disableFunction);
 
-    obj.addEventListener("mousedown", activeFunction);
+    obj.addEventListener("mousedown", activeFunction);    
     obj.addEventListener("mouseup", disableFunction);
 }
 
