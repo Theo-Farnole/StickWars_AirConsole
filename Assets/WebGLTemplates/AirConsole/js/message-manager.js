@@ -6,6 +6,7 @@ function init() {
     });
 
     ViewManager.init();
+    // ViewManager.show("Load");
     ViewManager.show("Play");
 
     airconsole.onMessage = function (from, data) {
