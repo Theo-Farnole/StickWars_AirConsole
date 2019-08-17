@@ -60,12 +60,14 @@ body {
     align-items: center;
     justify-content: center;
     
-    color: #2c3e50;
-    font-size: 5em;
+    color: #404040;
+    font-size: 25vmin;
 
-    background-size: 100% auto;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: #ececec;
+    border: 10px solid #404040;
+    border-radius: 999px;
+
+    box-shadow: 4px 4px #222;
 
     filter: brightness(100%);
     -webkit-filter: brightness(100%);
@@ -76,9 +78,10 @@ body {
     -webkit-filter: brightness(70%);
     
     transform: translateY(4px) translateX(4px);
+    box-shadow: 0px 0px #222;
 }
 
-.button_large
+/* .button_large
 {
     background-image: url("../img/key_large.png");
 }
@@ -91,4 +94,4 @@ body {
 .button_small
 {
     background-image: url("../img/key_small.png");
-}
+} */
