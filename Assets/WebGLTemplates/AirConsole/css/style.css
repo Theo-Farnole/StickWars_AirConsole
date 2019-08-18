@@ -74,7 +74,7 @@ body {
     -webkit-filter: brightness(100%);
 }
 
-.buttons:active {
+.buttons.buttons_active {
     filter: brightness(70%);
     -webkit-filter: brightness(70%);
 

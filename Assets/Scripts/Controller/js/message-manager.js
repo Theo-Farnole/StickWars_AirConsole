@@ -13,6 +13,7 @@ function init() {
 
     ViewManager.init();
     ViewManager.show("Load");
+    // ViewManager.show("Play");
 
     airconsole.onMessage = function (from, data) {
         if (from == AirConsole.SCREEN) {
@@ -25,8 +26,7 @@ function init() {
 
                 console.log(data.charId + "bgColor: " + data.bgColor);
 
-                if (data.charId == "red" || data.charId  == "blue")
-                {
+                if (data.charId == "red" || data.charId == "blue") {
                     console.log("change color");
 
                     var sheet = document.styleSheets[0];
@@ -90,8 +90,12 @@ document.addEventListener('touchstart', function (event) {
 
         var touchedElementId = touchedElement.get(identifier).id;
 
+        // if touched element has an active function
         if (touchedElementId != undefined && activeFunctionMap.get(touchedElementId) != undefined) {
             activeFunctionMap.get(touchedElementId)();
+
+            // add visual feedback
+            touchedElement.get(identifier).className += " buttons_active";
         }
     }
 }, false);
@@ -110,15 +114,23 @@ document.addEventListener('touchmove', function (event) {
         if (touchedElement.get(identifier) !== newTouchedElement) {
             var touchedElementId = touchedElement.get(identifier).id;
 
+            // if old touched element has a disable function
             if (touchedElementId != undefined && disableFunctionMap.get(touchedElementId) != undefined) {
                 disableFunctionMap.get(touchedElementId)();
+
+                // remove visual feedback
+                touchedElement.get(identifier).className = touchedElement.get(identifier).className.replace(" buttons_active", "");
             }
 
             touchedElement.set(identifier, newTouchedElement);
             touchedElementId = touchedElement.get(identifier).id;
 
+            // if new touched element has an active function
             if (touchedElementId != undefined && activeFunctionMap.get(touchedElementId) != undefined) {
                 activeFunctionMap.get(touchedElementId)();
+
+                // add visual feedback
+                touchedElement.get(identifier).className += " buttons_active";
             }
         }
     }
@@ -135,6 +147,9 @@ document.addEventListener("touchend", function (event) {
 
         if (touchedElementId != undefined && disableFunctionMap.get(touchedElementId) != undefined) {
             disableFunctionMap.get(touchedElementId)();
+
+            // remove visual feedback
+            touchedElement.get(identifier).className = touchedElement.get(identifier).className.replace(" buttons_active", "");
         }
 
         touchedElement.set(identifier, null);
@@ -150,8 +165,14 @@ function addButton(id, isDirectional, activeFunction, disableFunction) {
         activeFunctionMap.set(id, activeFunction);
         disableFunctionMap.set(id, disableFunction);
     } else {
-        obj.addEventListener("touchstart", activeFunction);
-        obj.addEventListener("touchend", disableFunction);
+        obj.addEventListener("touchstart", function () {
+            obj.className += " buttons_active";
+            activeFunction();
+        });
+        obj.addEventListener("touchend", function () {
+            obj.className = obj.className.replace(" buttons_active", "");
+            disableFunction();
+        });
     }
 
     obj.addEventListener("mousedown", activeFunction);
