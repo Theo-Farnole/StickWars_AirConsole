@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     public static readonly float STICKED_LIFETIME = 1f;
 
     [SerializeField] private ProjectileData _data;
+    [SerializeField] private AudioSource _hitProjectileAudio;
 
     [HideInInspector] public int damage = 10;
     [HideInInspector] public Entity sender;
@@ -35,7 +36,7 @@ public class Projectile : MonoBehaviour
     }
     #endregion
 
-
+    #region Methods
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -58,7 +59,12 @@ public class Projectile : MonoBehaviour
         if (entity != null && entity != sender)
         {
             entity.GetDamage(damage, sender);
+
+            _hitProjectileAudio.transform.parent = null;
+            _hitProjectileAudio.Play();
+
             Destroy(gameObject);
         }
     }
+    #endregion
 }

@@ -343,7 +343,7 @@ public class CharController : MonoBehaviour
                     otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>());
                     _entitiesHit.Add(otherEntity);
 
-                    _charAudio.PlaySound(CharAudio.Sound.HitTackle);
+                    _charAudio.PlayHitTackle();
                 }
             }
         }

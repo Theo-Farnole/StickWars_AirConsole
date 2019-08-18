@@ -8,8 +8,7 @@ public class CharAudio : MonoBehaviour
     public enum Sound
     {
         Tackle,
-        Jump,
-        HitTackle
+        Jump
     }
 
     #region Fields
@@ -47,15 +46,16 @@ public class CharAudio : MonoBehaviour
         if (_enableSound == false)
             return;
 
-        if (sound == Sound.HitTackle)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, _hitTackleAudioSource.Length);
-            _hitTackleAudioSource[randomIndex].Play();
-        }
-        else
-        {
-            _audioSource[(int)sound].Play();
-        }
+        _audioSource[(int)sound].Play();
+    }
+
+    public void PlayHitTackle()
+    {
+        if (_enableSound == false)
+            return;
+
+        int randomIndex = UnityEngine.Random.Range(0, _hitTackleAudioSource.Length);
+        _hitTackleAudioSource[randomIndex].Play();
     }
 
     private void StopAllSounds()

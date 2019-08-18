@@ -610,7 +610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea8a57f3e921f84886256d451786c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerId: 1
+  charID: 0
   _data: {fileID: 11400000, guid: 6a1d6a54f4485c34cafba676dbf12d0d, type: 2}
   _prefabProjectile: {fileID: 6277080515121283850, guid: 1838053a672016a4885f6f2f06fac89e,
     type: 3}
