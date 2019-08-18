@@ -12,8 +12,7 @@ function init() {
     });
 
     ViewManager.init();
-    // ViewManager.show("Load");
-    ViewManager.show("Play");
+    ViewManager.show("Load");
 
     airconsole.onMessage = function (from, data) {
         if (from == AirConsole.SCREEN) {

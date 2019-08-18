@@ -12,8 +12,7 @@ function init() {
     });
 
     ViewManager.init();
-    // ViewManager.show("Load");
-    ViewManager.show("Play");
+    ViewManager.show("Load");
 
     airconsole.onMessage = function (from, data) {
         if (from == AirConsole.SCREEN) {
@@ -23,6 +22,15 @@ function init() {
 
             if (data.bgColor) {
                 document.body.style.backgroundColor = data.bgColor;
+
+                console.log(data.bgColor);
+
+                if (data.bgColor == "c40233" || data.bgColor == "0088bf")
+                {
+                    var css_rules_num = sheet.cssRules.length;
+
+                    sheet.insertRule(".view>p { color: white }", css_rules_num);
+                }
             }
         }
     };

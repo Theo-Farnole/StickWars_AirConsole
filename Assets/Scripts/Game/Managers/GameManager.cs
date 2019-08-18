@@ -85,7 +85,7 @@ public class GameManager : Singleton<GameManager>
             var token = new
             {
                 view = ControllerView.Play.ToString(),
-                bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToString()
+                bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToHex()
             };
 
             AirConsole.instance.Message(device_id, token);
