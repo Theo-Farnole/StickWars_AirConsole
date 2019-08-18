@@ -1,0 +1,83 @@
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('PressStart2P.ttf') format('truetype');
+    text-align: center;
+}
+
+/**
+CharID color:
+- red #c40233
+- blue #0088bf
+- green #00a568
+- yellow #ffd400
+*/
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'PressStart2P', sans-serif;
+
+    background-blend-mode: multiply;
+    background-image: url("../img/background.jpg");
+    background-color: white;
+    background-size: cover;
+}
+
+.view {
+    display: none;
+}
+
+.view>p {
+    font-size: 10vmin;
+    text-align: center;
+
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+:root {
+    --button-padding-size: 30px;
+}
+
+#Play>div {
+    padding: var(--button-padding-size);
+
+    height: calc(100vh - var(--button-padding-size)* 2);
+    width: calc(100vw - var(--button-padding-size)* 2);
+
+    display: grid;
+    grid-gap: var(--button-padding-size);
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: repeat(2, auto);
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #404040;
+    font-size: 25vmin;
+
+    background-color: #ececec;
+    border: 10px solid #404040;
+    border-radius: 999px;
+
+    box-shadow: 4px 4px #222;
+
+    filter: brightness(100%);
+    -webkit-filter: brightness(100%);
+}
+
+.buttons.buttons_active {
+    filter: brightness(70%);
+    -webkit-filter: brightness(70%);
+
+    transform: translateY(4px) translateX(4px);
+    box-shadow: 0px 0px #222;
+}

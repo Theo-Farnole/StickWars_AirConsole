@@ -30,6 +30,26 @@ public struct CharControls
 
 static class CharIDExtensions
 {
+    public static string ToHex(this CharID playerId)
+    {
+        switch (playerId)
+        {
+            case CharID.red:
+                return "c40233";
+
+            case CharID.blue:
+                return "0088bf";
+
+            case CharID.green:
+                return "00a568";
+
+            case CharID.yellow:
+                return "ffd400";
+        }
+
+        return "ffffff";
+    }
+
     public static Color ToColor(this CharID playerId)
     {
         switch (playerId)
@@ -49,6 +69,7 @@ static class CharIDExtensions
 
         return Color.white;
     }
+
 
     public static CharControls ToControls(this CharID playerId)
     {

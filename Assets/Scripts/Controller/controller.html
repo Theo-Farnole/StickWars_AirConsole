@@ -1,181 +1,53 @@
 <html>
 
 <head>
+    <meta charset="ASCII">
+
     <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
-    <script type="text/javascript">
-        //the view manager finds all div containers with the "view" class and lets me show one view while hiding all others
-        //see also: https://github.com/AirConsole/airconsole-view-manager
-        var ViewManager = {
-          views: {},
-          current_view_id: null,
-    
-          init: function() {
-            var views = document.querySelectorAll('.view');
-            for (var i = 0; i < views.length; i++) {
-              this.views[views[i].id] = views[i];
-            }
-            return this;
-          },
-    
-          show: function(id) {
-            console.log("Change view with " + id);
+    <script src="js/view-manager.js"></script>
+    <script src="js/message-manager.js"></script>
 
-            var view = this.views[id];
-            if (view) {
-              this.current_view_id = id;
-              this.hideAll();
-              view.style.display = "block";
-            } else {
-              console.warn("Could not find view with ID:", id);
-            }
-            return this;
-          },
-    
-          hideAll: function() {
-            for (var key in this.views) {
-              this.views[key].style.display = "none";
-            }
-          }
-        };
-      </script>
-    <script type="text/javascript">
-        var airconsole;
-
-        function init() {
-            airconsole = new AirConsole({
-                "orientation": "landscape"
-            }); 
-
-            ViewManager.init();
-            ViewManager.show("Load");
-
-            airconsole.onMessage = function(from, data) {
-                if (from == AirConsole.SCREEN)
-                {
-                    if (data.view)
-                    {
-                        ViewManager.show(data.view);
-                    }
-                    
-                    if (data.bgColor)
-                    {
-                        document.body.style.backgroundColor = data.bgColor;
-                    } 
-                }
-            };
-        }
-
-        function horizontal(amount) {
-            airconsole.message(AirConsole.SCREEN, {
-                horizontal: amount
-            })
-        }
-
-        function bPressed(pressed) {
-            airconsole.message(AirConsole.SCREEN, {
-                bPressed: pressed
-            })
-        }
-
-        function xPressed(pressed) {
-            airconsole.message(AirConsole.SCREEN, {
-                xPressed: pressed
-            })
-        }
-
-        function aPressed(pressed) {
-            airconsole.message(AirConsole.SCREEN, {
-                aPressed: pressed
-            })
-        }
-    </script>
-    <style type="text/css">
-        @font-face {
-            font-family: 'PressStart2P';
-            src: url('PressStart2P.ttf') format('truetype');
-            text-align: center;
-        }
-        
-        html,
-        body {
-            height: 100%;
-            margin: 0px;
-            font-family: 'PressStart2P', sans-serif;
-            color: white;
-            text-align: center;
-            background-color: black;
-        }
-
-        .view {
-           display:none;
-        }
-
-        .vertical_center
-        {
-            color:white;
-            position: absolute; top: 50%; bottom: 50%; width: 100%;
-            vertical-align: middle;
-        }
-
-        #Play > div
-        {
-            height: 100%;
-            width: 100%;
-
-            display: grid;
-            grid-template-columns: repeat(4, auto);
-            grid-template-rows: repeat(2, auto);
-            grid-gap: 15px;
-        }
-
-        .buttons
-        {
-            display: flex;
-            align-items: center;
-            justify-content: center; 
-
-            background-color: #222;
-            line-height: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body onload="init()">
-    
     <div id="Play" class="view">
         <div>
-            <div style="grid-row: 1 / 3;" class=buttons ontouchstart="horizontal(-1)" ontouchend="horizontal(0)" onmousedown="horizontal(-1)" onmouseup="horizontal(0)">
-                <div class="button_label">LEFT</div>
+            <div class="buttons button_large_vertical" id="button_left" style="grid-row: 1 / 3;">
+                &#x25C0;
             </div>
 
-            <div style="grid-row: 1 / 3;" class=buttons ontouchstart="horizontal(1)" ontouchend="horizontal(0)" onmousedown="horizontal(1)" onmouseup="horizontal(0)">
-                <div class="button_label">RIGHT</div>
+            <div class="buttons button_large_vertical" id="button_right" style="grid-row: 1 / 3;">
+                &#x25B6;
             </div>
 
-            <div  class=buttons id="button_B" ontouchstart="bPressed(true)" ontouchend="bPressed(false)" onmousedown="bPressed(true)" onmouseup="bPressed(false)">
-                <div class="button_label">B</div>
+            <div class="buttons button_small" id="button_x">
+                X
             </div>
 
-            <div  class=buttons id="button_X" ontouchstart="xPressed(true)" ontouchend="xPressed(false)" onmousedown="xPressed(true)" onmouseup="xPressed(false)">
-                <div class="button_label">X</div>
+            <div class="buttons button_small" id="button_b">
+                B
             </div>
 
-            <div style="grid-row: 2 / 3; grid-column: 3 / 5;" class=buttons id="button_A"ontouchstart="aPressed(true)" ontouchend="aPressed(false)" onmousedown="aPressed(true)" onmouseup="aPressed(false)">
-                <div class="button_label">A</div>
+            <div class="buttons button_large" id="button_a" style="grid-row: 2 / 3; grid-column: 3 / 5;">
+                A
             </div>
         </div>
     </div>
 
     <div id="Wait" class="view">
-        <p class="vertical_center">Waiting for master to select map.</p>
+        <p>Waiting for master to select map</p>
     </div>
 
     <div id="Load" class="view">
-        <p class="vertical_center">Loading...</p>
+        <p>Loading...</p>
     </div>
 
     <div id="NoPlace" class="view">
-        <p class="vertical_center">There is too much players. You can't join the game :/</p>
+        <p>
+            There is too much players.<br> 
+            Sorry, you can't join the game.
+        </p>
     </div>
 </body>
 
