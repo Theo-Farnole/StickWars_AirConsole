@@ -20,8 +20,19 @@ function init() {
                 ViewManager.show(data.view);
             }
 
-            if (data.bgColor) {
+            if (data.charId != -1) {
                 document.body.style.backgroundColor = data.bgColor;
+
+                console.log(data.charId + "bgColor: " + data.bgColor);
+
+                if (data.charId == "red" || data.charId  == "blue")
+                {
+                    console.log("change color");
+
+                    var sheet = document.styleSheets[0];
+                    var css_rules_num = sheet.cssRules.length;
+                    sheet.addRule(".view>p", "color: white", css_rules_num);
+                }
             }
         }
     };

@@ -133,7 +133,8 @@ public class MenuManager : Singleton<MenuManager>
         {
             var device_id = AirConsole.instance.GetControllerDeviceIds()[i];
 
-            string bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToString();
+            string bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToHex();
+            string charId = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToString();
             string view = string.Empty;
 
             if (device_id == AirConsole.instance.GetMasterControllerDeviceId())
@@ -152,6 +153,7 @@ public class MenuManager : Singleton<MenuManager>
             var token = new
             {
                 view,
+                charId,
                 bgColor
             };
 

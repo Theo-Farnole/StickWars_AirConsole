@@ -23,13 +23,15 @@ function init() {
             if (data.bgColor) {
                 document.body.style.backgroundColor = data.bgColor;
 
-                console.log(data.bgColor);
+                console.log(data.charId + "bgColor: " + data.bgColor);
 
-                if (data.bgColor == "c40233" || data.bgColor == "0088bf")
+                if (data.charId == "red" || data.charId  == "blue")
                 {
-                    var css_rules_num = sheet.cssRules.length;
+                    console.log("change color");
 
-                    sheet.insertRule(".view>p { color: white }", css_rules_num);
+                    var sheet = document.styleSheets[0];
+                    var css_rules_num = sheet.cssRules.length;
+                    sheet.addRule(".view>p", "color: white", css_rules_num);
                 }
             }
         }
