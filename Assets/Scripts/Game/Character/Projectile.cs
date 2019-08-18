@@ -10,7 +10,6 @@ public class Projectile : MonoBehaviour
     public static readonly float STICKED_LIFETIME = 1f;
 
     [SerializeField] private ProjectileData _data;
-    [SerializeField] private AudioSource _hitProjectileAudio;
 
     [HideInInspector] public int damage = 10;
     [HideInInspector] public Entity sender;
@@ -60,8 +59,11 @@ public class Projectile : MonoBehaviour
         {
             entity.GetDamage(damage, sender);
 
-            _hitProjectileAudio.transform.parent = null;
-            _hitProjectileAudio.Play();
+            var charAudio = entity.GetComponent<CharAudio>();
+            if (charAudio != null)
+            {
+                charAudio.PlaySound(CharAudio.Sound.HitProjectile);
+            }
 
             Destroy(gameObject);
         }

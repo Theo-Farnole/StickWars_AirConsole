@@ -8,7 +8,8 @@ public class CharAudio : MonoBehaviour
     public enum Sound
     {
         Tackle,
-        Jump
+        Jump,
+        HitProjectile
     }
 
     #region Fields
