@@ -27,11 +27,7 @@ public class CharAudio : MonoBehaviour
         set
         {
             _enableSound = value;
-
-            if (_enableSound == false)
-            {
-                StopAllSounds();
-            }
+            MuteAllSounds(_enableSound);
         }
 
         get
@@ -52,23 +48,20 @@ public class CharAudio : MonoBehaviour
 
     public void PlayHitTackle()
     {
-        if (_enableSound == false)
-            return;
-
         int randomIndex = UnityEngine.Random.Range(0, _hitTackleAudioSource.Length);
         _hitTackleAudioSource[randomIndex].Play();
     }
 
-    private void StopAllSounds()
+    private void MuteAllSounds(bool isMuted)
     {
         for (int i = 0; i < _audioSource.Length; i++)
         {
-            _audioSource[i].Stop();
+            _audioSource[i].mute = isMuted;
         }
 
         for (int i = 0; i < _hitTackleAudioSource.Length; i++)
         {
-            _hitTackleAudioSource[i].Stop();
+            _hitTackleAudioSource[i].mute = isMuted;
         }
     }
     #endregion

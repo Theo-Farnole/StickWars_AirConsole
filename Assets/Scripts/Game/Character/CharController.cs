@@ -140,7 +140,7 @@ public class CharController : MonoBehaviour
     [SerializeField] private GameObject _prefabProjectile;
     [SerializeField] private Vector3 _projectileOrigin;
     [Header("Collisions")]
-    [SerializeField] private CharacterCollisions _collisions;
+    [SerializeField] private CharacterCollisions _collisions;    
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
@@ -163,6 +163,7 @@ public class CharController : MonoBehaviour
     #region cache variables
     private Rigidbody2D _rigidbody;
     private CharAudio _charAudio;
+    private CharFeedback _charFeedback;
 
     private int _layerMask;
 
@@ -183,6 +184,7 @@ public class CharController : MonoBehaviour
     public PlayerInputs Inputs { get => _inputs; }
     public List<Entity> EntitiesHit { get => _entitiesHit; }
     public CharAudio CharAudio { get => _charAudio; }
+    public CharFeedback CharFeedback { get => _charFeedback; }
 
     public Orientation OrientationX
     {
@@ -271,6 +273,7 @@ public class CharController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _charAudio = GetComponent<CharAudio>();
+        _charFeedback = GetComponent<CharFeedback>();
         _layerMask = ~LayerMask.GetMask("Entity", "Ignore Collision", "Ignore Raycast");
 
         _collisions.SetCollider(CharacterCollisions.Collider.Normal);
