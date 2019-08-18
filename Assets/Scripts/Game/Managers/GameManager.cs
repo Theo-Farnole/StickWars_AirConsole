@@ -58,6 +58,28 @@ public class GameManager : Singleton<GameManager>
         _gamemode = gamemodeType.ToGamemodeClass();
     }
 
+#if UNITY_EDITOR
+    void Update()
+    {
+        int playerNumber = -1;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) playerNumber = 0;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) playerNumber = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) playerNumber = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) playerNumber = 3;
+
+        if (playerNumber != -1)
+        {
+            var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
+
+            player.charID = (CharID)playerNumber;
+            _characters[playerNumber] = player;
+
+            player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+        }
+    }
+#endif
+
     void OnDestroy()
     {
         if (AirConsole.instance != null)
