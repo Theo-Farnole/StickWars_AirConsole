@@ -20,7 +20,7 @@ function init() {
                 ViewManager.show(data.view);
             }
 
-            if (data.bgColor) {
+            if (data.charId != -1) {
                 document.body.style.backgroundColor = data.bgColor;
 
                 console.log(data.charId + "bgColor: " + data.bgColor);
