@@ -21,7 +21,7 @@ public class CharStateTackle : CharState
 
         if (_charController.Raycast.down)
         {
-            _charController.CharFeedback.PlayParticle(true, CharFeedback.Particle.Tackle);
+            _charController.CharFeedback.PlayOrientedParticle(true, CharFeedback.OrientateParticle.Tackle);
         }
 
         // update collider
@@ -42,7 +42,7 @@ public class CharStateTackle : CharState
     public override void OnStateExit()
     {
         _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Normal);
-        _charController.CharFeedback.PlayParticle(false, CharFeedback.Particle.Tackle);
+        _charController.CharFeedback.PlayOrientedParticle(false, CharFeedback.OrientateParticle.Tackle);
         _charController.EntitiesHit.Clear();
     }
     #endregion

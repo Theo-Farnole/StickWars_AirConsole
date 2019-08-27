@@ -6,14 +6,21 @@ using UnityEngine;
 public class CharFeedback : MonoBehaviour
 {
     #region Enums
-    public enum Particle
+    public enum OrientateParticle
     {
         SlidingWall,
         Tackle
     }
 
+    public enum Particle
+    {
+        HitGround
+    }
+    #endregion
+
+    #region Classes
     [Serializable]
-    public class ParticleWrapper
+    public class ParticleOrientedWrapper
     {
         public ParticleSystem left;
         public ParticleSystem right;
@@ -21,8 +28,11 @@ public class CharFeedback : MonoBehaviour
     #endregion
 
     #region Fields
+    [EnumNamedArray(typeof(OrientateParticle))]
+    [SerializeField] private ParticleOrientedWrapper[] _orientedParticles = new ParticleOrientedWrapper[Enum.GetValues(typeof(OrientateParticle)).Length];
+    [Space]
     [EnumNamedArray(typeof(Particle))]
-    [SerializeField] private ParticleWrapper[] _prefabsParticle = new ParticleWrapper[Enum.GetValues(typeof(Particle)).Length];
+    [SerializeField] private ParticleSystem[] _nonOrientedParticles = new ParticleSystem[Enum.GetValues(typeof(Particle)).Length];
 
     private CharController _charController;
     #endregion
@@ -33,32 +43,44 @@ public class CharFeedback : MonoBehaviour
         _charController = GetComponent<CharController>();
     }
 
-    public void PlayParticle(bool active, Particle particle)
+    public void PlayOrientedParticle(bool active, OrientateParticle particle)
     {
-        PlayParticle(active, particle, _charController.OrientationX);
+        PlayOrientedParticle(active, particle, _charController.OrientationX);
     }
 
-    public void PlayParticle(bool active, Particle particle, CharController.Orientation orientation)
+    public void PlayOrientedParticle(bool active, OrientateParticle particle, CharController.Orientation orientation)
     {
         if (active)
         {
             switch (orientation)
             {
                 case CharController.Orientation.Left:
-                    _prefabsParticle[(int)particle].left.Play();
-                    _prefabsParticle[(int)particle].right.Stop();
+                    _orientedParticles[(int)particle].left.Play();
+                    _orientedParticles[(int)particle].right.Stop();
                     break;
 
                 case CharController.Orientation.Right:
-                    _prefabsParticle[(int)particle].right.Play();
-                    _prefabsParticle[(int)particle].left.Stop();
+                    _orientedParticles[(int)particle].right.Play();
+                    _orientedParticles[(int)particle].left.Stop();
                     break;
             }
         }
         else
         {
-            _prefabsParticle[(int)particle].left.Stop();
-            _prefabsParticle[(int)particle].right.Stop();
+            _orientedParticles[(int)particle].left.Stop();            
+            _orientedParticles[(int)particle].right.Stop();
+        }
+    }
+
+    public void PlayNonOrientedParticle(bool active, Particle particle)
+    {
+        if (active)
+        {
+            _nonOrientedParticles[(int)particle].Play();
+        }
+        else
+        {
+            _nonOrientedParticles[(int)particle].Stop();
         }
     }
     #endregion

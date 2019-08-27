@@ -359,6 +359,8 @@ public class CharController : MonoBehaviour
     #region Tick Methods
     void UpdateCollisions()
     {
+        bool isGrounded = _raycast.down;
+
         float distY = _collisions.CurrentCollider.bounds.extents.y + RAYCAST_DISTANCE;
         float distX = _collisions.CurrentCollider.bounds.extents.x + RAYCAST_DISTANCE;
 
@@ -368,6 +370,11 @@ public class CharController : MonoBehaviour
         _raycast.down = Physics2D.Raycast(position, Vector3.down, distY, _layerMask);
         _raycast.left = Physics2D.Raycast(position, Vector3.left, distX, _layerMask);
         _raycast.right = Physics2D.Raycast(position, Vector3.right, distX, _layerMask);
+
+        if (isGrounded == false && _raycast.down)
+        {
+            HitGround();
+        }
     }
     #endregion
 
@@ -395,6 +402,13 @@ public class CharController : MonoBehaviour
         _canThrowProjectile = true;
 
         State = new CharStateNormal(this);
+    }
+
+    private void HitGround()
+    {
+        Debug.Log("HitGround!");
+        _charFeedback.PlayNonOrientedParticle(false, CharFeedback.Particle.HitGround);
+        _charFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.HitGround);
     }
 
     #region Inputs Management
