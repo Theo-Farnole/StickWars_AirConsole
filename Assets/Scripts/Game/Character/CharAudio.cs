@@ -9,7 +9,8 @@ public class CharAudio : MonoBehaviour
     {
         Tackle,
         Jump,
-        HitProjectile
+        HitProjectile,
+        HitGround
     }
 
     #region Fields
