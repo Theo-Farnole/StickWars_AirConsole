@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TO Databases/Projectile")]
+[CreateAssetMenu(menuName = "StickWars/Projectile")]
 public class ProjectileData : ScriptableObject
 {
     [SerializeField] private int _speed = 3;

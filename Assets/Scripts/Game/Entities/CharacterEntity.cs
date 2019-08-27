@@ -27,7 +27,7 @@ public class CharacterEntity : Entity
         }
 
         // report kill to Gamemode
-        GameManager.Instance.Gamemode.Kill(killerID, _myID);
+        GameManager.Instance.Gamemode.Kill(killerID, _myID);        
 
         // respawn player
         transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
@@ -37,5 +37,8 @@ public class CharacterEntity : Entity
 
         // report death to CharController
         GetComponent<CharController>().Respawn();
+
+        // feedback
+        CameraShake.Instance.Shake();
     }
 }

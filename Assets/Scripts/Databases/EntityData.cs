@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TO Databases/Entity")]
+[CreateAssetMenu(menuName = "StickWars/Entity")]
 public class EntityData : ScriptableObject
 {
     [SerializeField] private int _hp = 10;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TO Databases/Character Controller")]
+[CreateAssetMenu(menuName = "StickWars/Character Controller")]
 public class CharacterControllerData : ScriptableObject
 {
     [Header("Movements")]

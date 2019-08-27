@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TO/Databases/Gamemode")]
+[CreateAssetMenu(menuName = "StickWars/Gamemode")]
 public class GamemodeData : ScriptableObject
 {
     [SerializeField] private int _defaultValue = 3;
