@@ -14,7 +14,8 @@ public class CharFeedback : MonoBehaviour
 
     public enum Particle
     {
-        HitGround
+        HitGround,
+        Jump
     }
     #endregion
 
