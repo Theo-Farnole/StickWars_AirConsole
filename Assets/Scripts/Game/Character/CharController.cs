@@ -405,10 +405,9 @@ public class CharController : MonoBehaviour
     }
 
     private void HitGround()
-    {
-        Debug.Log("HitGround!");
-        _charFeedback.PlayNonOrientedParticle(false, CharFeedback.Particle.HitGround);
+    {        
         _charFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.HitGround);
+        _charAudio.PlaySound(CharAudio.Sound.HitGround);
     }
 
     #region Inputs Management
