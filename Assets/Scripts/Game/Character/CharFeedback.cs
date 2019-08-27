@@ -5,31 +5,37 @@ using UnityEngine;
 
 public class CharFeedback : MonoBehaviour
 {
+    #region Enums
     public enum Particle
     {
-        SlidingWall
+        SlidingWall,
+        Tackle
     }
 
     [Serializable]
-    public struct ParticleWrapper
+    public class ParticleWrapper
     {
         public ParticleSystem left;
         public ParticleSystem right;
     }
+    #endregion
 
     #region Fields
-    //[EnumNamedArray(typeof(Particle))]
-    [SerializeField] private ParticleWrapper[] _prefabsParticleLeft = new ParticleWrapper[Enum.GetValues(typeof(Particle)).Length];
+    [EnumNamedArray(typeof(Particle))]
+    [SerializeField] private ParticleWrapper[] _prefabsParticle = new ParticleWrapper[Enum.GetValues(typeof(Particle)).Length];
+
+    private CharController _charController;
     #endregion
 
     #region Methods
-    void Start()
+    void Awake()
     {
-        for (int i = 0; i < _prefabsParticleLeft.Length; i++)
-        {
-            _prefabsParticleLeft[i].left.Stop();
-            _prefabsParticleLeft[i].right.Stop();
-        }
+        _charController = GetComponent<CharController>();
+    }
+
+    public void PlayParticle(bool active, Particle particle)
+    {
+        PlayParticle(active, particle, _charController.OrientationX);
     }
 
     public void PlayParticle(bool active, Particle particle, CharController.Orientation orientation)
@@ -39,20 +45,20 @@ public class CharFeedback : MonoBehaviour
             switch (orientation)
             {
                 case CharController.Orientation.Left:
-                    _prefabsParticleLeft[(int)particle].left.Play();
-                    _prefabsParticleLeft[(int)particle].right.Stop();
+                    _prefabsParticle[(int)particle].left.Play();
+                    _prefabsParticle[(int)particle].right.Stop();
                     break;
 
                 case CharController.Orientation.Right:
-                    _prefabsParticleLeft[(int)particle].left.Stop();
-                    _prefabsParticleLeft[(int)particle].right.Play();
+                    _prefabsParticle[(int)particle].right.Play();
+                    _prefabsParticle[(int)particle].left.Stop();
                     break;
             }
         }
         else
         {
-            _prefabsParticleLeft[(int)particle].left.Stop();
-            _prefabsParticleLeft[(int)particle].right.Stop();
+            _prefabsParticle[(int)particle].left.Stop();
+            _prefabsParticle[(int)particle].right.Stop();
         }
     }
     #endregion

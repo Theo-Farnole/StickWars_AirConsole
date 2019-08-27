@@ -13,13 +13,13 @@ public class CharStateSticked : CharState
     public override void OnStateEnter()
     {
         _charController.Rigidbody.gravityScale = 0;
-        _charController.CharFeedback.PlayParticle(true, CharFeedback.Particle.SlidingWall, _charController.OrientationX);
+        _charController.CharFeedback.PlayParticle(true, CharFeedback.Particle.SlidingWall);
     }
 
     public override void OnStateExit()
     {
         _charController.Rigidbody.gravityScale = 1;
-        _charController.CharFeedback.PlayParticle(false, CharFeedback.Particle.SlidingWall, _charController.OrientationX);
+        _charController.CharFeedback.PlayParticle(false, CharFeedback.Particle.SlidingWall);
     }
     #endregion
 

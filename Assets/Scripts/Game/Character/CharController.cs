@@ -287,6 +287,8 @@ public class CharController : MonoBehaviour
         _spriteRenderer.color = charID.ToColor();
         _keyboardControls = charID.ToControls();
         _crown.enabled = false;
+
+        gameObject.name = gameObject.name.Replace("(Clone)", " " + charID.ToString());
     }
     #endregion
 

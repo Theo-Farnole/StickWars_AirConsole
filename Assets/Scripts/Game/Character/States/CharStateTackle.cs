@@ -8,7 +8,7 @@ public class CharStateTackle : CharState
     public readonly static float TACKLE_TRANSITION_TIME = 0.1f;
     public readonly static float TACKLE_DURATION = 1.1f / 2f;
     #endregion
-  
+
     public CharStateTackle(CharController charController) : base(charController)
     { }
 
@@ -18,6 +18,11 @@ public class CharStateTackle : CharState
     public override void OnStateEnter()
     {
         _charController.CharAudio.PlaySound(CharAudio.Sound.Tackle);
+
+        if (_charController.Raycast.down)
+        {
+            _charController.CharFeedback.PlayParticle(true, CharFeedback.Particle.Tackle);
+        }
 
         // update collider
         _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Transition);
@@ -37,6 +42,7 @@ public class CharStateTackle : CharState
     public override void OnStateExit()
     {
         _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Normal);
+        _charController.CharFeedback.PlayParticle(false, CharFeedback.Particle.Tackle);
         _charController.EntitiesHit.Clear();
     }
     #endregion
