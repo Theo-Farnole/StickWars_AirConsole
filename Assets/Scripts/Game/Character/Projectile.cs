@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
         set
         {
             _direction = value.normalized;
-            GetComponentInChildren<SpriteRenderer>().flipX = _direction.x > 0 ? false : true;
+            GetComponentInChildren<SpriteRenderer>().flipX = _direction.x < 0 ? false : true;
         }
     }
     #endregion

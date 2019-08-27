@@ -13,7 +13,7 @@ function init() {
 
     ViewManager.init();
     ViewManager.show("Load");
-    ViewManager.show("Play");
+    // ViewManager.show("Play");
 
     airconsole.onMessage = function (from, data) {
         if (from == AirConsole.SCREEN) {
@@ -24,13 +24,15 @@ function init() {
             if (data.charId != -1) {
                 document.body.style.backgroundColor = data.bgColor;
 
-                console.log(data.charId + "bgColor: " + data.bgColor);
+                var sheet = document.styleSheets[0];
+                var css_rules_num = sheet.cssRules.length;
 
+                // update tackle button color
+                sheet.addRule("#button_b>div", "background-color:" + data.bgColor, css_rules_num);
+                css_rules_num = sheet.cssRules.length;
+
+                // update font color
                 if (data.charId == "red" || data.charId == "blue") {
-                    console.log("change color");
-
-                    var sheet = document.styleSheets[0];
-                    var css_rules_num = sheet.cssRules.length;
                     sheet.addRule(".view>p", "color: white", css_rules_num);
                 }
             }

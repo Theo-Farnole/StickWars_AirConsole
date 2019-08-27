@@ -24,9 +24,6 @@ body {
     background-size: cover;
 }
 
-.view {
-    display: none;
-}
 
 .view>p {
     font-size: 10vmin;
@@ -41,14 +38,14 @@ body {
 }
 
 :root {
-    --button-padding-size: 30px;
+    --button-padding-size: 2vw;
 }
 
 #Play>div {
     padding: var(--button-padding-size);
 
-    height: calc(100vh - var(--button-padding-size)* 2);
-    width: calc(100vw - var(--button-padding-size)* 2);
+    height: calc(100vh - var(--button-padding-size) * 2);
+    width: calc(100vw - var(--button-padding-size) * 2);
 
     display: grid;
     grid-gap: var(--button-padding-size);
@@ -66,18 +63,46 @@ body {
 
     background-color: #ececec;
     border: 10px solid #404040;
-    border-radius: 999px;
+    border-radius: 30px;
 
     box-shadow: 4px 4px #222;
 
-    filter: brightness(100%);
-    -webkit-filter: brightness(100%);
+    filter: brightness(100%);    
 }
 
 .buttons.buttons_active {
     filter: brightness(70%);
-    -webkit-filter: brightness(70%);
 
     transform: translateY(4px) translateX(4px);
     box-shadow: 0px 0px #222;
+}
+
+.button_small>div {
+    height: 100%;
+    width: 100%;
+
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#button_x>div {
+    background-image: url("../img/knife.png");
+    background-size: 80%;
+}
+
+#button_b>div>div {
+    background-color: red;    
+}
+
+#button_b>div {
+    mask: url("../img/tackle.png");
+
+    mask-mode: alpha;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 80%;
+}
+
+#button_a {
+    font-variant: small-caps;
 }
