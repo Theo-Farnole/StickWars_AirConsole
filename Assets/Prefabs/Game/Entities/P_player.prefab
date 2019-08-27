@@ -677,6 +677,7 @@ MonoBehaviour:
     right: {fileID: 5450471923250347122}
   _nonOrientedParticles:
   - {fileID: 7745868226801935166}
+  - {fileID: 7745868226801935166}
 --- !u!50 &3867000743114586799
 Rigidbody2D:
   serializedVersion: 4
