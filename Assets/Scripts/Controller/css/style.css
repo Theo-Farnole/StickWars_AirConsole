@@ -41,14 +41,14 @@ body {
 }
 
 :root {
-    --button-padding-size: 30px;
+    --button-padding-size: 2vw;
 }
 
 #Play>div {
     padding: var(--button-padding-size);
 
-    height: calc(100vh - var(--button-padding-size)* 2);
-    width: calc(100vw - var(--button-padding-size)* 2);
+    height: calc(100vh - var(--button-padding-size) * 2);
+    width: calc(100vw - var(--button-padding-size) * 2);
 
     display: grid;
     grid-gap: var(--button-padding-size);
@@ -72,6 +72,11 @@ body {
 
     filter: brightness(100%);
     -webkit-filter: brightness(100%);
+}
+
+.button_large_vertical
+{
+    border-radius: 10px;
 }
 
 .buttons.buttons_active {
