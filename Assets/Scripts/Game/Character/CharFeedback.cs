@@ -35,6 +35,7 @@ public class CharFeedback : MonoBehaviour
     [SerializeField] private ParticleSystem[] _nonOrientedParticles = new ParticleSystem[Enum.GetValues(typeof(Particle)).Length];
 
     private CharController _charController;
+    private bool _canPlayHitGround = false; // disable the first call of hitGround
     #endregion
 
     #region Methods
@@ -67,7 +68,7 @@ public class CharFeedback : MonoBehaviour
         }
         else
         {
-            _orientedParticles[(int)particle].left.Stop();            
+            _orientedParticles[(int)particle].left.Stop();
             _orientedParticles[(int)particle].right.Stop();
         }
     }
@@ -76,7 +77,14 @@ public class CharFeedback : MonoBehaviour
     {
         if (active)
         {
-            _nonOrientedParticles[(int)particle].Play();
+            if (particle == Particle.HitGround && !_canPlayHitGround)
+            {
+                _canPlayHitGround = true;
+            }
+            else
+            {
+                _nonOrientedParticles[(int)particle].Play();
+            }
         }
         else
         {
