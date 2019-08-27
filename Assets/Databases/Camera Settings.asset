@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48bc40ce3a058744a93ab2cf61420ed, type: 3}
   m_Name: Camera Settings
   m_EditorClassIdentifier: 
-  _duration: 0.1
-  _magnitude: 0.3
+  _duration: 0.2
+  _magnitude: 0.1
