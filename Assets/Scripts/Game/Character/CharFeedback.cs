@@ -15,7 +15,8 @@ public class CharFeedback : MonoBehaviour
     public enum Particle
     {
         HitGround,
-        Jump
+        Jump,
+        Death
     }
     #endregion
 
@@ -91,6 +92,11 @@ public class CharFeedback : MonoBehaviour
         {
             _nonOrientedParticles[(int)particle].Stop();
         }
+    }
+
+    public ParticleSystem GetNonOrientedParticle(Particle particle)
+    {
+        return _nonOrientedParticles[(int)particle];
     }
     #endregion
 }

@@ -26,7 +26,7 @@ public static class GamemodeTypeExtension
 
 public abstract class AbstractGamemode
 {
-    public static int valueForVictory = 3;
+    public static int valueForVictory = 5;
     protected int[] _charactersValue = new int[GameManager.MAX_PLAYERS];
     protected int _indexMvp = -1;
 
