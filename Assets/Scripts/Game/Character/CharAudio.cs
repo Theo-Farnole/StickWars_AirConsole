@@ -11,7 +11,8 @@ public class CharAudio : MonoBehaviour
         Jump,
         HitProjectile,
         HitGround,
-        Death
+        Death,
+        Footstep
     }
 
     #region Fields
@@ -40,12 +41,20 @@ public class CharAudio : MonoBehaviour
     #endregion
 
     #region Method
-    public void PlaySound(Sound sound)
+    public void PlaySound(Sound sound, bool forcePlay = false)
     {
         if (_enableSound == false)
             return;
 
-        _audioSource[(int)sound].Play();
+        if (_audioSource[(int)sound].isPlaying == false || forcePlay)
+        {
+            _audioSource[(int)sound].Play();
+        }
+    }
+
+    public void StopSound(Sound sound)
+    {
+        _audioSource[(int)sound].Stop();
     }
 
     public void PlayHitTackle()

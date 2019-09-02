@@ -10,6 +10,12 @@ public class CharStateNormal : CharState
     { }
 
     #region Methods
+    #region State Transitions Callbacks
+    public override void OnStateExit()
+    {
+        _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
+    }
+    #endregion
     #region Tick Callbacks
     public override void Tick()
     {
@@ -72,10 +78,12 @@ public class CharStateNormal : CharState
         if ((direction < 0 && _charController.Raycast.left == false) || (direction > 0 && _charController.Raycast.right == false))
         {
             velocity.x = _charController.Data.Speed * direction;
+            _charController.CharAudio.PlaySound(CharAudio.Sound.Footstep);
         }
         else
         {
             velocity.x = 0;
+            _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
         }
 
         _charController.Rigidbody.velocity = velocity;

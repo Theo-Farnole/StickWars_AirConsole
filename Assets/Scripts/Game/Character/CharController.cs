@@ -267,6 +267,7 @@ public class CharController : MonoBehaviour
     }
     #endregion
 
+    #region Methods
     #region MonoBehaviour callbacks
     #region Initialization
     void Awake()
@@ -356,10 +357,9 @@ public class CharController : MonoBehaviour
     #endregion
     #endregion
 
-    #region Tick Methods
     void UpdateCollisions()
     {
-        bool isGrounded = _raycast.down;
+        bool wasGrounded = _raycast.down;
 
         float distY = _collisions.CurrentCollider.bounds.extents.y + RAYCAST_DISTANCE;
         float distX = _collisions.CurrentCollider.bounds.extents.x + RAYCAST_DISTANCE;
@@ -371,12 +371,11 @@ public class CharController : MonoBehaviour
         _raycast.left = Physics2D.Raycast(position, Vector3.left, distX, _layerMask);
         _raycast.right = Physics2D.Raycast(position, Vector3.right, distX, _layerMask);
 
-        if (isGrounded == false && _raycast.down)
+        if (wasGrounded == false && _raycast.down)
         {
             HitGround();
         }
     }
-    #endregion
 
     public void ThrowProjectile()
     {
@@ -476,4 +475,5 @@ public class CharController : MonoBehaviour
         Gizmos.color = charID.ToColor();
         Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);
     }
+    #endregion
 }
