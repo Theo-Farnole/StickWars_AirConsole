@@ -78,12 +78,10 @@ public class CharStateNormal : CharState
         if ((direction < 0 && _charController.Raycast.left == false) || (direction > 0 && _charController.Raycast.right == false))
         {
             velocity.x = _charController.Data.Speed * direction;
-            _charController.CharAudio.PlaySound(CharAudio.Sound.Footstep);
         }
         else
         {
             velocity.x = 0;
-            _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
         }
 
         _charController.Rigidbody.velocity = velocity;
@@ -92,6 +90,8 @@ public class CharStateNormal : CharState
         {
             _charController.OrientationX = direction < 0 ? CharController.Orientation.Left : CharController.Orientation.Right;
         }
+
+        ManageFootstepSound(velocity);
     }
 
     void Jump()
@@ -102,6 +102,25 @@ public class CharStateNormal : CharState
 
         _charController.Rigidbody.velocity = new Vector2(_charController.Rigidbody.velocity.x, 0);
         _charController.Rigidbody.AddForce(Vector2.up * _charController.Data.JumpForce);
+    }
+
+    void ManageFootstepSound(Vector2 velocity)
+    {
+        if (_charController.Raycast.down == false)
+        {
+            _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
+        }
+        else
+        {
+            if (velocity.x == 0)
+            {
+                _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
+            }
+            else
+            {
+                _charController.CharAudio.PlaySound(CharAudio.Sound.Footstep);
+            }
+        }
     }
     #endregion
     #endregion
