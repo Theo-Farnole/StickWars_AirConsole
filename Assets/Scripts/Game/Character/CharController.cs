@@ -154,7 +154,7 @@ public class CharController : MonoBehaviour
     private CharControls _keyboardControls;
     private bool _isMVP = false;
     private bool _canThrowProjectile = true;
-    private Orientation _orientationX = Orientation.Right;
+    private Orientation _orientationX = Orientation.Left;
 
     // attack variables
     private List<Entity> _entitiesHit = new List<Entity>();

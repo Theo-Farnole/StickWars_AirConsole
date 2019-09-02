@@ -17,6 +17,7 @@ public class Projectile : MonoBehaviour
     private Vector3 _direction = Vector3.right;
 
     private Rigidbody2D _rb;
+    private bool _isFreeze = false;
     #endregion
 
     #region Properties
@@ -48,24 +49,44 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
+        if (_isFreeze)
+            return;
+
         transform.position += _direction * _data.Speed * Time.deltaTime;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isFreeze)
+            return;
+
         var entity = other.GetComponent<Entity>();
 
         if (entity != null && entity != sender)
         {
             entity.GetDamage(damage, sender);
+            entity.GetComponent<CharAudio>()?.PlaySound(CharAudio.Sound.HitProjectile);
 
-            var charAudio = entity.GetComponent<CharAudio>();
-            if (charAudio != null)
+            if (entity is CharacterEntity)
             {
-                charAudio.PlaySound(CharAudio.Sound.HitProjectile);
+                Destroy(gameObject);
             }
+            else
+            {
+                _isFreeze = true;
+                Destroy(gameObject, _data.LifetimeOnCollision);
+            }
+        }
+        else
+        {
+            bool a = other.transform.CompareTag("Player");
+            bool b = (other.transform.parent != null && other.transform.parent.CompareTag("Player"));
 
-            Destroy(gameObject);
+            if (!(a || b))
+            {
+                _isFreeze = true;
+                Destroy(gameObject, _data.LifetimeOnCollision);
+            }
         }
     }
     #endregion
