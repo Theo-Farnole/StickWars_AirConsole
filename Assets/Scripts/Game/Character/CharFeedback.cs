@@ -16,7 +16,8 @@ public class CharFeedback : MonoBehaviour
     {
         HitGround,
         Jump,
-        Death
+        Death,
+        Hitted
     }
     #endregion
 

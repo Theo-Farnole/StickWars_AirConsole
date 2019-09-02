@@ -391,17 +391,29 @@ public class CharController : MonoBehaviour
 
     public void Respawn()
     {
+        // reset value
         StopAllCoroutines();
 
         _inputs.Reset();
         _entitiesHit.Clear();
 
-        OrientationX = Orientation.Right;
+        OrientationX = Orientation.Left;
         _collisions.SetCollider(CharacterCollisions.Collider.Normal);
 
         _canThrowProjectile = true;
 
         State = new CharStateNormal(this);
+        GetComponent<CharacterEntity>().ResetHP();
+        
+
+        // feedback
+        var deathPS = _charFeedback.GetNonOrientedParticle(CharFeedback.Particle.Death);
+        Instantiate(deathPS, transform.position, Quaternion.identity).Play();
+
+        _charAudio.PlaySound(CharAudio.Sound.Death);
+
+        // set new position
+        transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
     }
 
     private void HitGround()

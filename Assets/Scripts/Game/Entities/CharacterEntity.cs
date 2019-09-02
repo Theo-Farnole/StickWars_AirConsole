@@ -8,12 +8,6 @@ public class CharacterEntity : Entity
     #region Fields
     private int _myID = -1;
     private CharController _charController;
-
-    private bool _isDead = false;
-    #endregion
-
-    #region Properties
-    public bool IsDead { get => _isDead; }
     #endregion
 
     #region Methods
@@ -31,34 +25,28 @@ public class CharacterEntity : Entity
     }
     #endregion
 
+    public override void GetDamage(int damage, Entity attacker)
+    {
+        base.GetDamage(damage, attacker);
+
+        //_charController.CharFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.Hitted);
+    }
+
     protected override void Death(Entity killer)
     {
-        _isDead = true;
-
         // retrieve killer ID
         CharController killerCharController = killer.GetComponent<CharController>();
         int killerID = killerCharController ? (int)killerCharController.charID : -1;
 
         GameManager.Instance.Gamemode.Kill(killerID, _myID);
 
-        // feedback
-        CameraShake.Instance.Shake();
-        var deathPS = _charController.CharFeedback.GetNonOrientedParticle(CharFeedback.Particle.Death);
-        Instantiate(deathPS, transform.position, Quaternion.identity).Play();
-
-        // then respawn
-        Respawn();
+        _charController.Respawn();
     }
 
-    private void Respawn()
-    {
-        transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
-
+    public void ResetHP()
+    {        
         _hp = MaxHp;
         UpdateHealthSlider();
-
-        _charController.Respawn();
-        _isDead = false;
     }
     #endregion
 }

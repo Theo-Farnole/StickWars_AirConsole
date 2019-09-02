@@ -19,6 +19,8 @@ public class GamemodeDeathMatch : AbstractGamemode
 
         CheckForNewMvp(killerPlayerNumber);
         CheckForVictory();
+
+        CameraShake.Instance.Shake();
     }
 
     protected override void Victory(int winnerPlayerNumber)
