@@ -67,14 +67,17 @@ public class Projectile : MonoBehaviour
             entity.GetDamage(damage, sender);
             entity.GetComponent<CharAudio>()?.PlaySound(CharAudio.Sound.HitProjectile);
 
-            if (entity is CharacterEntity)
+            if (entity is CharacterEntity || entity is Virus)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _isFreeze = true;
-                Destroy(gameObject, _data.LifetimeOnCollision);
+                if (other.GetComponent<Projectile>() == null)
+                {
+                    _isFreeze = true;
+                    Destroy(gameObject, _data.LifetimeOnCollision);
+                }
             }
         }
         else

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class SetActiveOnDamage : Entity
 {
+    #region Fields
     [SerializeField] private GameObject[] _activeOnDamage = new GameObject[] { };
+    #endregion
 
+    #region Methods
     void Awake()
     {
         for (int i = 0; i < _activeOnDamage.Length; i++)
@@ -23,4 +26,5 @@ public class SetActiveOnDamage : Entity
     }
 
     protected override void Death(Entity killer) { }
+    #endregion
 }

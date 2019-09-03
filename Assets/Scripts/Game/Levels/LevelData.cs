@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class LevelData : Singleton<LevelData>
 {
+    #region Fields
     public static readonly float SPAWN_REUSE_TIME = 1f;
 
     [SerializeField] private Transform[] _spawnPoints = new Transform[4];
-    private List<Transform> _availableSpawnPoints = null;
 
+    private List<Transform> _availableSpawnPoints = null;
+    #endregion
+
+    #region Methods
     public Transform GetRandomSpawnPoint()
     {
         // init spawn points
@@ -45,4 +49,5 @@ public class LevelData : Singleton<LevelData>
 
         return point;
     }
+    #endregion
 }
