@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharStateSticked : CharState
+public class CharStateSticked : OwnerState<CharController>
 {
     public CharStateSticked(CharController charController) : base(charController)
     { }
@@ -12,37 +12,37 @@ public class CharStateSticked : CharState
     #region State Transition Callbacks
     public override void OnStateEnter()
     {
-        _charController.Rigidbody.gravityScale = 0;
-        _charController.CharFeedback.PlayOrientedParticle(true, CharFeedback.OrientateParticle.SlidingWall);
+        _owner.Rigidbody.gravityScale = 0;
+        _owner.CharFeedback.PlayOrientedParticle(true, CharFeedback.OrientateParticle.SlidingWall);
     }
 
     public override void OnStateExit()
     {
-        _charController.Rigidbody.gravityScale = 1;
-        _charController.CharFeedback.PlayOrientedParticle(false, CharFeedback.OrientateParticle.SlidingWall);
+        _owner.Rigidbody.gravityScale = 1;
+        _owner.CharFeedback.PlayOrientedParticle(false, CharFeedback.OrientateParticle.SlidingWall);
     }
     #endregion
 
     #region Tick Callbacks
     public override void Tick()
     {
-        if (_charController.Raycast.down ||
-            _charController.Inputs.horizontalInput == 0 ||
-            (_charController.Inputs.horizontalInput < 0 && !_charController.Raycast.left) ||
-            (_charController.Inputs.horizontalInput > 0 && !_charController.Raycast.right))
+        if (_owner.Raycast.down ||
+            _owner.Inputs.horizontalInput == 0 ||
+            (_owner.Inputs.horizontalInput < 0 && !_owner.Raycast.left) ||
+            (_owner.Inputs.horizontalInput > 0 && !_owner.Raycast.right))
         {
-            _charController.State = new CharStateNormal(_charController);
+            _owner.State = new CharStateNormal(_owner);
         }
     }
 
     public override void FixedTick()
     {
         // slow sliding
-        Vector2 velocity = _charController.Rigidbody.velocity;
+        Vector2 velocity = _owner.Rigidbody.velocity;
 
-        velocity.y = _charController.Data.SlidingDownSpeed;
+        velocity.y = _owner.Data.SlidingDownSpeed;
 
-        _charController.Rigidbody.velocity = velocity;
+        _owner.Rigidbody.velocity = velocity;
     }
     #endregion
     #endregion

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharStateTackle : CharState
+public class CharStateTackle : OwnerState<CharController>
 {
     #region Fields
     public readonly static float TACKLE_TRANSITION_TIME = 0.1f;
@@ -17,33 +17,33 @@ public class CharStateTackle : CharState
     #region State Transitions Callbacks
     public override void OnStateEnter()
     {
-        _charController.CharAudio.PlaySound(CharAudio.Sound.Tackle);
+        _owner.CharAudio.PlaySound(CharAudio.Sound.Tackle);
 
-        if (_charController.Raycast.down)
+        if (_owner.Raycast.down)
         {
-            _charController.CharFeedback.PlayOrientedParticle(true, CharFeedback.OrientateParticle.Tackle);
+            _owner.CharFeedback.PlayOrientedParticle(true, CharFeedback.OrientateParticle.Tackle);
         }
 
         // update collider
-        _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Transition);
+        _owner.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Transition);
 
-        _charController.ExecuteAfterTime(TACKLE_TRANSITION_TIME, () =>
+        _owner.ExecuteAfterTime(TACKLE_TRANSITION_TIME, () =>
         {
-            _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Tackle);
+            _owner.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Tackle);
         });
 
-        _charController.ExecuteAfterTime(TACKLE_DURATION, () =>
+        _owner.ExecuteAfterTime(TACKLE_DURATION, () =>
         {
-            _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Normal);
-            _charController.State = new CharStateNormal(_charController);
+            _owner.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Normal);
+            _owner.State = new CharStateNormal(_owner);
         });
     }
 
     public override void OnStateExit()
     {
-        _charController.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Normal);
-        _charController.CharFeedback.PlayOrientedParticle(false, CharFeedback.OrientateParticle.Tackle);
-        _charController.EntitiesHit.Clear();
+        _owner.Collisions.SetCollider(CharController.CharacterCollisions.Collider.Normal);
+        _owner.CharFeedback.PlayOrientedParticle(false, CharFeedback.OrientateParticle.Tackle);
+        _owner.EntitiesHit.Clear();
     }
     #endregion
 
@@ -59,19 +59,19 @@ public class CharStateTackle : CharState
 
     void MoveCharacter()
     {
-        float direction = (int)_charController.OrientationX;
-        Vector2 velocity = _charController.Rigidbody.velocity;
+        float direction = (int)_owner.OrientationX;
+        Vector2 velocity = _owner.Rigidbody.velocity;
 
-        if ((direction < 0 && _charController.Raycast.left == false) || (direction > 0 && _charController.Raycast.right == false))
+        if ((direction < 0 && _owner.Raycast.left == false) || (direction > 0 && _owner.Raycast.right == false))
         {
-            velocity.x = _charController.Data.Speed * direction;
+            velocity.x = _owner.Data.Speed * direction;
         }
         else
         {
             velocity.x = 0;
         }
 
-        _charController.Rigidbody.velocity = velocity;
+        _owner.Rigidbody.velocity = velocity;
     }
     #endregion
 }

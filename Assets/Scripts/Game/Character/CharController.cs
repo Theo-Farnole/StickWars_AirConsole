@@ -149,7 +149,7 @@ public class CharController : MonoBehaviour
 
     #region internals variables
     private CharacterRaycast _raycast = new CharacterRaycast();
-    private CharState _state;
+    private OwnerState<CharController> _state;
 
     private CharControls _keyboardControls;
     private bool _isMVP = false;
@@ -247,7 +247,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-    public CharState State
+    public OwnerState<CharController> State
     {
         get
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharStateNormal : CharState
+public class CharStateNormal : OwnerState<CharController>
 {
     private int _jumpCount = 0;
 
@@ -13,7 +13,7 @@ public class CharStateNormal : CharState
     #region State Transitions Callbacks
     public override void OnStateExit()
     {
-        _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
+        _owner.CharAudio.StopSound(CharAudio.Sound.Footstep);
     }
     #endregion
     #region Tick Callbacks
@@ -22,7 +22,7 @@ public class CharStateNormal : CharState
         ProcessAttackInputs();
         ManageStick();
 
-        if (_charController.Raycast.down)
+        if (_owner.Raycast.down)
         {
             _jumpCount = 0;
         }
@@ -39,23 +39,23 @@ public class CharStateNormal : CharState
     #region Update
     void ProcessAttackInputs()
     {
-        if (_charController.Inputs.throwPressed && _charController.CanThrowProjectile)
+        if (_owner.Inputs.throwPressed && _owner.CanThrowProjectile)
         {
-            _charController.ThrowProjectile();
+            _owner.ThrowProjectile();
         }
-        else if (_charController.Inputs.tacklePressed)
+        else if (_owner.Inputs.tacklePressed)
         {
-            _charController.State = new CharStateTackle(_charController);
+            _owner.State = new CharStateTackle(_owner);
         }
     }
 
     void ManageStick()
     {
-        if (_charController.Raycast.down == false &&
-            ((_charController.Inputs.horizontalInput < 0 && _charController.Raycast.left) ||
-            (_charController.Inputs.horizontalInput > 0 && _charController.Raycast.right)))
+        if (_owner.Raycast.down == false &&
+            ((_owner.Inputs.horizontalInput < 0 && _owner.Raycast.left) ||
+            (_owner.Inputs.horizontalInput > 0 && _owner.Raycast.right)))
         {
-            _charController.State = new CharStateSticked(_charController);
+            _owner.State = new CharStateSticked(_owner);
         }
     }
     #endregion
@@ -63,32 +63,32 @@ public class CharStateNormal : CharState
     #region Fixed Update
     void ProcessVerticalInput()
     {
-        if (_charController.Inputs.jumpPressed && _jumpCount < CharController.MAX_JUMPS_COUNT)
+        if (_owner.Inputs.jumpPressed && _jumpCount < CharController.MAX_JUMPS_COUNT)
         {
-            _charController.Inputs.jumpPressed = false;
+            _owner.Inputs.jumpPressed = false;
             Jump();
         }
     }
 
     void ProcessHorizontalInput()
     {
-        float direction = _charController.Inputs.horizontalInput;
-        Vector2 velocity = _charController.Rigidbody.velocity;
+        float direction = _owner.Inputs.horizontalInput;
+        Vector2 velocity = _owner.Rigidbody.velocity;
 
-        if ((direction < 0 && _charController.Raycast.left == false) || (direction > 0 && _charController.Raycast.right == false))
+        if ((direction < 0 && _owner.Raycast.left == false) || (direction > 0 && _owner.Raycast.right == false))
         {
-            velocity.x = _charController.Data.Speed * direction;
+            velocity.x = _owner.Data.Speed * direction;
         }
         else
         {
             velocity.x = 0;
         }
 
-        _charController.Rigidbody.velocity = velocity;
+        _owner.Rigidbody.velocity = velocity;
 
         if (direction != 0)
         {
-            _charController.OrientationX = direction < 0 ? CharController.Orientation.Left : CharController.Orientation.Right;
+            _owner.OrientationX = direction < 0 ? CharController.Orientation.Left : CharController.Orientation.Right;
         }
 
         ManageFootstepSound(velocity);
@@ -96,29 +96,29 @@ public class CharStateNormal : CharState
 
     void Jump()
     {
-        _charController.CharAudio.PlaySound(CharAudio.Sound.Jump);
-        _charController.CharFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.Jump);
+        _owner.CharAudio.PlaySound(CharAudio.Sound.Jump);
+        _owner.CharFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.Jump);
         _jumpCount++;
 
-        _charController.Rigidbody.velocity = new Vector2(_charController.Rigidbody.velocity.x, 0);
-        _charController.Rigidbody.AddForce(Vector2.up * _charController.Data.JumpForce);
+        _owner.Rigidbody.velocity = new Vector2(_owner.Rigidbody.velocity.x, 0);
+        _owner.Rigidbody.AddForce(Vector2.up * _owner.Data.JumpForce);
     }
 
     void ManageFootstepSound(Vector2 velocity)
     {
-        if (_charController.Raycast.down == false)
+        if (_owner.Raycast.down == false)
         {
-            _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
+            _owner.CharAudio.StopSound(CharAudio.Sound.Footstep);
         }
         else
         {
             if (velocity.x == 0)
             {
-                _charController.CharAudio.StopSound(CharAudio.Sound.Footstep);
+                _owner.CharAudio.StopSound(CharAudio.Sound.Footstep);
             }
             else
             {
-                _charController.CharAudio.PlaySound(CharAudio.Sound.Footstep);
+                _owner.CharAudio.PlaySound(CharAudio.Sound.Footstep);
             }
         }
     }
