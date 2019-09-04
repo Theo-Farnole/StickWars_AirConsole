@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 213a50af75fde4544bbe979b2829f892, type: 3}
-  m_Name: Virus
+  m_Script: {fileID: 11500000, guid: 1c7dc90679fe2534dad9e0a81fee73ff, type: 3}
+  m_Name: Virus Controller
   m_EditorClassIdentifier: 
-  _hp: 20
+  _speed: 3
+  _attackRange: 3

@@ -67,7 +67,7 @@ public class Projectile : MonoBehaviour
             entity.GetDamage(damage, sender);
             entity.GetComponent<CharAudio>()?.PlaySound(CharAudio.Sound.HitProjectile);
 
-            if (entity is CharacterEntity || entity is Virus)
+            if (entity is CharacterEntity || entity is VirusTriggerer)
             {
                 Destroy(gameObject);
             }
