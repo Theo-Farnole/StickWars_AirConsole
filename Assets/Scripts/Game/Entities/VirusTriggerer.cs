@@ -9,6 +9,8 @@ public class VirusTriggerer : Entity
     [Header("Virus Config")]
     [SerializeField] private GameObject _prefabVirus;
     [SerializeField] private Transform[] _positions;
+    [Space]
+    [SerializeField] private bool _debugAttackEveryCharacter = false;
 
     private int _deathCount = 0;
     #endregion
@@ -18,6 +20,11 @@ public class VirusTriggerer : Entity
     {
         Transform[] currentPositionArray = new Transform[] { transform };
         _positions = currentPositionArray.Union(_positions).ToArray();
+
+#if UNITY_EDITOR
+#else
+        _debugAttackEveryCharacter = false;
+#endif
     }
 
     protected override void Death(Entity killer)
@@ -56,11 +63,11 @@ public class VirusTriggerer : Entity
 
             if (charController != null)
             {
-                //if (charController.charID != killer.GetComponent<CharController>()?.charID)
-                //{
-                var virus = Instantiate(_prefabVirus, transform.position, Quaternion.identity);
-                virus.GetComponent<VirusController>().target = charController.transform;
-                //}
+                if (charController.charID != killer.GetComponent<CharController>()?.charID || _debugAttackEveryCharacter)
+                {
+                    var virus = Instantiate(_prefabVirus, transform.position, Quaternion.identity);
+                    virus.GetComponent<VirusController>().target = charController.transform;
+                }
             }
         }
 

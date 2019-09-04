@@ -5,6 +5,8 @@ using UnityEngine;
 public class VirusController : MonoBehaviour
 {
     #region Fields
+    public static readonly float DISTANCE_THRESHOLD = 0.1f;
+
     [HideInInspector] public Transform target;
 
     [SerializeField] private VirusControllerData _data;
@@ -38,22 +40,34 @@ public class VirusController : MonoBehaviour
     #region Methods
     void Start()
     {
-        State = new VirusStateGoto(this);
+        this.ExecuteAfterTime(_data.DelayAfterTriggered, () =>
+        {
+            State = new VirusStateGoto(this);
+        });
     }
 
     void Update()
     {
-        _state.Tick();    
+        _state?.Tick();
     }
 
     void FixedUpdate()
     {
-        _state.FixedTick();            
+        _state?.FixedTick();
     }
 
     void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position, _data.AttackRange);
+        Gizmos.DrawWireSphere(transform.position, _data.AttackRange);
+
+        if (_state is VirusStatePreCharge)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position - transform.forward * _data.PreChargeDistance, 0.1f);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(transform.position + transform.forward * _data.ChargeDistance, 0.1f);
+        }
     }
     #endregion
 }
