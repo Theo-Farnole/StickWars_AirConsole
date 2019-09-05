@@ -12,6 +12,7 @@ public class VirusControllerData : ScriptableObject
 
     [Header("Attack Config")]
     [SerializeField] private float _attackRange = 3;
+    [SerializeField] private int _attackDamage = 3;
     [Space]
     [SerializeField] private float _preChargeDistance = 0.3f;
     [SerializeField] private float _preChargeTime = 0.8f;
@@ -23,7 +24,9 @@ public class VirusControllerData : ScriptableObject
     #region Properties
     public float Speed { get => _speed; }
     public float DelayAfterTriggered { get => _delayAfterTriggered; }
+
     public float AttackRange { get => _attackRange; }
+    public int AttackDamage { get => _attackDamage; }
 
     public float PreChargeDistance { get => _preChargeDistance; }
     public float PreChargeTime { get => _preChargeTime; }

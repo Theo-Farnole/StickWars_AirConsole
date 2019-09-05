@@ -10,8 +10,10 @@ public class VirusController : MonoBehaviour
     [HideInInspector] public Transform target;
 
     [SerializeField] private VirusControllerData _data;
+    [SerializeField] private GameObject _prefabDestroyParticleSystem;
 
     private OwnerState<VirusController> _state;
+    private bool _isApplicationQuitting = false;
     #endregion
 
     #region Properties
@@ -54,6 +56,25 @@ public class VirusController : MonoBehaviour
     void FixedUpdate()
     {
         _state?.FixedTick();
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        var entity = GetComponent<Entity>();
+        collision.GetComponent<CharacterEntity>()?.GetDamage(_data.AttackDamage, entity);
+    }
+
+    void OnDestroy()
+    {
+        if (!_isApplicationQuitting)
+        {
+            Instantiate(_prefabDestroyParticleSystem, transform.position, Quaternion.identity).GetComponent<ParticleSystem>().Play();
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        _isApplicationQuitting = true;
     }
 
     void OnDrawGizmos()

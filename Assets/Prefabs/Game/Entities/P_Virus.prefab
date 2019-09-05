@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 1890174931713293413}
   - component: {fileID: 1890174931713293410}
   - component: {fileID: 730860264010549235}
+  - component: {fileID: 5245271800145555555}
   m_Layer: 0
   m_Name: P_virus
   m_TagString: Untagged
@@ -289,6 +290,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   _data: {fileID: 11400000, guid: d41a503488589c84aa97e5fdf4ff66ba, type: 2}
+  _prefabDestroyParticleSystem: {fileID: 6843903831366001273, guid: 1307770aaa6d242438533fa18a62d92e,
+    type: 3}
 --- !u!114 &730860264010549235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,6 +306,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 65db324ae09fe3a439d0ce727f97c49a, type: 2}
   _healthSlider: {fileID: 3035966646225260805}
+  _hideHealthSliderIfFull: 1
+--- !u!58 &5245271800145555555
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890174931713293412}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.25
 --- !u!1 &3480625286459172587
 GameObject:
   m_ObjectHideFlags: 0
