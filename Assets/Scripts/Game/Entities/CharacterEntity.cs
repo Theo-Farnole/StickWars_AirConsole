@@ -12,15 +12,15 @@ public class CharacterEntity : Entity
 
     #region Methods
     #region MonoBehaviour Callbacks
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         _charController = GetComponent<CharController>();
     }
 
-    protected override void Start()
+    void Start()
     {
-        base.Start();
-
         _myID = (int)_charController.charID;
     }
     #endregion

@@ -10,7 +10,10 @@ public class Entity : MonoBehaviour
     #region Fields
     [Header("Entity Config")]
     [SerializeField] protected EntityData _entityData;
+    [Space]
     [SerializeField] protected Slider _healthSlider;
+    [SerializeField] private bool _hideHealthSliderIfFull = true;
+
 
     protected int _hp;
     private int _maxHp;
@@ -22,7 +25,7 @@ public class Entity : MonoBehaviour
     public bool IsAlive { get => _hp > 0 ? true : false; }
     #endregion
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         if (_entityData != null)
         {
@@ -46,7 +49,7 @@ public class Entity : MonoBehaviour
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 
         UpdateHealthSlider();
-        PopFloatingText(damage, attacker);        
+        PopFloatingText(damage, attacker);
 
         if (!IsAlive)
         {
@@ -63,8 +66,11 @@ public class Entity : MonoBehaviour
         }
 
         // active or not the slider
-        bool isFullLife = (_hp == _maxHp);
-        _healthSlider.gameObject.SetActive(!isFullLife);
+        if (_hideHealthSliderIfFull)
+        {
+            bool isFullLife = (_hp == _maxHp);
+            _healthSlider.gameObject.SetActive(!isFullLife);
+        }
 
         // update the value
         _healthSlider.maxValue = _maxHp;
@@ -79,7 +85,7 @@ public class Entity : MonoBehaviour
     private void PopFloatingText(int damage, Entity attacker)
     {
         float direction = transform.position.x - attacker.transform.position.x;
-        
+
         var floatingText = Instantiate(GameManager.Instance.PrefabFloatingText, transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();
         floatingText.direction = (FloatingText.Direction)Mathf.Sign(direction);
         floatingText.Text.text = damage.ToString();

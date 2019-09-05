@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VirusTriggerer : Entity
 {
     #region Fields
     [Header("Virus Config")]
     [SerializeField] private GameObject _prefabVirus;
+    [SerializeField] private Slider[] _healthSliders = new Slider[3];
     [Space]
     [SerializeField] private bool _debugAttackEveryCharacter = false;
     [SerializeField] private bool _debugInstantKill = false;
@@ -17,21 +19,34 @@ public class VirusTriggerer : Entity
     #endregion
 
     #region Methods
-    void Awake()
+#if !UNITY_EDITOR
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _debugAttackEveryCharacter = false;
+        _debugInstantKill = false;
+    }
+#endif
+
+    void Start()
     {
         Transform[] currentPositionArray = new Transform[] { transform };
         _positions = currentPositionArray.Union(LevelData.Instance.VirusTriggererPosition).ToArray();
 
-#if UNITY_EDITOR
-#else
-        _debugAttackEveryCharacter = false;
-        _debugInstantKill = false;
-#endif
+        for (int i = 0; i < _healthSliders.Length; i++)
+        {
+            _healthSliders[i].maxValue = MaxHp;
+            _healthSliders[i].value = MaxHp;
+        }
+
+        SetCurrentHealthBar();
     }
 
     protected override void Death(Entity killer)
     {
         _deathCount++;
+        SetCurrentHealthBar();
 
         // VirusTriggerer has reach last position
         if (_deathCount >= _positions.Length || _debugInstantKill)
@@ -75,6 +90,18 @@ public class VirusTriggerer : Entity
         }
 
         Destroy(gameObject);
+    }
+
+    void SetCurrentHealthBar()
+    {
+        if (_deathCount < _healthSliders.Length)
+        {
+            _healthSlider = _healthSliders[_deathCount];
+        }
+        else
+        {
+            Debug.LogWarning("No Health Slider for " + _deathCount + "th death of " + transform.name);
+        }
     }
     #endregion
 }

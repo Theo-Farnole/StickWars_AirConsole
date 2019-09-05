@@ -9,7 +9,7 @@ public class SetActiveOnDamage : Entity
     #endregion
 
     #region Methods
-    void Awake()
+    void Start()
     {
         for (int i = 0; i < _activeOnDamage.Length; i++)
         {
