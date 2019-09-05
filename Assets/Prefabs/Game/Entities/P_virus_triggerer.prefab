@@ -159,9 +159,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 0397626aa9c4f904098313f81d38e7a8, type: 2}
   _healthSlider: {fileID: 4676883534530697953}
-  _positions:
-  - {fileID: 0}
-  - {fileID: 0}
+  _prefabVirus: {fileID: 1890174931713293412, guid: f821400d679224f49a2784434c648a21,
+    type: 3}
+  _debugAttackEveryCharacter: 1
+  _debugInstantKill: 1
 --- !u!58 &4755789436170763418
 CircleCollider2D:
   m_ObjectHideFlags: 0

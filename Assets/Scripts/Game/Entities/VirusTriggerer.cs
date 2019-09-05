@@ -8,10 +8,11 @@ public class VirusTriggerer : Entity
     #region Fields
     [Header("Virus Config")]
     [SerializeField] private GameObject _prefabVirus;
-    [SerializeField] private Transform[] _positions;
     [Space]
     [SerializeField] private bool _debugAttackEveryCharacter = false;
+    [SerializeField] private bool _debugInstantKill = false;
 
+    private Transform[] _positions;
     private int _deathCount = 0;
     #endregion
 
@@ -19,11 +20,12 @@ public class VirusTriggerer : Entity
     void Awake()
     {
         Transform[] currentPositionArray = new Transform[] { transform };
-        _positions = currentPositionArray.Union(_positions).ToArray();
+        _positions = currentPositionArray.Union(LevelData.Instance.VirusTriggererPosition).ToArray();
 
 #if UNITY_EDITOR
 #else
         _debugAttackEveryCharacter = false;
+        _debugInstantKill = false;
 #endif
     }
 
@@ -31,7 +33,14 @@ public class VirusTriggerer : Entity
     {
         _deathCount++;
 
-        if (_deathCount < _positions.Length)
+        // VirusTriggerer has reach last position
+        if (_deathCount >= _positions.Length || _debugInstantKill)
+        {
+            TriggerVirus(killer);
+
+            CameraShake.Instance.Shake(0.3f, 0.15f);
+        }
+        else
         {
             GetComponent<FancyObject>()?.ResetStartingPosition(_positions[_deathCount].position);
 
@@ -39,12 +48,6 @@ public class VirusTriggerer : Entity
             UpdateHealthSlider();
 
             CameraShake.Instance.Shake();
-        }
-        else
-        {
-            TriggerVirus(killer);
-
-            CameraShake.Instance.Shake(0.3f, 0.15f);
         }
     }
 
