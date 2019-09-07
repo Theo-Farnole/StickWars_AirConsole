@@ -285,7 +285,7 @@ public class CharController : MonoBehaviour
 
     void Start()
     {
-        _spriteRenderer.color = charID.ToColor();
+        _spriteRenderer.color = charID.GetSpriteColor();
         _keyboardControls = charID.ToControls();
         _crown.enabled = false;
 
@@ -359,7 +359,7 @@ public class CharController : MonoBehaviour
 #if UNITY_EDITOR
     void OnValidate()
     {
-        _spriteRenderer.color = charID.ToColor();
+        _spriteRenderer.color = charID.GetSpriteColor();
     }
 #endif
     #endregion
@@ -479,7 +479,7 @@ public class CharController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = charID.ToColor();
+        Gizmos.color = charID.GetSpriteColor();
         Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);
     }
     #endregion

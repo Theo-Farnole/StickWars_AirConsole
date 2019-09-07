@@ -78,7 +78,7 @@ public class UIMenuManager : Singleton<UIMenuManager>
         });
 
         // update outline
-        _playersWrappers[playerNumber].Outline.effectColor = ((CharID)playerNumber).ToColor();
+        _playersWrappers[playerNumber].Outline.effectColor = ((CharID)playerNumber).GetUIColor();
 
         // update text
         _playersWrappers[playerNumber].Name.text = AirConsole.instance.GetNickname(deviceId);

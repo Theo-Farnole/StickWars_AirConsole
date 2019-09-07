@@ -30,46 +30,46 @@ public struct CharControls
 
 static class CharIDExtensions
 {
-    public static string ToHex(this CharID playerId)
+    public static string GetUIHex(this CharID playerId)
     {
-        bool useNewMethod = true;
-
-        if (useNewMethod)
+        switch (playerId)
         {
-            float goldenRatio = (int)playerId * 0.618033988749895f;
+            case CharID.red:
+                return "c40233";
 
-            float r = goldenRatio % 1f;
-            float g = 0.5f;
-            float b = Mathf.Sqrt(1f - goldenRatio % 0.5f);
+            case CharID.blue:
+                return "0088bf";
 
-            //return Color.HSVToRGB(0.1f * (int)playerId, 0.5f, 1.0f).ToHex();
-            return Color.HSVToRGB(r, g, b).ToHex();
-        }
-        else
-        {
-            switch (playerId)
-            {
-                case CharID.red:
-                    return "c40233";
+            case CharID.green:
+                return "00a568";
 
-                case CharID.blue:
-                    return "0088bf";
-
-                case CharID.green:
-                    return "00a568";
-
-                case CharID.yellow:
-                    return "ffd400";
-            }
-
-            return "ffffff";
+            case CharID.yellow:
+                return "ffd400";
         }
 
+        return "ffffff";
     }
 
-    public static Color ToColor(this CharID playerId)
+    public static Color GetUIColor(this CharID playerId)
     {
-        return playerId.ToHex().HexToColor();
+        return playerId.GetUIHex().HexToColor();
+    }
+
+    public static string GetSpriteHex(this CharID playerId)
+    {
+        float goldenRatio = (int)playerId * 0.618033988749895f;
+
+        float r = goldenRatio % 1f;
+        float g = 0.5f;
+        float b = Mathf.Sqrt(1f - goldenRatio % 0.5f);
+
+        //return Color.HSVToRGB(0.1f * (int)playerId, 0.5f, 1.0f).ToHex();
+        return Color.HSVToRGB(r, g, b).ToHex();
+    }
+
+    public static Color GetSpriteColor(this CharID playerId)
+    {
+        return playerId.GetSpriteHex().HexToColor();
     }
 
     public static CharControls ToControls(this CharID playerId)

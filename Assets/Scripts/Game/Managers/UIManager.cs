@@ -53,7 +53,7 @@ public class UIManager : Singleton<UIManager>
                 string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
                 ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[i].Avatar);
 
-                _playersWrappers[i].Outline.effectColor = ((CharID)i).ToColor();
+                _playersWrappers[i].Outline.effectColor = ((CharID)i).GetUIColor();
             }
         }
     }
