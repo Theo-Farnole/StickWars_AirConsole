@@ -89,7 +89,7 @@ public class CharController : MonoBehaviour
             float offsetX = Mathf.Abs(_tackleCollider.offset.x) * (int)o * -1;
             _tackleCollider.offset = new Vector2(offsetX, _tackleCollider.offset.y);
 
-            offsetX = Mathf.Abs(_transitionCollider.offset.x) * (int)o* -1;
+            offsetX = Mathf.Abs(_transitionCollider.offset.x) * (int)o * -1;
             _transitionCollider.offset = new Vector2(offsetX, _transitionCollider.offset.y);
         }
     }
@@ -140,7 +140,7 @@ public class CharController : MonoBehaviour
     [SerializeField] private GameObject _prefabProjectile;
     [SerializeField] private Vector3 _projectileOrigin;
     [Header("Collisions")]
-    [SerializeField] private CharacterCollisions _collisions;    
+    [SerializeField] private CharacterCollisions _collisions;
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
@@ -355,6 +355,13 @@ public class CharController : MonoBehaviour
         }
     }
     #endregion
+
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        _spriteRenderer.color = charID.ToColor();
+    }
+#endif
     #endregion
 
     void UpdateCollisions()
@@ -403,7 +410,7 @@ public class CharController : MonoBehaviour
 
         State = new CharStateNormal(this);
         GetComponent<CharacterEntity>().ResetHP();
-        
+
 
         // feedback
         var deathPS = _charFeedback.GetNonOrientedParticle(CharFeedback.Particle.Death);
@@ -416,7 +423,7 @@ public class CharController : MonoBehaviour
     }
 
     private void HitGround()
-    {        
+    {
         _charFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.HitGround);
         _charAudio.PlaySound(CharAudio.Sound.HitGround);
     }
