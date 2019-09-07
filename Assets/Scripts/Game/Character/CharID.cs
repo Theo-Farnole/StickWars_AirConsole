@@ -32,44 +32,45 @@ static class CharIDExtensions
 {
     public static string ToHex(this CharID playerId)
     {
-        switch (playerId)
+        bool useNewMethod = true;
+
+        if (useNewMethod)
         {
-            case CharID.red:
-                return "c40233";
+            float goldenRatio = (int)playerId * 0.618033988749895f;
 
-            case CharID.blue:
-                return "0088bf";
+            float r = goldenRatio % 1f;
+            float g = 0.5f;
+            float b = Mathf.Sqrt(1f - goldenRatio % 0.5f);
 
-            case CharID.green:
-                return "00a568";
+            //return Color.HSVToRGB(0.1f * (int)playerId, 0.5f, 1.0f).ToHex();
+            return Color.HSVToRGB(r, g, b).ToHex();
+        }
+        else
+        {
+            switch (playerId)
+            {
+                case CharID.red:
+                    return "c40233";
 
-            case CharID.yellow:
-                return "ffd400";
+                case CharID.blue:
+                    return "0088bf";
+
+                case CharID.green:
+                    return "00a568";
+
+                case CharID.yellow:
+                    return "ffd400";
+            }
+
+            return "ffffff";
         }
 
-        return "ffffff";
     }
 
     public static Color ToColor(this CharID playerId)
     {
-        switch (playerId)
-        {
-            case CharID.red:
-                return "c40233".HexToColor();
-
-            case CharID.blue:
-                return "0088bf".HexToColor();
-
-            case CharID.green:
-                return "00a568".HexToColor();
-
-            case CharID.yellow:
-                return "ffd400".HexToColor();
-        }
-
-        return Color.white;
+        return playerId.ToHex().HexToColor();
     }
-
 
     public static CharControls ToControls(this CharID playerId)
     {

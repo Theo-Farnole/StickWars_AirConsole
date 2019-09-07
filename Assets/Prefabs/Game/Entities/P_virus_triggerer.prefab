@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000000014901161}
-  m_SizeDelta: {x: 0.79999995, y: 0.8000001}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.8, y: 0.8000001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5292426189750072996
 CanvasRenderer:
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.79607844, g: 0, b: 0.011764706, a: 1}
+  m_Color: {r: 0.9960785, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 2244259010546087726}
   - component: {fileID: 2312667898278995349}
   m_Layer: 10
-  m_Name: Slider (2)
+  m_Name: red slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -404,7 +404,7 @@ MonoBehaviour:
   - {fileID: 4676883534530697953}
   - {fileID: 8864144383522801767}
   - {fileID: 2244259010546087726}
-  _debugAttackEveryCharacter: 1
+  _debugAttackEveryCharacter: 0
   _debugInstantKill: 0
 --- !u!58 &4755789436170763418
 CircleCollider2D:
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9863014, g: 0.78431374, b: 0.05490196, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 4676883534530697953}
   - component: {fileID: 9004765910403574308}
   m_Layer: 10
-  m_Name: Slider
+  m_Name: green slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -758,7 +758,7 @@ GameObject:
   - component: {fileID: 8864144383522801767}
   - component: {fileID: 7833075221525893064}
   m_Layer: 10
-  m_Name: Slider (1)
+  m_Name: orange slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1026,7 +1026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1764706, g: 0.49019608, b: 0.11764706, a: 1}
+  m_Color: {r: 0.003921569, g: 1, b: 0.007843138, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
