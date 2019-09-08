@@ -11,6 +11,7 @@ public class VirusController : MonoBehaviour
 
     [SerializeField] private VirusControllerData _data;
     [SerializeField] private GameObject _prefabDestroyParticleSystem;
+    [Space]
 
     private OwnerState<VirusController> _state;
     private bool _isApplicationQuitting = false;

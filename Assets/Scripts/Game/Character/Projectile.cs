@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     public static readonly float STICKED_LIFETIME = 1f;
 
     [SerializeField] private ProjectileData _data;
+    [SerializeField] private AudioSource _audioHitProjectile;
 
     [HideInInspector] public int damage = 10;
     [HideInInspector] public Entity sender;
@@ -65,7 +66,9 @@ public class Projectile : MonoBehaviour
         if (entity != null && entity != sender)
         {
             entity.GetDamage(damage, sender);
-            entity.GetComponent<CharAudio>()?.PlaySound(CharAudio.Sound.HitProjectile);
+
+            _audioHitProjectile.transform.parent = null;
+            _audioHitProjectile.Play();
 
             if (entity is CharacterEntity || entity is VirusTriggerer || entity.GetComponent<VirusController>() != null)
             {
@@ -85,7 +88,7 @@ public class Projectile : MonoBehaviour
             bool a = other.transform.CompareTag("Player");
             bool b = (other.transform.parent != null && other.transform.parent.CompareTag("Player"));
 
-            if (!(a || b))
+            if (!(a || b) && other.GetComponent<Projectile>() == null)
             {
                 _isFreeze = true;
                 Destroy(gameObject, _data.LifetimeOnCollision);

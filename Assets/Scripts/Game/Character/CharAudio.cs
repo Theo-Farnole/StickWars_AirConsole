@@ -9,7 +9,6 @@ public class CharAudio : MonoBehaviour
     {
         Tackle,
         Jump,
-        HitProjectile,
         HitGround,
         Death,
         Footstep
