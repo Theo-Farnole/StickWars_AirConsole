@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2104213715295173460}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 6755787373396870885}
   - component: {fileID: 3621122924259075682}
   - component: {fileID: 7128450335880700313}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 6757917631710833431}
   - component: {fileID: 3996767914989436796}
   - component: {fileID: 3773781340663877165}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1890174930015895012}
   - component: {fileID: 1890174930015895013}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 1890174931713293410}
   - component: {fileID: 730860264010549235}
   - component: {fileID: 5245271800145555555}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: P_virus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,6 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 65db324ae09fe3a439d0ce727f97c49a, type: 2}
+  isInvincible: 0
   _healthSlider: {fileID: 3750651691366965355}
   _hideHealthSliderIfFull: 1
 --- !u!58 &5245271800145555555
@@ -356,7 +357,7 @@ GameObject:
   - component: {fileID: 1039178940775733260}
   - component: {fileID: 7863071320578276190}
   - component: {fileID: 8873911751499366824}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: border_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +430,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1649920924713730655}
   - component: {fileID: 3750651691366965355}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +522,7 @@ GameObject:
   - component: {fileID: 1283017471860173847}
   - component: {fileID: 3197211495608419967}
   - component: {fileID: 840976930422042022}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: border_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -593,7 +594,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3144986889324527028}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -631,7 +632,7 @@ GameObject:
   - component: {fileID: 4287017521923457668}
   - component: {fileID: 7182240285068034579}
   - component: {fileID: 4438126730332129835}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: border_top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -705,7 +706,7 @@ GameObject:
   - component: {fileID: 3372907204782720729}
   - component: {fileID: 7764679610874367719}
   - component: {fileID: 5277298339982681553}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: border_bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -780,7 +781,7 @@ GameObject:
   - component: {fileID: 841172245243552861}
   - component: {fileID: 7333200932161505324}
   - component: {fileID: 8954566695918275374}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: health bar canvas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
