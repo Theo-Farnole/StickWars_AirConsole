@@ -40,10 +40,16 @@ public class VirusController : MonoBehaviour
     #endregion
 
     #region Methods
+    void Awake()
+    {
+        GetComponent<Entity>().isInvincible = true;    
+    }
+
     void Start()
     {
         this.ExecuteAfterTime(_data.DelayAfterTriggered, () =>
         {
+            GetComponent<Entity>().isInvincible = false;
             State = new VirusStateGoto(this);
         });
     }

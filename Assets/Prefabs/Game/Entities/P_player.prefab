@@ -915,6 +915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 432695cf0fd869a4b84775f227c26ff2, type: 2}
+  isInvincible: 0
   _healthSlider: {fileID: 9076951675531308484}
   _hideHealthSliderIfFull: 1
 --- !u!114 &7649409384958866699

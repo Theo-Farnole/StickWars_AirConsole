@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 213a50af75fde4544bbe979b2829f892, type: 3}
   m_Name: Virus Entity
   m_EditorClassIdentifier: 
-  _hp: 10
+  _hp: 20

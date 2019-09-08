@@ -11,6 +11,8 @@ public class Entity : MonoBehaviour
     [Header("Entity Config")]
     [SerializeField] protected EntityData _entityData;
     [Space]
+    public bool isInvincible = false;
+    [Space]
     [SerializeField] protected Slider _healthSlider;
     [SerializeField] private bool _hideHealthSliderIfFull = true;
 
@@ -45,6 +47,9 @@ public class Entity : MonoBehaviour
      */
     virtual public void GetDamage(int damage, Entity attacker)
     {
+        if (isInvincible)
+            return;
+
         _hp -= damage;
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 
