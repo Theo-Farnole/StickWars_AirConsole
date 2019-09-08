@@ -11,8 +11,12 @@ public class VirusTriggerer : Entity
     [SerializeField] private GameObject _prefabVirus;
     [SerializeField] private Slider[] _healthSliders = new Slider[3];
     [Space]
+    [SerializeField] private AudioSource _audioDeath;
+    [Space]
     [SerializeField] private bool _debugAttackEveryCharacter = false;
     [SerializeField] private bool _debugInstantKill = false;
+
+    private bool _isApplicationQuitting = false;
 
     private Transform[] _positions;
     private int _deathCount = 0;
@@ -102,6 +106,20 @@ public class VirusTriggerer : Entity
         {
             Debug.LogWarning("No Health Slider for " + _deathCount + "th death of " + transform.name);
         }
+    }
+
+    void OnDestroy()
+    {
+        if (!_isApplicationQuitting)
+        {
+            _audioDeath.transform.parent = null;
+            _audioDeath.Play();
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        _isApplicationQuitting = true;
     }
     #endregion
 }

@@ -27,9 +27,12 @@ public class CharacterEntity : Entity
 
     public override void GetDamage(int damage, Entity attacker)
     {
-        base.GetDamage(damage, attacker);
+        if (attacker.GetComponent<VirusController>() && damage > _hp)
+        {
+            damage = _hp - 1;
+        }
 
-        //_charController.CharFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.Hitted);
+        base.GetDamage(damage, attacker);
     }
 
     protected override void Death(Entity killer)
