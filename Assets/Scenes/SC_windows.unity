@@ -4240,11 +4240,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_virus_triggerer_final
       objectReference: {fileID: 0}
-    - target: {fileID: 4755789436170763417, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4755789436170763416, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4253,7 +4248,7 @@ PrefabInstance:
     - target: {fileID: 4755789436170763416, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.559
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: 4755789436170763416, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
         type: 3}
@@ -4420,34 +4415,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9109111801593005132, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
+    - target: {fileID: 7452312217714967093, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947664417, guid: 59b5d8bc936e1ac4fbee5d041488b1f3, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947664415, guid: 59b5d8bc936e1ac4fbee5d041488b1f3, type: 3}
+      propertyPath: m_havePropertiesChanged
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6088765193115964960, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8747140683574891449, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4274652102017180573, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4755789436170763419, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
-        type: 3}
-      propertyPath: _debugInstantKill
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4755789436170763419, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
-        type: 3}
-      propertyPath: _debugAttackEveryCharacter
+    - target: {fileID: 1947664415, guid: 59b5d8bc936e1ac4fbee5d041488b1f3, type: 3}
+      propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
