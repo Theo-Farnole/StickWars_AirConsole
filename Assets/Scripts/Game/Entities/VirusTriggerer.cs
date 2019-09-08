@@ -9,6 +9,7 @@ public class VirusTriggerer : Entity
     #region Fields
     [Header("Virus Config")]
     [SerializeField] private GameObject _prefabVirus;
+    [SerializeField] private GameObject _sliderCanvas;
     [SerializeField] private Slider[] _healthSliders = new Slider[3];
     [Space]
     [SerializeField] private AudioSource _audioDeath;
@@ -45,6 +46,15 @@ public class VirusTriggerer : Entity
         }
 
         SetCurrentHealthBar();
+        _sliderCanvas.SetActive(false);
+    }
+
+    public override void GetDamage(int damage, Entity attacker)
+    {
+        base.GetDamage(damage, attacker);
+
+        bool shouldHideCanvas = (_deathCount == 0 && _hp == MaxHp);
+        _sliderCanvas.SetActive(!shouldHideCanvas);
     }
 
     protected override void Death(Entity killer)
