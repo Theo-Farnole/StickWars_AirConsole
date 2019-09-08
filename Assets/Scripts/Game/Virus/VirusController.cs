@@ -14,6 +14,8 @@ public class VirusController : MonoBehaviour
 
     private OwnerState<VirusController> _state;
     private bool _isApplicationQuitting = false;
+
+    private Entity _entity;
     #endregion
 
     #region Properties
@@ -42,14 +44,16 @@ public class VirusController : MonoBehaviour
     #region Methods
     void Awake()
     {
-        GetComponent<Entity>().isInvincible = true;    
+        _entity = GetComponent<Entity>();
+
+        _entity.isInvincible = true;    
     }
 
     void Start()
     {
         this.ExecuteAfterTime(_data.DelayAfterTriggered, () =>
         {
-            GetComponent<Entity>().isInvincible = false;
+            _entity.isInvincible = false;
             State = new VirusStateGoto(this);
         });
     }
@@ -66,8 +70,13 @@ public class VirusController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        var entity = GetComponent<Entity>();
-        collision.GetComponent<CharacterEntity>()?.GetDamage(_data.AttackDamage, entity);
+        collision.GetComponent<CharacterEntity>()?.GetDamage(_data.AttackDamage, _entity);
+    }
+
+    // not a mistake: virus do damage OnEnter & OnExit
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        collision.GetComponent<CharacterEntity>()?.GetDamage(_data.AttackDamage, _entity);
     }
 
     void OnDestroy()
