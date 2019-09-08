@@ -12,6 +12,7 @@ public class VirusController : MonoBehaviour
     [SerializeField] private VirusControllerData _data;
     [SerializeField] private GameObject _prefabDestroyParticleSystem;
     [Space]
+    [SerializeField] private AudioSource _audioDeath;
 
     private OwnerState<VirusController> _state;
     private bool _isApplicationQuitting = false;
@@ -85,6 +86,8 @@ public class VirusController : MonoBehaviour
         if (!_isApplicationQuitting)
         {
             Instantiate(_prefabDestroyParticleSystem, transform.position, Quaternion.identity).GetComponent<ParticleSystem>().Play();
+            _audioDeath.transform.parent = null;
+            _audioDeath.Play();
         }
     }
 
