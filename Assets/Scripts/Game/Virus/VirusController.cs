@@ -88,6 +88,13 @@ public class VirusController : MonoBehaviour
             Instantiate(_prefabDestroyParticleSystem, transform.position, Quaternion.identity).GetComponent<ParticleSystem>().Play();
             _audioDeath.transform.parent = null;
             _audioDeath.Play();
+
+            int aliveVirus = GameObject.FindObjectsOfType<VirusController>().Length;
+
+            if (aliveVirus == 0)
+            {
+                GlitchController.Instance.StopGlitch();
+            }
         }
     }
 
