@@ -13,7 +13,7 @@ function init() {
 
     ViewManager.init();
     ViewManager.show("Load");
-    // ViewManager.show("Play");
+    ViewManager.show("Menu");
 
     airconsole.onMessage = function (from, data) {
         if (from == AirConsole.SCREEN) {
@@ -68,6 +68,14 @@ function init() {
             xPressed(false)
         });
     addButton("button_a", false,
+        function () {
+            aPressed(true)
+        },
+        function () {
+            aPressed(false)
+        });
+
+    addButton("button_a_menu", false,
         function () {
             aPressed(true)
         },

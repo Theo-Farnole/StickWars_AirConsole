@@ -4,13 +4,6 @@
     text-align: center;
 }
 
-/**
-CharID color:
-- red #c40233
-- blue #0088bf
-- green #00a568
-- yellow #ffd400
-*/
 html,
 body {
     height: 100%;
@@ -41,7 +34,7 @@ body {
     --button-padding-size: 2vw;
 }
 
-#Play>div {
+#Play>div, #Menu>div {
     padding: var(--button-padding-size);
 
     height: calc(100vh - var(--button-padding-size) * 2);
@@ -103,6 +96,6 @@ body {
     mask-size: 80%;
 }
 
-#button_a {
+#button_a,#button_a_menu {
     font-variant: small-caps;
 }

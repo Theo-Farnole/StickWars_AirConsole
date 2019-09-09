@@ -1,6 +1,7 @@
 ﻿public enum ControllerView
 {
     Load,
+    Menu,
     Play,
     Wait,
     NoPlace
@@ -14,6 +15,9 @@ public static class ControllerViewExtension
         {
             case ControllerView.Load:
                 return "Load";
+
+            case ControllerView.Menu:
+                return "Menu";
 
             case ControllerView.Play:
                 return "Play";

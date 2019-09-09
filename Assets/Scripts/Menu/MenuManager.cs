@@ -139,7 +139,7 @@ public class MenuManager : Singleton<MenuManager>
 
             if (device_id == AirConsole.instance.GetMasterControllerDeviceId())
             {
-                view = ControllerView.Play.ToString();
+                view = ControllerView.Menu.ToString();
             }
             else if (AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id) == -1)
             {
