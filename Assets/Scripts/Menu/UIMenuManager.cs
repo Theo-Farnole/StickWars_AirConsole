@@ -9,15 +9,15 @@ using UnityEngine.UI;
 public class UIMenuManager : Singleton<UIMenuManager>
 {
     #region Fields
-    [Header("Panel Level Select")]
+    [Header("Panel Lobby")]
     [SerializeField] private GameObject _panelLevelSelection;
+    [Space]
+    [SerializeField] private TextMeshProUGUI _textWinIndicatin;
     [Space]
     [SerializeField] private TextMeshProUGUI _textWaitingForPlayers;
     [SerializeField] private PlayerWrapper[] _playersWrappers = new PlayerWrapper[4];
-    [Header("Loading")]
+    [Header("Panel Loading")]
     [SerializeField] private GameObject _panelLoading;
-    [Space]
-    [SerializeField] private TextMeshProUGUI _textLoading;
     #endregion
 
     #region Methods
@@ -38,6 +38,8 @@ public class UIMenuManager : Singleton<UIMenuManager>
                 });
             }
         }
+
+        _textWinIndicatin.text = _textWinIndicatin.text.Replace("$value$", MenuManager.Instance.SelectedGamemodeDefaultValue.ToString());
     }
     #endregion
 
@@ -90,9 +92,7 @@ public class UIMenuManager : Singleton<UIMenuManager>
 
     #region Panel Loading
     public void SetActivePanelLoading()
-    {
-        _textLoading.text = _textLoading.text.Replace("$value$", MenuManager.Instance.SelectedGamemodeDefaultValue.ToString());
-
+    {        
         _panelLevelSelection.SetActive(false);
         _panelLoading.SetActive(true);
     }

@@ -164,11 +164,8 @@ public class MenuManager : Singleton<MenuManager>
     #region Handle Input
     void APressed()
     {
-        if (LevelSelector.Instance.GetSelectedLevelData().key != "lock")
-        {
-            UIMenuManager.Instance.SetActivePanelLoading();
-            this.ExecuteAfterTime(LOADING_TIME, LoadScene);
-        }
+        UIMenuManager.Instance.SetActivePanelLoading();
+        this.ExecuteAfterTime(LOADING_TIME, LoadScene);
     }
     #endregion
 
@@ -189,9 +186,7 @@ public class MenuManager : Singleton<MenuManager>
         }
 
         // then, finally load the scene
-        string level = "SC_" + LevelSelector.Instance.GetSelectedLevelData().key;
-
-        Debug.Log("Loading level named " + level);
+        string level = "SC_Windows";
         SceneManager.LoadScene(level);
     }
     #endregion

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6815961214398009912}
   - component: {fileID: 6815961214398009919}
   m_Layer: 0
-  m_Name: TextMeshPro Text
+  m_Name: Player Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,8 +67,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Player Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 613d514cb254e55448c06438d93e1896, type: 2}
-  m_sharedMaterial: {fileID: 21706482246682148, guid: 613d514cb254e55448c06438d93e1896,
+  m_fontAsset: {fileID: 11400000, guid: 1862d260b10883f428ca00452d98a571, type: 2}
+  m_sharedMaterial: {fileID: 21505579150771528, guid: 1862d260b10883f428ca00452d98a571,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 19.55
+  m_fontSize: 32.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 6815961214971803133}
   - component: {fileID: 8453166264594652671}
   m_Layer: 0
-  m_Name: player wrapper
+  m_Name: P_MENU_player_wrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

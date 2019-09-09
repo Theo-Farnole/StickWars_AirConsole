@@ -1,54 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1454623623
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1454623624}
-  - component: {fileID: 1454623625}
-  m_Layer: 0
-  m_Name: LevelSelector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1454623624
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454623623}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8089560094173689795}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1454623625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454623623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c3bf97f24879314b92e5a6024c68388, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cursor: {fileID: 0}
-  _levels:
-  - key: windows
-    gameObject: {fileID: 0}
-  - key: lock
-    gameObject: {fileID: 0}
 --- !u!1 &8089560094173689792
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +29,6 @@ Transform:
   m_Children:
   - {fileID: 8089560095293512426}
   - {fileID: 8089560094325035647}
-  - {fileID: 1454623624}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -125,21 +75,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643f7cb99ce031a4bad0e79700a00de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _panelPlayers: {fileID: 0}
+  _panelLevelSelection: {fileID: 0}
   _textWaitingForPlayers: {fileID: 0}
   _playersWrappers:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _panelGamemode: {fileID: 0}
-  _sliderGamemodeSettings: {fileID: 0}
-  _textValuesSlider:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _panelLoading: {fileID: 0}
+  _textLoading: {fileID: 0}
 --- !u!1 &8089560095293512427
 GameObject:
   m_ObjectHideFlags: 0
