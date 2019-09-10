@@ -578,8 +578,8 @@ MonoBehaviour:
   _nonOrientedParticles:
   - {fileID: 7745868226801935166}
   - {fileID: 7745868226801935166}
-  - {fileID: 4436422633678434065}
-  - {fileID: 4436422633678434065}
+  - {fileID: 7163881924193586615}
+  - {fileID: 7163881924193586615}
 --- !u!50 &3867000743114586799
 Rigidbody2D:
   serializedVersion: 4
@@ -1199,7 +1199,7 @@ Transform:
   - {fileID: 6128275266898555466}
   - {fileID: 1148171679538569093}
   - {fileID: 3400795262113759433}
-  - {fileID: 4436422633678434064}
+  - {fileID: 7163881924193586653}
   m_Father: {fileID: 3867000743114586797}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1819,13 +1819,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1307770aaa6d242438533fa18a62d92e, type: 3}
---- !u!4 &4436422633678434064 stripped
+--- !u!4 &7163881924193586653 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6843903831366001274, guid: 1307770aaa6d242438533fa18a62d92e,
     type: 3}
   m_PrefabInstance: {fileID: 7163881924193586538}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &4436422633678434065 stripped
+--- !u!198 &7163881924193586615 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
     type: 3}

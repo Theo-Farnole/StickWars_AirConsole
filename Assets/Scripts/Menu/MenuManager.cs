@@ -166,6 +166,8 @@ public class MenuManager : Singleton<MenuManager>
     {
         UIMenuManager.Instance.SetActivePanelLoading();
         this.ExecuteAfterTime(LOADING_TIME, LoadScene);
+
+        GetComponentInChildren<AudioSource>()?.Play();
     }
     #endregion
 
