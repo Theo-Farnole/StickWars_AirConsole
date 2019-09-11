@@ -112,15 +112,15 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &51616569 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6224115835215465234, guid: 06b058232b2b9ef499ec68b8fa73c6ec,
-    type: 3}
-  m_PrefabInstance: {fileID: 6224115835199639595}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &51616570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6224115835215465233, guid: 06b058232b2b9ef499ec68b8fa73c6ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 6224115835199639595}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &156772126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6224115835215465234, guid: 06b058232b2b9ef499ec68b8fa73c6ec,
     type: 3}
   m_PrefabInstance: {fileID: 6224115835199639595}
   m_PrefabAsset: {fileID: 0}
@@ -2044,8 +2044,8 @@ GameObject:
   - component: {fileID: 1712415127}
   - component: {fileID: 1712415128}
   - component: {fileID: 1712415130}
-  - component: {fileID: 1712415129}
   - component: {fileID: 1712415131}
+  - component: {fileID: 1712415129}
   m_Layer: 2
   m_Name: shortcut
   m_TagString: Untagged
@@ -2130,10 +2130,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 28166ac902aa0c845a1e0281aaa282e9, type: 2}
   isInvincible: 0
-  _healthSlider: {fileID: 0}
   _hideHealthSliderIfFull: 1
-  _activeOnDamage:
-  - {fileID: 51616569}
+  _healthSlider: {fileID: 0}
+  _window: {fileID: 156772126}
+  _duration: 1
 --- !u!61 &1712415130
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2707,7 +2707,7 @@ PrefabInstance:
     - target: {fileID: 7456931107786699328, guid: 27fac3f66b328e140b63d4ffdc881be8,
         type: 3}
       propertyPath: browserStartMode
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27fac3f66b328e140b63d4ffdc881be8, type: 3}

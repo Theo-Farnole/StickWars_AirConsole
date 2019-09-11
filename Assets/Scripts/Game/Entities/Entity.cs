@@ -10,11 +10,10 @@ public class Entity : MonoBehaviour
     #region Fields
     [Header("Entity Config")]
     [SerializeField] protected EntityData _entityData;
-    [Space]
     public bool isInvincible = false;
     [Space]
-    [SerializeField] protected Slider _healthSlider;
     [SerializeField] private bool _hideHealthSliderIfFull = true;
+    [SerializeField] protected Slider _healthSlider;
 
 
     protected int _hp;
