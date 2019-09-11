@@ -388,7 +388,15 @@ public class CharController : MonoBehaviour
     {
         CanThrowProjectile = false;
 
-        var projectile = Instantiate(_prefabProjectile, transform.position + _projectileOrigin, Quaternion.identity).GetComponent<Projectile>();
+        var goProj = ObjectPooler.Instance.SpawnFromPool("projectile", transform.position + _projectileOrigin, Quaternion.identity);
+
+        if (goProj == null)
+        {
+            Debug.Log("goProj == null");
+        }
+
+        var projectile = goProj.GetComponent<Projectile>();
+        projectile.gameObject.SetActive(true);
 
         projectile.damage = _data.DamageProjectile;
         projectile.Direction = Vector3.right * (int)OrientationX;

@@ -58,6 +58,8 @@ public class VirusController : MonoBehaviour
             _entity.isInvincible = false;
             State = new VirusStateGoto(this);
         });
+
+        DynamicsObjects.Instance.SetToParent(transform, "virus");
     }
 
     void Update()
