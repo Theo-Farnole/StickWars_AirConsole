@@ -1502,27 +1502,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4280474210882689148, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _prefabFloatingText
-      value: 
-      objectReference: {fileID: 8925926180478064266, guid: dfd7d801ec43e9c4d95782aae59a5751,
-        type: 3}
-    - target: {fileID: 1910613720984072189, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _parentsTag.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1910613720984072189, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _parentsTag.Array.data[0]
-      value: projectile
-      objectReference: {fileID: 0}
-    - target: {fileID: 1910613720984072189, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _parentsTag.Array.data[1]
-      value: virus
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25bd1b13870e64b409e94aeb923bd731, type: 3}
 --- !u!1 &912553768
@@ -2728,7 +2707,7 @@ PrefabInstance:
     - target: {fileID: 7456931107786699328, guid: 27fac3f66b328e140b63d4ffdc881be8,
         type: 3}
       propertyPath: browserStartMode
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27fac3f66b328e140b63d4ffdc881be8, type: 3}

@@ -13,6 +13,7 @@ public class VirusController : MonoBehaviour
     [SerializeField] private GameObject _prefabDestroyParticleSystem;
     [Space]
     [SerializeField] private AudioSource _audioDeath;
+    [SerializeField] private AudioSource _audioDoDamage;
 
     private OwnerState<VirusController> _state;
     private bool _isApplicationQuitting = false;
@@ -48,7 +49,7 @@ public class VirusController : MonoBehaviour
     {
         _entity = GetComponent<Entity>();
 
-        _entity.isInvincible = true;    
+        _entity.isInvincible = true;
     }
 
     void Start()
@@ -74,7 +75,14 @@ public class VirusController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        collision.GetComponent<CharacterEntity>()?.GetDamage(_data.AttackDamage, _entity);
+        var characterEntity = collision.GetComponent<CharacterEntity>();
+
+        if (characterEntity != null)
+        {
+            characterEntity.GetDamage(_data.AttackDamage, _entity);
+            _audioDoDamage.Stop();
+            _audioDoDamage.Play();
+        }
     }
 
     // not a mistake: virus do damage OnEnter & OnExit
