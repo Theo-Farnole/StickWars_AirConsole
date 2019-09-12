@@ -164,10 +164,18 @@ public class MenuManager : Singleton<MenuManager>
     #region Handle Input
     void APressed()
     {
-        UIMenuManager.Instance.SetActivePanelLoading();
-        this.ExecuteAfterTime(LOADING_TIME, LoadScene);
+        if (AirConsole.instance.GetActivePlayerDeviceIds.Count < 2)
+        {
+            UIMenuManager.Instance.DisplayNoEnoughPlayersText(true);
+        }
+        else
+        {
+            UIMenuManager.Instance.SetActivePanelLoading();
+            this.ExecuteAfterTime(LOADING_TIME, LoadScene);
 
-        GetComponentInChildren<AudioSource>()?.Play();
+            GetComponentInChildren<AudioSource>()?.Play();
+        }
+
     }
     #endregion
 
