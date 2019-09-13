@@ -7434,36 +7434,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6815961214398009919, guid: 7f9d36b2d6373354faa40c1ab49d2f96,
-        type: 3}
-      propertyPath: m_fontStyle
-      value: 33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6815961214398009919, guid: 7f9d36b2d6373354faa40c1ab49d2f96,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 30.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6815961214398009919, guid: 7f9d36b2d6373354faa40c1ab49d2f96,
-        type: 3}
-      propertyPath: m_enableAutoSizing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6815961214398009919, guid: 7f9d36b2d6373354faa40c1ab49d2f96,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6815961214398009919, guid: 7f9d36b2d6373354faa40c1ab49d2f96,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6815961214398009919, guid: 7f9d36b2d6373354faa40c1ab49d2f96,
-        type: 3}
-      propertyPath: m_fontSizeBase
-      value: 34.9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f9d36b2d6373354faa40c1ab49d2f96, type: 3}
 --- !u!1001 &8089560095699577881
