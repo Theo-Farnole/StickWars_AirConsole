@@ -94,6 +94,13 @@ body {
     mask-position: center;
     mask-repeat: no-repeat;
     mask-size: 80%;
+
+    -webkit-mask: url("../img/tackle.png");
+
+    -webkit-mask-mode: alpha;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 80%;
 }
 
 #button_a,#button_a_menu {
