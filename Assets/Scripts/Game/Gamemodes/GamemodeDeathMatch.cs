@@ -19,12 +19,13 @@ public class GamemodeDeathMatch : AbstractGamemode
             _charactersValue[killerPlayerNumber]++;
         }
 
+        EventController.Instance.OnKill();
+
         UIManager.Instance.UpdateGamemodeData(_charactersValue);
+        CameraShake.Instance.Shake();
 
         CheckForNewMvp(killerPlayerNumber);
         CheckForVictory();
-
-        CameraShake.Instance.Shake();
     }
 
     protected override void Victory(int winnerPlayerNumber)

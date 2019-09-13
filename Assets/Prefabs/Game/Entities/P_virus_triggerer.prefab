@@ -579,8 +579,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4517458432840050796}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.23957491, y: 0.70733595, z: -0.00061035156}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5625148831457756617}
@@ -638,8 +638,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 0397626aa9c4f904098313f81d38e7a8, type: 2}
   isInvincible: 0
-  _healthSlider: {fileID: 4676883534530697953}
   _hideHealthSliderIfFull: 0
+  _healthSlider: {fileID: 4676883534530697953}
   _prefabVirus: {fileID: 1890174931713293412, guid: f821400d679224f49a2784434c648a21,
     type: 3}
   _sliderCanvas: {fileID: 6939837523756616893}

@@ -26,16 +26,23 @@ public static class GamemodeTypeExtension
 
 public abstract class AbstractGamemode
 {
+    #region Fields
     public static int valueForVictory = 5;
     protected int[] _charactersValue = new int[GameManager.MAX_PLAYERS];
     protected int _indexMvp = -1;
+    #endregion
 
+    #region Properties
+    public int SumCharactersValue { get => _charactersValue.Sum(); }
+    #endregion
+
+    #region Methods
     public AbstractGamemode()
     {
         _charactersValue = Enumerable.Repeat(0, GameManager.MAX_PLAYERS).ToArray();
     }
 
-    public void CheckForVictory()
+    public bool CheckForVictory()
     {
         for (int i = 0; i < _charactersValue.Length; i++)
         {
@@ -43,8 +50,12 @@ public abstract class AbstractGamemode
             {
                 GameManager.Instance.Victory(i);
                 Victory(i);
+
+                return true;
             }
         }
+
+        return false;
     }
 
     protected void CheckForNewMvp(int indexPlayerWithNewScore)
@@ -64,4 +75,5 @@ public abstract class AbstractGamemode
 
     protected abstract void Victory(int winnerPlayerNumber);
     public abstract void Kill(int killerPlayerNumber, int deadPlayerNumber);
+    #endregion
 }
