@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VirusTriggerer : Entity
+public class VirusSpawner : Entity
 {
     #region Fields
     [Header("Virus Config")]
@@ -37,7 +37,7 @@ public class VirusTriggerer : Entity
     void Start()
     {
         Transform[] currentPositionArray = new Transform[] { transform };
-        _positions = currentPositionArray.Union(LevelData.Instance.VirusTriggererPosition).ToArray();
+        _positions = currentPositionArray.Union(LevelData.Instance.VirusSpawnerPosition).ToArray();
 
         for (int i = 0; i < _healthSliders.Length; i++)
         {

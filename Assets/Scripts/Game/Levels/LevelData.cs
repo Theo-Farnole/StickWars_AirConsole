@@ -8,13 +8,13 @@ public class LevelData : Singleton<LevelData>
     public static readonly float SPAWN_REUSE_TIME = 1f;
 
     [SerializeField] private Transform[] _spawnPoints = new Transform[4];
-    [SerializeField] private Transform[] _virusTriggererPosition = new Transform[3];
+    [SerializeField] private Transform[] _virusSpawnerPosition = new Transform[3];
 
     private List<Transform> _availableSpawnPoints = null;
     #endregion
 
     #region Properties
-    public Transform[] VirusTriggererPosition { get => _virusTriggererPosition;}
+    public Transform[] VirusSpawnerPosition { get => _virusSpawnerPosition;}
     #endregion
 
     #region Methods

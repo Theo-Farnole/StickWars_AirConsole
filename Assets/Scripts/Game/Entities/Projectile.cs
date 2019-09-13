@@ -75,7 +75,7 @@ public class Projectile : MonoBehaviour, IPooledObject
             _audioHitProjectile.transform.parent = null;
             _audioHitProjectile.Play();
 
-            if (entity is CharacterEntity || entity is VirusTriggerer || entity.GetComponent<VirusController>() != null)
+            if (entity is CharacterEntity || entity is VirusSpawner || entity.GetComponent<VirusController>() != null)
             {
                 ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject);
             }
