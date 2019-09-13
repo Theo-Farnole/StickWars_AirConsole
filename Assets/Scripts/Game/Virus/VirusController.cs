@@ -103,7 +103,7 @@ public class VirusController : MonoBehaviour
 
             if (aliveVirus == 0)
             {
-                GlitchController.Instance.StopGlitch();
+                GlitchController.Instance?.StopGlitch();
             }
         }
     }
