@@ -429,9 +429,8 @@ MonoBehaviour:
   - {fileID: 912553769}
   - {fileID: 1793123070}
   _virusSpawnerPosition:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 551434487}
+  - {fileID: 1238508239}
 --- !u!1 &469796060
 GameObject:
   m_ObjectHideFlags: 0

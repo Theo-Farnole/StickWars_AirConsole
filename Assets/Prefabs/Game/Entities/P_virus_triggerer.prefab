@@ -648,8 +648,8 @@ MonoBehaviour:
   - {fileID: 8864144383522801767}
   - {fileID: 2244259010546087726}
   _audioDeath: {fileID: 3815613144052103636}
-  _debugAttackEveryCharacter: 1
-  _debugInstantKill: 1
+  _debugAttackEveryCharacter: 0
+  _debugInstantKill: 0
 --- !u!58 &4755789436170763418
 CircleCollider2D:
   m_ObjectHideFlags: 0

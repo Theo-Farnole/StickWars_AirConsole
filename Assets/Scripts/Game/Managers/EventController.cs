@@ -20,7 +20,8 @@ public class EventController : Singleton<EventController>
 
         bool shouldSpawnVirus = (_data.KillsNeededToSpawnVirusSpawner != 0 && killNumber % _data.KillsNeededToSpawnVirusSpawner == 0);
 
-        if (shouldSpawnVirus && _currentVirusSpawner == null)
+        // spawn virus spawner if there isn't VirusController in the map
+        if (shouldSpawnVirus && _currentVirusSpawner == null && FindObjectsOfType<VirusController>().Length == 0)
         {
             Debug.Log("Creating CurrentVirusSpawner at " + killNumber + " kills.");
             _currentVirusSpawner = Instantiate(_prefabVirusSpawner, _positionVirusSpawner.position, Quaternion.identity);
