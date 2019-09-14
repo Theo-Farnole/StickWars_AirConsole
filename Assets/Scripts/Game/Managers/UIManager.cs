@@ -48,8 +48,6 @@ public class UIManager : Singleton<UIManager>
             bool isPlayerActive = (GameManager.Instance.Characters.ContainsKey(item) && GameManager.Instance.Characters[item] != null);
             _playersWrappers[i].gameObject.SetActive(isPlayerActive);
 
-            Debug.Log(item + " is active: " + isPlayerActive);
-
             // load avatar
             if (isPlayerActive)
             {

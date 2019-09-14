@@ -84,12 +84,6 @@ public class VirusSpawner : Entity
 
     void TriggerVirus(Entity killer)
     {
-        if (killer.GetComponent<CharController>() == null)
-        {
-            Debug.LogWarning(transform.name + " has been killed by a non CharController named " + killer.name);
-            return;
-        }
-
         // spawn a virus that target every player, except the killer of VirusTriggerer
         foreach (CharID item in Enum.GetValues(typeof(CharID)))
         {
