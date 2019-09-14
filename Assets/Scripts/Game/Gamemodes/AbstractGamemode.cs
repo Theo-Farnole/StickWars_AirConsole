@@ -28,28 +28,60 @@ public abstract class AbstractGamemode
 {
     #region Fields
     public static int valueForVictory = 5;
-    protected int[] _charactersValue = new int[GameManager.MAX_PLAYERS];
-    protected int _indexMvp = -1;
+    protected Dictionary<CharID, int> _charactersValue = new Dictionary<CharID, int>();
+    protected CharID? _mvpCharID = null;
     #endregion
 
     #region Properties
-    public int SumCharactersValue { get => _charactersValue.Sum(); }
+    public int SumCharactersValue
+    {
+        get
+        {
+            int sum = 0;
+
+            foreach (CharID item in Enum.GetValues(typeof(CharID)))
+            {
+                sum += _charactersValue[item];
+            }
+
+            return sum;
+        }
+    }
+
+    public int[] CharactersValueArray
+    {
+        get
+        {
+            int[] charactersValueArray = new int [Enum.GetValues(typeof(CharID)).Length];
+
+            foreach (CharID item in Enum.GetValues(typeof(CharID)))
+            {
+                charactersValueArray[(int)item] = _charactersValue[item];
+            }
+
+            return charactersValueArray;
+        }
+    }
     #endregion
 
     #region Methods
     public AbstractGamemode()
     {
-        _charactersValue = Enumerable.Repeat(0, GameManager.MAX_PLAYERS).ToArray();
+        // init _charactersValue
+        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        {
+            _charactersValue[item] = 0;
+        }
     }
 
     public bool CheckForVictory()
     {
-        for (int i = 0; i < _charactersValue.Length; i++)
+        foreach (CharID item in Enum.GetValues(typeof(CharID)))
         {
-            if (_charactersValue[i] >= valueForVictory)
+            if (_charactersValue[item] >= valueForVictory)
             {
-                GameManager.Instance.Victory(i);
-                Victory(i);
+                GameManager.Instance.Victory(item);
+                Victory(item);
 
                 return true;
             }
@@ -58,22 +90,24 @@ public abstract class AbstractGamemode
         return false;
     }
 
-    protected void CheckForNewMvp(int indexPlayerWithNewScore)
+    protected void CheckForNewMvp(CharID? playerToCheck)
     {
-        if (_indexMvp == -1 || _charactersValue[_indexMvp] < _charactersValue[indexPlayerWithNewScore])
+        if (_mvpCharID == null || playerToCheck == null) return;
+
+        CharID mvpCharID = (CharID)_mvpCharID;
+        CharID newMvpToCheck = (CharID)playerToCheck;
+
+        if (_charactersValue[mvpCharID] < _charactersValue[newMvpToCheck])
         {
-            if (_indexMvp != -1)
-            {
-                GameManager.Instance.Characters[_indexMvp].IsMVP = false;
-            }
+            GameManager.Instance.Characters[mvpCharID].IsMVP = false;
 
-            _indexMvp = indexPlayerWithNewScore;
+            _mvpCharID = playerToCheck;
 
-            GameManager.Instance.Characters[_indexMvp].IsMVP = true;
+            GameManager.Instance.Characters[mvpCharID].IsMVP = true;
         }
     }
 
-    protected abstract void Victory(int winnerPlayerNumber);
-    public abstract void Kill(int killerPlayerNumber, int deadPlayerNumber);
+    protected abstract void Victory(CharID winnerID);
+    public abstract void Kill(CharID? killerCharID);
     #endregion
 }

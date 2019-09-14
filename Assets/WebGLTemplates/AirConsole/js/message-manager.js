@@ -11,7 +11,7 @@ var disableFunctionMap = new Map();
 function init() {
     ViewManager.init();
     ViewManager.show("Load");
-    ViewManager.show("Play");
+    // ViewManager.show("Play");
 
     airconsole = new AirConsole({
         "orientation": "landscape"

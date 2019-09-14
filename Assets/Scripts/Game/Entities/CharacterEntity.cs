@@ -37,17 +37,22 @@ public class CharacterEntity : Entity
 
     protected override void Death(Entity killer)
     {
-        // retrieve killer ID
-        CharController killerCharController = killer.GetComponent<CharController>();
-        int killerID = killerCharController ? (int)killerCharController.charID : -1;
+        // retrieve killer 
+        var charController = killer.GetComponent<CharController>();
+        CharID? killerId = null;
 
-        GameManager.Instance.Gamemode.Kill(killerID, _myID);
+        if (charController != null)
+        {
+            killerId = killer.GetComponent<CharController>().charID;
+        }
+
+        GameManager.Instance.Gamemode.Kill(killerId);
 
         _charController.Respawn();
     }
 
     public void ResetHP()
-    {        
+    {
         _hp = MaxHp;
         UpdateHealthSlider();
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -90,9 +91,9 @@ public class VirusSpawner : Entity
         }
 
         // spawn a virus that target every player, except the killer of VirusTriggerer
-        for (int i = 0; i < GameManager.Instance.Characters.Length; i++)
+        foreach (CharID item in Enum.GetValues(typeof(CharID)))
         {
-            var charController = GameManager.Instance.Characters[i];
+            var charController = GameManager.Instance.Characters[item];
 
             if (charController != null)
             {

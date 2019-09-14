@@ -7,29 +7,28 @@ public class GamemodeDeathMatch : AbstractGamemode
 {
     public GamemodeDeathMatch() : base()
     {
-        UIManager.Instance.UpdateGamemodeData(_charactersValue);
+        UIManager.Instance.UpdateGamemodeData(CharactersValueArray);
     }
 
-    public override void Kill(int killerPlayerNumber, int deadPlayerNumber)
+    public override void Kill(CharID? killerCharID)
     {
-        int killerIndex = AirConsole.instance.ConvertDeviceIdToPlayerNumber(killerPlayerNumber);
+        if (killerCharID == null) return;
 
-        if (killerIndex != -1)
-        {
-            _charactersValue[killerPlayerNumber]++;
-        }
+        CharID c_killerCharID = (CharID)killerCharID;
+
+        _charactersValue[c_killerCharID]++;
 
         EventController.Instance.OnKill();
 
-        UIManager.Instance.UpdateGamemodeData(_charactersValue);
+        UIManager.Instance.UpdateGamemodeData(CharactersValueArray);
         CameraShake.Instance.Shake();
 
-        CheckForNewMvp(killerPlayerNumber);
+        CheckForNewMvp(killerCharID);
         CheckForVictory();
     }
 
-    protected override void Victory(int winnerPlayerNumber)
+    protected override void Victory(CharID winnerCharId)
     {
-        UIManager.Instance.LaunchVictoryAnimation(winnerPlayerNumber);
+        UIManager.Instance.LaunchVictoryAnimation(winnerCharId);
     }
 }

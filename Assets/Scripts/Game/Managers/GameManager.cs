@@ -1,5 +1,6 @@
 ﻿using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,27 +18,28 @@ public class GameManager : Singleton<GameManager>
     private GamemodeType gamemodeType = GamemodeType.DeathMatch;
     private AbstractGamemode _gamemode;
 
-    private CharController[] _characters = new CharController[MAX_PLAYERS];
-    private Dictionary<CharController, int> _charControllerToDeviceID = new Dictionary<CharController, int>();
+    private Dictionary<CharID, CharController> _characters = new Dictionary<CharID, CharController>();
+    private Dictionary<CharID, int> _charControllerToDeviceID = new Dictionary<CharID, int>();
     #endregion
 
     #region Properties
     public AbstractGamemode Gamemode { get => _gamemode; }
-    public CharController[] Characters { get => _characters; }
     public GameObject PrefabFloatingText { get => _prefabFloatingText; }
+    public Dictionary<CharID, CharController> Characters { get => _characters; }
+    public Dictionary<CharID, int> CharControllerToDeviceID { get => _charControllerToDeviceID; set => _charControllerToDeviceID = value; }
     #endregion
 
+    #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
 #if UNITY_EDITOR
-        // add existing Prefab to _characters
+        // add instantiate characters to _characters
         var charControllers = FindObjectsOfType<CharController>();
 
         for (int i = 0; i < charControllers.Length; i++)
         {
-            CharID charID = charControllers[i].charID;
-            _characters[(int)charID] = charControllers[i];
+            _characters[charControllers[i].charID] = charControllers[i];
         }
 
         AirConsole.instance.onConnect += OnConnect;
@@ -51,6 +53,12 @@ public class GameManager : Singleton<GameManager>
         {
             AirConsole.instance.onReady += OnReady;
         }
+
+        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        {
+            _characters[item] = null;
+            _charControllerToDeviceID[item] = -1;
+        }
     }
 
     void Start()
@@ -61,26 +69,30 @@ public class GameManager : Singleton<GameManager>
 #if UNITY_EDITOR
     void Update()
     {
-        int playerNumber = -1;
+        CharID? charId = null;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) playerNumber = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) playerNumber = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) playerNumber = 2;
-        if (Input.GetKeyDown(KeyCode.Alpha4)) playerNumber = 3;
+        if (Input.GetKeyDown(KeyCode.Alpha1)) charId = CharID.Red;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) charId = CharID.Blue;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) charId = CharID.Green;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) charId = CharID.Purple;
 
-        if (playerNumber != -1)
+        if (charId != null && _characters[(CharID)charId] == null)
         {
+            CharID c_charId = (CharID)charId;
+
             var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
-
-            player.charID = (CharID)playerNumber;
-            _characters[playerNumber] = player;
-
             player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+            player.charID = c_charId;
+
+            _characters[c_charId] = player;
+
+
+            UIManager.Instance.SetAvatars();
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            UIManager.Instance.LaunchVictoryAnimation(0);
+            UIManager.Instance.LaunchVictoryAnimation(CharID.Red);
         }
     }
 #endif
@@ -132,40 +144,52 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-    void InstantiateCharacter(int device_id)
+    void InstantiateCharacter(int deviceId)
     {
-        // convert device id to player numer
-        int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
+        bool isActivePlayer = (AirConsole.instance.ConvertDeviceIdToPlayerNumber(deviceId) != -1);
 
-        // instantiate character is playerNumber is contains inside _characters 
-        // and if character hasn't be instantiated
-        if (playerNumber != -1 && playerNumber < MAX_PLAYERS && _characters[playerNumber] == null)
+        if (isActivePlayer)
         {
-            var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
+            bool charIdFinded = false;
 
-            player.charID = (CharID)playerNumber;
-            _characters[playerNumber] = player;
-
-            if (LevelData.Instance == null)
+            // find an availableCharId
+            foreach (CharID item in Enum.GetValues(typeof(CharID)))
             {
-                Debug.LogError("No LevelData on Scene!");
-            }
-            player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+                if (_characters.ContainsKey(item) && _characters[item] != null)
+                    continue;
 
+                charIdFinded = true;
+
+                var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
+                player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+                player.charID = item;
+
+                _characters[item] = player;
+                _charControllerToDeviceID[item] = deviceId;
+
+                Debug.Log("Character instantiated after find free charID: " + item);
+
+                break;
+            }
+
+            if (!charIdFinded)
+            {
+                // on retourne la view "Pas assez de place déso"
+            }
         }
 
         UIManager.Instance.SetAvatars();
     }
 
-    public void Victory(int winnerPlayerNumber)
+    public void Victory(CharID winnerId)
     {
         // mute & freeze characters
-        for (int i = 0; i < _characters.Length; i++)
+        foreach (CharID item in Enum.GetValues(typeof(CharID)))
         {
-            if (_characters[i] != null)
+            if (_characters[item] != null)
             {
-                _characters[i].CharAudio.EnableSound = false;
-                _characters[i].Freeze = true;
+                _characters[item].CharAudio.EnableSound = false;
+                _characters[item].Freeze = true;
             }
         }
 
@@ -177,4 +201,5 @@ public class GameManager : Singleton<GameManager>
             Destroy(virus[i].gameObject);
         }
     }
+    #endregion
 }

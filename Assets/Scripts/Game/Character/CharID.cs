@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum CharID
 {
-    red = 0,
-    blue = 1,
-    green = 2,
-    purple = 3
+    Red = 0,
+    Blue = 1,
+    Green = 2,
+    Purple = 3
 }
 
 public struct CharControls
@@ -34,16 +34,16 @@ static class CharIDExtensions
     {
         switch (playerId)
         {
-            case CharID.red:
+            case CharID.Red:
                 return "c40233";
 
-            case CharID.blue:
+            case CharID.Blue:
                 return "0088bf";
 
-            case CharID.green:
+            case CharID.Green:
                 return "00a568";
 
-            case CharID.purple:
+            case CharID.Purple:
                 return "A60092";
         }
 
@@ -76,16 +76,16 @@ static class CharIDExtensions
     {
         switch (playerId)
         {
-            case CharID.red:
+            case CharID.Red:
                 return new CharControls(KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.Keypad0);
 
-            case CharID.blue:
+            case CharID.Blue:
                 return new CharControls(KeyCode.Q, KeyCode.D, KeyCode.Z, KeyCode.S, KeyCode.E);
 
-            case CharID.green:
+            case CharID.Green:
                 return new CharControls(KeyCode.K, KeyCode.M, KeyCode.O, KeyCode.L, KeyCode.P);
 
-            case CharID.purple:
+            case CharID.Purple:
                 return new CharControls(KeyCode.Keypad4, KeyCode.Keypad6, KeyCode.Keypad8, KeyCode.Keypad5, KeyCode.Keypad9);
         }
 

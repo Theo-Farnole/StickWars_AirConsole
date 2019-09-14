@@ -1,4 +1,5 @@
 ﻿using NDream.AirConsole;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -31,29 +32,35 @@ public class UIManager : Singleton<UIManager>
         _victoryPanel.SetActive(false);
 
         // hide avatar wrappers
-        SetAvatars();
+       for (int i = 0; i < _playersWrappers.Length; i++)
+        {
+            _playersWrappers[i].gameObject.SetActive(false);
+        }
     }
     #endregion
 
     public void SetAvatars()
     {
-        var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
-
-        for (int i = 0; i < _playersWrappers.Length; i++)
+        foreach (CharID item in Enum.GetValues(typeof(CharID)))
         {
+            int i = (int)item;
             // active or not wrapper
-            bool isPlayerActive = (i < activePlayers);
+            bool isPlayerActive = (GameManager.Instance.Characters.ContainsKey(item) && GameManager.Instance.Characters[item] != null);
             _playersWrappers[i].gameObject.SetActive(isPlayerActive);
+
+            Debug.Log(item + " is active: " + isPlayerActive);
 
             // load avatar
             if (isPlayerActive)
             {
-                int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(i);
-
-                string url = AirConsole.instance.GetProfilePicture(deviceId, 256);
-                ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[i].Avatar);
-
                 _playersWrappers[i].Outline.effectColor = ((CharID)i).GetUIColor();
+                int deviceId = GameManager.Instance.CharControllerToDeviceID[item];
+
+                if (deviceId != -1)
+                {
+                    ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[i].Avatar);
+                }
+
             }
         }
     }
@@ -66,15 +73,15 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void LaunchVictoryAnimation(int winnerPlayerNumber)
+    public void LaunchVictoryAnimation(CharID winnerCharId)
     {
+        int winnerDeviceId = GameManager.Instance.CharControllerToDeviceID[winnerCharId];
         CameraEffectController.Instance.EnableBlur(true);
 
-        string winnerNickname = AirConsole.instance.GetNickname(AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber));
+        string winnerNickname = AirConsole.instance.GetNickname(winnerDeviceId);
         _winnerWrapper.GetComponentInChildren<TextMeshProUGUI>().text = winnerNickname;
 
-        int deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber);
-        ProfilePictureManager.Instance.SetProfilePicture(deviceId, _winnerWrapper.GetComponentInChildren<Image>());
+        ProfilePictureManager.Instance.SetProfilePicture(winnerDeviceId, _winnerWrapper.GetComponentInChildren<Image>());
 
         _victoryPanel.SetActive(true);
         this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
