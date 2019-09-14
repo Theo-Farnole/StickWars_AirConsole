@@ -5,15 +5,16 @@ var touchedElement = new Map();
 var activeFunctionMap = new Map();
 var disableFunctionMap = new Map();
 
+
+
 // #region AIR CONSOLE STARTUP
 function init() {
+    ViewManager.init();
+    ViewManager.show("Load");
+
     airconsole = new AirConsole({
         "orientation": "landscape"
     });
-
-    ViewManager.init();
-    ViewManager.show("Load");
-    // ViewManager.show("Menu");
 
     airconsole.onMessage = function (from, data) {
         if (from == AirConsole.SCREEN) {
