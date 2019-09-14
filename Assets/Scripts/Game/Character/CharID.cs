@@ -7,7 +7,7 @@ public enum CharID
     red = 0,
     blue = 1,
     green = 2,
-    yellow = 3
+    purple = 3
 }
 
 public struct CharControls
@@ -43,8 +43,8 @@ static class CharIDExtensions
             case CharID.green:
                 return "00a568";
 
-            case CharID.yellow:
-                return "ffd400";
+            case CharID.purple:
+                return "A60092";
         }
 
         return "ffffff";
@@ -85,7 +85,7 @@ static class CharIDExtensions
             case CharID.green:
                 return new CharControls(KeyCode.K, KeyCode.M, KeyCode.O, KeyCode.L, KeyCode.P);
 
-            case CharID.yellow:
+            case CharID.purple:
                 return new CharControls(KeyCode.Keypad4, KeyCode.Keypad6, KeyCode.Keypad8, KeyCode.Keypad5, KeyCode.Keypad9);
         }
 
