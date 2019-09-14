@@ -103,7 +103,7 @@ public class VirusController : MonoBehaviour
 
             if (aliveVirus == 0)
             {
-                CameraEffectController.Instance?.EnableBlur(false);
+                CameraEffectController.Instance?.EnableGlitch(false);
             }
         }
     }
