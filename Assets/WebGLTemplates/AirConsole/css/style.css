@@ -43,7 +43,8 @@ body {
     display: grid;
     grid-gap: var(--button-padding-size);
     grid-template-columns: repeat(4, auto);
-    grid-template-rows: repeat(2, auto);
+    /* grid-template-rows: repeat(2, auto); */
+    grid-auto-rows: 1fr;
 }
 
 .buttons {
