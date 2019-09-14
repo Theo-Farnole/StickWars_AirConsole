@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class FloatingText : MonoBehaviour
+public class FloatingText : MonoBehaviour, IPooledObject
 {
     public enum Direction
     {
         Left = -1,
         Right = 1
     }
+
     #region Fields
     public static readonly int ANGLE_OFFSET = 15;
 
@@ -18,16 +19,27 @@ public class FloatingText : MonoBehaviour
     [Header("Components linking")]
     [SerializeField] private TextMeshPro _text;
 
-    [System.NonSerialized] public Direction direction;
+    [HideInInspector] public Direction direction;
+
+    private Rigidbody2D _rb;
     #endregion
 
     #region Properties
-    public TextMeshPro Text { get => _text;  }
+    public TextMeshPro Text { get => _text; }
     #endregion
 
     #region Methods
-    void Start()
+    void Awake()
     {
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void OnObjectSpawn()
+    {
+#if UNITY_EDITOR
+        DynamicsObjects.Instance.SetToParent(transform, "floating_text");
+#endif
+
         // find random angle
         int minValue = 0;
         int maxValue = 180;
@@ -48,12 +60,20 @@ public class FloatingText : MonoBehaviour
 
         // apply force
         Vector2 forceAngle = MyMath.AngleToVector2(angle);
-        GetComponent<Rigidbody2D>().AddForce(forceAngle * _hitForce);
+        _rb.AddForce(forceAngle * _hitForce);
 
         // fade out
         _text.Fade(FadeType.FadeOut, _lifetime);
 
-        Destroy(gameObject, _lifetime);
+        ObjectPooler.Instance.EnqueueGameObject("floating_text", gameObject, _lifetime);
+    }
+
+    void OnDisable()
+    {
+        _text.text = string.Empty;
+        _text.color = Color.white;
+
+        _rb.velocity = Vector3.zero;
     }
     #endregion
 }

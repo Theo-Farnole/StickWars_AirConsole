@@ -112,6 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parentsTag:
   - projectile
+  - floating_text
   - virus
 --- !u!1 &5237759257506658875
 GameObject:
@@ -124,7 +125,7 @@ GameObject:
   - component: {fileID: 8011801065220136739}
   - component: {fileID: 779570745710546895}
   m_Layer: 0
-  m_Name: Virus Spawner Controller
+  m_Name: Event Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,5 +326,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pools:
   - tag: projectile
+    prefab: {fileID: 6277080515121283850, guid: 1838053a672016a4885f6f2f06fac89e,
+      type: 3}
+  - tag: floating_text
     prefab: {fileID: 6277080515121283850, guid: 1838053a672016a4885f6f2f06fac89e,
       type: 3}

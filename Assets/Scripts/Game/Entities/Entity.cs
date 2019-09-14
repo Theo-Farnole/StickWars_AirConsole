@@ -90,7 +90,7 @@ public class Entity : MonoBehaviour
     {
         float direction = transform.position.x - attacker.transform.position.x;
 
-        var floatingText = Instantiate(GameManager.Instance.PrefabFloatingText, transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();
+        var floatingText = ObjectPooler.Instance.SpawnFromPool("floating_text", transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();        
         floatingText.direction = (FloatingText.Direction)Mathf.Sign(direction);
         floatingText.Text.text = damage.ToString();
 
