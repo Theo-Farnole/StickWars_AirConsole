@@ -68,7 +68,7 @@ public class VirusSpawner : Entity
             TriggerVirus(killer);
 
             CameraShake.Instance.Shake(0.3f, 0.15f);
-            GlitchController.Instance.StartGlitch();
+            CameraEffectController.Instance.EnableGlitch(true);
         }
         else
         {

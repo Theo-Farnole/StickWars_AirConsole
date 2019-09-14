@@ -99,11 +99,11 @@ public class VirusController : MonoBehaviour
             _audioDeath.transform.parent = null;
             _audioDeath.Play();
 
-            int aliveVirus = GameObject.FindObjectsOfType<VirusController>().Length;
+            int aliveVirus = FindObjectsOfType<VirusController>().Length;
 
             if (aliveVirus == 0)
             {
-                GlitchController.Instance?.StopGlitch();
+                CameraEffectController.Instance?.EnableBlur(false);
             }
         }
     }

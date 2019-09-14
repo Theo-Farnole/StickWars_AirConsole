@@ -148,6 +148,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region internals variables
+    private bool _freeze;
     private CharacterRaycast _raycast = new CharacterRaycast();
     private OwnerState<CharController> _state;
 
@@ -186,6 +187,23 @@ public class CharController : MonoBehaviour
     public CharAudio CharAudio { get => _charAudio; }
     public CharFeedback CharFeedback { get => _charFeedback; }
 
+    public bool Freeze
+    {
+        get
+        {
+            return _freeze;
+        }
+
+        set
+        {
+            _freeze = value;
+
+            if (_freeze == true)
+            {
+                _inputs.Reset();
+            }
+        }
+    }
     public Orientation OrientationX
     {
         get
@@ -439,6 +457,9 @@ public class CharController : MonoBehaviour
     #region Inputs Management
     void HandleInput(int device_id, JToken data)
     {
+        if (_freeze)
+            return;
+
         int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
 
         if (playerNumber == -1 || playerNumber != (int)charID)
@@ -468,6 +489,9 @@ public class CharController : MonoBehaviour
 #if UNITY_EDITOR
     void HandleKeyboardInput()
     {
+        if (_freeze)
+            return;
+
         if (Input.GetKeyDown(_keyboardControls.Right)) _inputs.horizontalInput = 1;
         if (Input.GetKeyUp(_keyboardControls.Right) && _inputs.horizontalInput != -1) _inputs.horizontalInput = 0;
         if (Input.GetKeyDown(_keyboardControls.Left)) _inputs.horizontalInput = -1;

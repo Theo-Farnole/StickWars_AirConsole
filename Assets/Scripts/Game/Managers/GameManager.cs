@@ -77,6 +77,11 @@ public class GameManager : Singleton<GameManager>
 
             player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            UIManager.Instance.LaunchVictoryAnimation(0);
+        }
     }
 #endif
 
@@ -154,12 +159,22 @@ public class GameManager : Singleton<GameManager>
 
     public void Victory(int winnerPlayerNumber)
     {
+        // mute & freeze characters
         for (int i = 0; i < _characters.Length; i++)
         {
             if (_characters[i] != null)
             {
                 _characters[i].CharAudio.EnableSound = false;
+                _characters[i].Freeze = true;
             }
+        }
+
+        // destroy every virus
+        var virus = FindObjectsOfType<VirusController>();
+
+        for (int i = virus.Length - 1; i >= 0; i--)
+        {
+            Destroy(virus[i].gameObject);
         }
     }
 }

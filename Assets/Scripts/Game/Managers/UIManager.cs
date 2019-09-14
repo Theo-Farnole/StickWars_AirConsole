@@ -68,6 +68,8 @@ public class UIManager : Singleton<UIManager>
 
     public void LaunchVictoryAnimation(int winnerPlayerNumber)
     {
+        CameraEffectController.Instance.EnableBlur(true);
+
         string winnerNickname = AirConsole.instance.GetNickname(AirConsole.instance.ConvertPlayerNumberToDeviceId(winnerPlayerNumber));
         _winnerWrapper.GetComponentInChildren<TextMeshProUGUI>().text = winnerNickname;
 

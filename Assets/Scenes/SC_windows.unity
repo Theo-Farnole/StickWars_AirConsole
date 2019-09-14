@@ -136,11 +136,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_UISystem
       objectReference: {fileID: 0}
-    - target: {fileID: 6125072410614328178, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6125072410614328179, guid: 7ab1c676aae425344ba0fff62480c6f3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -196,16 +191,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5465835722725101789, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465835722725101789, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2869548774890620979, guid: 7ab1c676aae425344ba0fff62480c6f3,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -364,16 +349,6 @@ PrefabInstance:
     - target: {fileID: 8498633164893582473, guid: 7ab1c676aae425344ba0fff62480c6f3,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5905058583889296614, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -53.80005
-      objectReference: {fileID: 0}
-    - target: {fileID: 1195073976451065653, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -556,8 +531,9 @@ GameObject:
   - component: {fileID: 534669904}
   - component: {fileID: 534669903}
   - component: {fileID: 534669906}
-  - component: {fileID: 534669907}
   - component: {fileID: 534669908}
+  - component: {fileID: 534669907}
+  - component: {fileID: 534669909}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -671,6 +647,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b5deefd6771914f83e0b281499162d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &534669909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba45c646ab394541a5091de1fc184c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderMode: 0
+  kernelSize: 0
+  interpolation: 1
+  downsample: 0
+  iterations: 4
+  gammaCorrection: 0
+  blurMaterial: {fileID: 2100000, guid: 79fded9ef6890194c8f7b36e846767b9, type: 2}
+  UIMaterial: {fileID: 2100000, guid: b4122cb619ed70e4aad746832f4bc42c, type: 2}
 --- !u!1 &551434486
 GameObject:
   m_ObjectHideFlags: 0
@@ -2763,7 +2759,7 @@ PrefabInstance:
     - target: {fileID: 7456931107786699328, guid: 27fac3f66b328e140b63d4ffdc881be8,
         type: 3}
       propertyPath: browserStartMode
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27fac3f66b328e140b63d4ffdc881be8, type: 3}
