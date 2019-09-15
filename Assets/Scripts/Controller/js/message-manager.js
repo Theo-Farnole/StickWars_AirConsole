@@ -82,7 +82,6 @@ function init() {
             aPressed(true)
         },
         function () {
-            aPressed(false)
         });
 }
 

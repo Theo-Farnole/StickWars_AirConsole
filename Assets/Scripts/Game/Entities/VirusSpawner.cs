@@ -87,10 +87,10 @@ public class VirusSpawner : Entity
         // spawn a virus that target every player, except the killer of VirusTriggerer
         foreach (CharID item in Enum.GetValues(typeof(CharID)))
         {
-            var charController = GameManager.Instance.Characters[item];
-
-            if (charController != null)
+            if (GameManager.Instance.Characters.ContainsKey(item) && GameManager.Instance.Characters[item] != null)
             {
+                var charController = GameManager.Instance.Characters[item];
+
                 if (charController.charID != killer.GetComponent<CharController>()?.charID || _debugAttackEveryCharacter)
                 {
                     var virus = Instantiate(_prefabVirus, transform.position, Quaternion.identity);

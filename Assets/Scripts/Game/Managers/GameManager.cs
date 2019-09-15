@@ -30,6 +30,21 @@ public class GameManager : Singleton<GameManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
+        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        {
+            _characters[item] = null;
+            _charControllerToDeviceID[item] = -1;
+        }
+
+        if (AirConsole.instance.IsAirConsoleUnityPluginReady())
+        {
+            OnReady(string.Empty);
+        }
+        else
+        {
+            AirConsole.instance.onReady += OnReady;
+        }
+
 #if UNITY_EDITOR
         // add instantiate characters to _characters
         var charControllers = FindObjectsOfType<CharController>();
@@ -41,21 +56,6 @@ public class GameManager : Singleton<GameManager>
 
         AirConsole.instance.onConnect += OnConnect;
 #endif
-
-        if (AirConsole.instance.IsAirConsoleUnityPluginReady())
-        {
-            OnReady(string.Empty);
-        }
-        else
-        {
-            AirConsole.instance.onReady += OnReady;
-        }
-
-        foreach (CharID item in Enum.GetValues(typeof(CharID)))
-        {
-            _characters[item] = null;
-            _charControllerToDeviceID[item] = -1;
-        }
     }
 
     void Start()
