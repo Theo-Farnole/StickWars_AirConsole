@@ -85,7 +85,7 @@ public class VirusSpawner : Entity
     void TriggerVirus(Entity killer)
     {
         // spawn a virus that target every player, except the killer of VirusTriggerer
-        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {
             if (GameManager.Instance.Characters.ContainsKey(item) && GameManager.Instance.Characters[item] != null)
             {

@@ -85,13 +85,7 @@ public class MenuManager : Singleton<MenuManager>
 
     void OnConnect(int deviceId)
     {
-        Debug.Log("Onconnect");
-
-        int activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
-        if (activePlayers < GameManager.MAX_PLAYERS)
-        {
-            AirConsole.instance.SetActivePlayers(activePlayers + 1);
-        }
+        CharIdAllocator.AllocateDeviceId(deviceId);
 
         UIMenuManager.Instance.UpdatePlayersAvatar();
         UpdateControllerView();
@@ -105,20 +99,7 @@ public class MenuManager : Singleton<MenuManager>
 
     void OnDisconnect(int device_id)
     {
-        // is part of active players ?
-        if (AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id) != -1)
-        {
-            int activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
-
-            if (AirConsole.instance.GetControllerDeviceIds().Count >= GameManager.MAX_PLAYERS)
-            {
-                AirConsole.instance.SetActivePlayers(activePlayers);
-            }
-            else
-            {
-                AirConsole.instance.SetActivePlayers(activePlayers - 1);
-            }
-        }
+        CharIdAllocator.DeallocateDeviceId(device_id);
 
         UIMenuManager.Instance.UpdatePlayersAvatar();
         UpdateControllerView();
@@ -127,44 +108,53 @@ public class MenuManager : Singleton<MenuManager>
 
     void UpdateControllerView()
     {
-        var playersNumber = AirConsole.instance.GetControllerDeviceIds().Count;
+        List<int> devices = AirConsole.instance.GetControllerDeviceIds();
 
-        for (int i = 0; i < playersNumber; i++)
+        for (int i = 0; i < devices.Count; i++)
         {
-            var device_id = AirConsole.instance.GetControllerDeviceIds()[i];
+            int deviceId = devices[i];
+            CharId? charId = CharIdAllocator.GetCharId(deviceId);
 
-            string bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).GetUIHex();
-            string charId = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToString();
-            string view = string.Empty;
+            // if not charId allocated
+            if (charId == null)
+            {
+                var token2 = new
+                {
+                    view = ControllerView.NoPlace.ToString()
+                };
 
-            if (device_id == AirConsole.instance.GetMasterControllerDeviceId())
-            {
-                view = ControllerView.Menu.ToString();
-            }
-            else if (AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id) == -1)
-            {
-                view = ControllerView.NoPlace.ToString();
+                AirConsole.instance.Message(deviceId, token2);
+                continue;
             }
             else
             {
-                view = ControllerView.Wait.ToString();
+                string view = string.Empty;
+
+                if (deviceId == AirConsole.instance.GetMasterControllerDeviceId())
+                {
+                    view = ControllerView.Menu.ToString();
+                }
+                else
+                {
+                    view = ControllerView.Wait.ToString();
+                }
+
+                var token = new
+                {
+                    view,
+                    charId = ((CharId)charId).ToString(),
+                    bgColor = ((CharId)charId).GetUIHex()
+                };
+
+                AirConsole.instance.Message(deviceId, token);
             }
-
-            var token = new
-            {
-                view,
-                charId,
-                bgColor
-            };
-
-            AirConsole.instance.Message(device_id, token);
         }
     }
 
     #region Handle Input
     void APressed()
     {
-        if (AirConsole.instance.GetActivePlayerDeviceIds.Count < 2)
+        if (CharIdAllocator.AllocatedCharId < 2)
         {
             UIMenuManager.Instance.DisplayNoEnoughPlayersText(true);
         }
@@ -185,19 +175,15 @@ public class MenuManager : Singleton<MenuManager>
         AbstractGamemode.valueForVictory = SelectedGamemodeDefaultValue;
 
         // display play view on controllers
-        if (AirConsole.instance.IsAirConsoleUnityPluginReady())
+        var token = new
         {
-            var token = new
-            {
-                view = ControllerView.Play.ToString(),
-            };
+            view = ControllerView.Play.ToString(),
+        };
 
-            AirConsole.instance.Broadcast(token);
-        }
+        AirConsole.instance.Broadcast(token);
 
         // then, finally load the scene
-        string level = "SC_Windows";
-        SceneManager.LoadScene(level);
+        SceneManager.LoadScene("SC_Windows");
     }
     #endregion
 }

@@ -34,7 +34,7 @@ function init() {
                 css_rules_num = sheet.cssRules.length;
 
                 // update font color
-                if (data.charId == "red" || data.charId == "blue") {
+                if (data.charId == "Red" || data.charId == "Blue") {
                     sheet.addRule(".view>p", "color: white", css_rules_num);
                 }
             }

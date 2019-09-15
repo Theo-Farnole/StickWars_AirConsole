@@ -10,11 +10,11 @@ public class GamemodeDeathMatch : AbstractGamemode
         UIManager.Instance.UpdateGamemodeData(CharactersValueArray);
     }
 
-    public override void Kill(CharID? killerCharID)
+    public override void Kill(CharId? killerCharID)
     {
         if (killerCharID == null) return;
 
-        CharID c_killerCharID = (CharID)killerCharID;
+        CharId c_killerCharID = (CharId)killerCharID;
 
         _charactersValue[c_killerCharID]++;
 
@@ -27,7 +27,7 @@ public class GamemodeDeathMatch : AbstractGamemode
         CheckForVictory();
     }
 
-    protected override void Victory(CharID winnerCharId)
+    protected override void Victory(CharId winnerCharId)
     {
         UIManager.Instance.LaunchVictoryAnimation(winnerCharId);
     }

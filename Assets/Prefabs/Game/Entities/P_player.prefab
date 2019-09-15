@@ -521,6 +521,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 8160361011068639438}
   _animator: {fileID: 4215037579328184273}
   _crown: {fileID: 4180734011860687220}
+  ownerDeviceId: -1
 --- !u!114 &3268265160266172289
 MonoBehaviour:
   m_ObjectHideFlags: 0

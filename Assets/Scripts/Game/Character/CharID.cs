@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CharID
+public enum CharId
 {
     Red = 0,
     Blue = 1,
@@ -30,32 +30,32 @@ public struct CharControls
 
 static class CharIDExtensions
 {
-    public static string GetUIHex(this CharID playerId)
+    public static string GetUIHex(this CharId playerId)
     {
         switch (playerId)
         {
-            case CharID.Red:
+            case CharId.Red:
                 return "c40233";
 
-            case CharID.Blue:
+            case CharId.Blue:
                 return "0088bf";
 
-            case CharID.Green:
+            case CharId.Green:
                 return "00a568";
 
-            case CharID.Purple:
+            case CharId.Purple:
                 return "A60092";
         }
 
         return "ffffff";
     }
 
-    public static Color GetUIColor(this CharID playerId)
+    public static Color GetUIColor(this CharId playerId)
     {
         return playerId.GetUIHex().HexToColor();
     }
 
-    public static string GetSpriteHex(this CharID playerId)
+    public static string GetSpriteHex(this CharId playerId)
     {
         float goldenRatio = (int)playerId * 0.618033988749895f;
 
@@ -67,25 +67,25 @@ static class CharIDExtensions
         return Color.HSVToRGB(r, g, b).ToHex();
     }
 
-    public static Color GetSpriteColor(this CharID playerId)
+    public static Color GetSpriteColor(this CharId playerId)
     {
         return playerId.GetSpriteHex().HexToColor();
     }
 
-    public static CharControls ToControls(this CharID playerId)
+    public static CharControls ToControls(this CharId playerId)
     {
         switch (playerId)
         {
-            case CharID.Red:
+            case CharId.Red:
                 return new CharControls(KeyCode.LeftArrow, KeyCode.RightArrow, KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.Keypad0);
 
-            case CharID.Blue:
+            case CharId.Blue:
                 return new CharControls(KeyCode.Q, KeyCode.D, KeyCode.Z, KeyCode.S, KeyCode.E);
 
-            case CharID.Green:
+            case CharId.Green:
                 return new CharControls(KeyCode.K, KeyCode.M, KeyCode.O, KeyCode.L, KeyCode.P);
 
-            case CharID.Purple:
+            case CharId.Purple:
                 return new CharControls(KeyCode.Keypad4, KeyCode.Keypad6, KeyCode.Keypad8, KeyCode.Keypad5, KeyCode.Keypad9);
         }
 

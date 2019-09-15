@@ -14,8 +14,6 @@ public class UIManager : Singleton<UIManager>
     #region Fields
     [SerializeField] private Canvas _mainCanvas;
     [Header("Game Panel")]
-    [SerializeField] private TextMeshProUGUI _textSceneName;
-    [Space]
     [SerializeField] private PlayerWrapper[] _playersWrappers = new PlayerWrapper[GameManager.MAX_PLAYERS];
     [Header("Victory Animation")]
     [SerializeField] private GameObject _victoryPanel;
@@ -28,7 +26,6 @@ public class UIManager : Singleton<UIManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        _textSceneName.text = SceneManager.GetActiveScene().name;
         _victoryPanel.SetActive(false);
 
         // hide avatar wrappers
@@ -41,24 +38,24 @@ public class UIManager : Singleton<UIManager>
 
     public void SetAvatars()
     {
-        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        foreach (CharId charId in Enum.GetValues(typeof(CharId)))
         {
-            int i = (int)item;
+            int i = (int)charId;
+
             // active or not wrapper
-            bool isPlayerActive = (GameManager.Instance.Characters.ContainsKey(item) && GameManager.Instance.Characters[item] != null);
+            bool isPlayerActive = GameManager.Instance.Characters[charId] != null;
             _playersWrappers[i].gameObject.SetActive(isPlayerActive);
 
             // load avatar
             if (isPlayerActive)
             {
-                _playersWrappers[i].Outline.effectColor = ((CharID)i).GetUIColor();
-                int deviceId = GameManager.Instance.CharControllerToDeviceID[item];
+                _playersWrappers[i].Outline.effectColor = ((CharId)i).GetUIColor();
+                int deviceId = CharIdAllocator.GetDeviceId(charId);
 
                 if (deviceId != -1)
                 {
                     ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[i].Avatar);
                 }
-
             }
         }
     }
@@ -71,11 +68,11 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void LaunchVictoryAnimation(CharID winnerCharId)
+    public void LaunchVictoryAnimation(CharId winnerCharId)
     {
-        int winnerDeviceId = GameManager.Instance.CharControllerToDeviceID[winnerCharId];
         CameraEffectController.Instance.EnableBlur(true);
 
+        int winnerDeviceId = CharIdAllocator.GetDeviceId(winnerCharId);
         string winnerNickname = AirConsole.instance.GetNickname(winnerDeviceId);
         _winnerWrapper.GetComponentInChildren<TextMeshProUGUI>().text = winnerNickname;
 

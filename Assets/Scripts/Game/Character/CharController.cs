@@ -133,7 +133,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region serialized variables
-    public CharID charID;
+    public CharId charID;
     [Space]
     [SerializeField] private CharacterControllerData _data;
     [Header("Attacking")]
@@ -148,6 +148,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region internals variables
+    [HideInInspector] public int ownerDeviceId = -1;
     private bool _freeze;
     private CharacterRaycast _raycast = new CharacterRaycast();
     private OwnerState<CharController> _state;
@@ -448,16 +449,11 @@ public class CharController : MonoBehaviour
     }
 
     #region Inputs Management
-    void HandleInput(int device_id, JToken data)
+    void HandleInput(int deviceId, JToken data)
     {
-        if (_freeze)
+        if (_freeze || deviceId != ownerDeviceId)
             return;
-
-        int playerNumber = AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id);
-
-        if (playerNumber == -1 || playerNumber != (int)charID)
-            return;
-
+        
         if (data["horizontal"] != null)
         {
             _inputs.horizontalInput = (int)data["horizontal"];

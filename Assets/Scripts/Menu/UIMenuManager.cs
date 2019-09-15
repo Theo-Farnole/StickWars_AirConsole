@@ -79,47 +79,33 @@ public class UIMenuManager : Singleton<UIMenuManager>
     #region Panel Level Selection
     public void UpdatePlayersAvatar()
     {
-        var devices = AirConsole.instance.GetActivePlayerDeviceIds;
 
-        for (int i = 0; i < GameManager.MAX_PLAYERS; i++)
+        foreach(CharId charId in Enum.GetValues(typeof(CharId)))
         {
-            if (i < devices.Count)
-            {
-                DisplayPlayerAvatar(i);
-            }
-            else
-            {
-                // hide childs
-                _playersWrappers[i].transform.ActionForEachChildren((GameObject child) =>
-                {
-                    child.SetActive(false);
-                });
-            }
+            int deviceId = CharIdAllocator.GetDeviceId(charId);
+            bool isPlayerActive = false;
+            isPlayerActive = CharIdAllocator.DoDeviceIdExist(deviceId);
+
+            ActivePlayerAvatar(isPlayerActive, charId, deviceId);
         }
 
         // display text waiting or not
-        bool shouldDisplayTextWaiting = (devices.Count == 0);
+        bool shouldDisplayTextWaiting = (AirConsole.instance.GetControllerDeviceIds().Count == 0);
         _textWaitingForPlayers.gameObject.SetActive(shouldDisplayTextWaiting);
     }
 
-    private void DisplayPlayerAvatar(int playerNumber)
+    private void ActivePlayerAvatar(bool active, CharId charId, int deviceId)
     {
-        var deviceId = AirConsole.instance.ConvertPlayerNumberToDeviceId(playerNumber);
+        int index = (int)charId;
 
-        // activate childs
-        _playersWrappers[playerNumber].transform.ActionForEachChildren((GameObject child) =>
+        _playersWrappers[index].Outline.effectColor = charId.GetUIColor();
+        _playersWrappers[index].Name.text = AirConsole.instance.GetNickname(deviceId);
+        ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[index].Avatar);
+        
+        _playersWrappers[index].transform.ActionForEachChildren((GameObject child) =>
         {
-            child.SetActive(true);
+            child.SetActive(active);
         });
-
-        // update outline
-        _playersWrappers[playerNumber].Outline.effectColor = ((CharID)playerNumber).GetUIColor();
-
-        // update text
-        _playersWrappers[playerNumber].Name.text = AirConsole.instance.GetNickname(deviceId);
-
-        // update image
-        ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[playerNumber].Avatar);
     }
 
     public void DisplayNoEnoughPlayersText(bool active)

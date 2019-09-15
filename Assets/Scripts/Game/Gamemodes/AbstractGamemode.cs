@@ -28,8 +28,8 @@ public abstract class AbstractGamemode
 {
     #region Fields
     public static int valueForVictory = 5;
-    protected Dictionary<CharID, int> _charactersValue = new Dictionary<CharID, int>();
-    protected CharID? _mvpCharID = null;
+    protected Dictionary<CharId, int> _charactersValue = new Dictionary<CharId, int>();
+    protected CharId? _mvpCharID = null;
     #endregion
 
     #region Properties
@@ -39,7 +39,7 @@ public abstract class AbstractGamemode
         {
             int sum = 0;
 
-            foreach (CharID item in Enum.GetValues(typeof(CharID)))
+            foreach (CharId item in Enum.GetValues(typeof(CharId)))
             {
                 sum += _charactersValue[item];
             }
@@ -52,9 +52,9 @@ public abstract class AbstractGamemode
     {
         get
         {
-            int[] charactersValueArray = new int [Enum.GetValues(typeof(CharID)).Length];
+            int[] charactersValueArray = new int [Enum.GetValues(typeof(CharId)).Length];
 
-            foreach (CharID item in Enum.GetValues(typeof(CharID)))
+            foreach (CharId item in Enum.GetValues(typeof(CharId)))
             {
                 charactersValueArray[(int)item] = _charactersValue[item];
             }
@@ -68,7 +68,7 @@ public abstract class AbstractGamemode
     public AbstractGamemode()
     {
         // init _charactersValue
-        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {
             _charactersValue[item] = 0;
         }
@@ -76,7 +76,7 @@ public abstract class AbstractGamemode
 
     public bool CheckForVictory()
     {
-        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {
             if (_charactersValue[item] >= valueForVictory)
             {
@@ -90,12 +90,12 @@ public abstract class AbstractGamemode
         return false;
     }
 
-    protected void CheckForNewMvp(CharID? playerToCheck)
+    protected void CheckForNewMvp(CharId? playerToCheck)
     {
         if (_mvpCharID == null || playerToCheck == null) return;
 
-        CharID mvpCharID = (CharID)_mvpCharID;
-        CharID newMvpToCheck = (CharID)playerToCheck;
+        CharId mvpCharID = (CharId)_mvpCharID;
+        CharId newMvpToCheck = (CharId)playerToCheck;
 
         if (_charactersValue[mvpCharID] < _charactersValue[newMvpToCheck])
         {
@@ -107,7 +107,7 @@ public abstract class AbstractGamemode
         }
     }
 
-    protected abstract void Victory(CharID winnerID);
-    public abstract void Kill(CharID? killerCharID);
+    protected abstract void Victory(CharId winnerID);
+    public abstract void Kill(CharId? killerCharID);
     #endregion
 }

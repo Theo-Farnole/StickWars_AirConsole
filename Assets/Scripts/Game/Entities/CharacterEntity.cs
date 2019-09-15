@@ -39,7 +39,7 @@ public class CharacterEntity : Entity
     {
         // retrieve killer 
         var charController = killer.GetComponent<CharController>();
-        CharID? killerId = null;
+        CharId? killerId = null;
 
         if (charController != null)
         {

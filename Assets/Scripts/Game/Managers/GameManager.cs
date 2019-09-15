@@ -16,25 +16,26 @@ public class GameManager : Singleton<GameManager>
     private GamemodeType gamemodeType = GamemodeType.DeathMatch;
     private AbstractGamemode _gamemode;
 
-    private Dictionary<CharID, CharController> _characters = new Dictionary<CharID, CharController>();
-    private Dictionary<CharID, int> _charControllerToDeviceID = new Dictionary<CharID, int>();
+    private Dictionary<CharId, CharController> _characters = new Dictionary<CharId, CharController>();
+
     #endregion
 
     #region Properties
     public AbstractGamemode Gamemode { get => _gamemode; }
-    public Dictionary<CharID, CharController> Characters { get => _characters; }
-    public Dictionary<CharID, int> CharControllerToDeviceID { get => _charControllerToDeviceID; set => _charControllerToDeviceID = value; }
+    public Dictionary<CharId, CharController> Characters { get => _characters; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {
             _characters[item] = null;
-            _charControllerToDeviceID[item] = -1;
         }
+
+        // AirConsole callbacks
+        AirConsole.instance.onConnect += OnConnect;
 
         if (AirConsole.instance.IsAirConsoleUnityPluginReady())
         {
@@ -44,18 +45,6 @@ public class GameManager : Singleton<GameManager>
         {
             AirConsole.instance.onReady += OnReady;
         }
-
-#if UNITY_EDITOR
-        // add instantiate characters to _characters
-        var charControllers = FindObjectsOfType<CharController>();
-
-        for (int i = 0; i < charControllers.Length; i++)
-        {
-            _characters[charControllers[i].charID] = charControllers[i];
-        }
-
-        AirConsole.instance.onConnect += OnConnect;
-#endif
     }
 
     void Start()
@@ -66,16 +55,16 @@ public class GameManager : Singleton<GameManager>
 #if UNITY_EDITOR
     void Update()
     {
-        CharID? charId = null;
+        CharId? charId = null;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) charId = CharID.Red;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) charId = CharID.Blue;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) charId = CharID.Green;
-        if (Input.GetKeyDown(KeyCode.Alpha4)) charId = CharID.Purple;
+        if (Input.GetKeyDown(KeyCode.Alpha1)) charId = CharId.Red;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) charId = CharId.Blue;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) charId = CharId.Green;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) charId = CharId.Purple;
 
-        if (charId != null && _characters[(CharID)charId] == null)
+        if (charId != null && _characters[(CharId)charId] == null)
         {
-            CharID c_charId = (CharID)charId;
+            CharId c_charId = (CharId)charId;
 
             var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
             player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
@@ -89,99 +78,106 @@ public class GameManager : Singleton<GameManager>
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            UIManager.Instance.LaunchVictoryAnimation(CharID.Red);
+            UIManager.Instance.LaunchVictoryAnimation(CharId.Red);
         }
     }
 #endif
 
     void OnDestroy()
     {
-        if (AirConsole.instance != null)
-        {
-#if UNITY_EDITOR
-            AirConsole.instance.onConnect -= OnConnect;
-#endif
-            AirConsole.instance.onReady -= OnReady;
-        }
+        AirConsole.instance.onConnect -= OnConnect;
+        AirConsole.instance.onReady -= OnReady;
     }
     #endregion
 
     #region AirConsole events
-#if UNITY_EDITOR
-    void OnConnect(int device_id)
+    void OnConnect(int deviceId)
     {
-        var activePlayers = AirConsole.instance.GetActivePlayerDeviceIds.Count;
+        CharId? charId = null;
 
-        if (activePlayers < MAX_PLAYERS)
+        if (CharIdAllocator.DoDeviceIdExist(deviceId))
         {
-            AirConsole.instance.SetActivePlayers(activePlayers + 1);
-            InstantiateCharacter(device_id);
+            charId = CharIdAllocator.GetCharId(deviceId);
+            InstantiateCharacter(deviceId, (CharId)charId);
+        }
+        else
+        {
+            charId = CharIdAllocator.AllocateDeviceId(deviceId);
 
-            // update controller
+            // Is there available charId
+            if (charId != null)
+            {
+#if UNITY_EDITOR
+                InstantiateCharacter(deviceId, (CharId)charId);
+#else
             var token = new
             {
-                view = ControllerView.Play.ToString(),
-                charID = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).ToString(),
-                bgColor = ((CharID)AirConsole.instance.ConvertDeviceIdToPlayerNumber(device_id)).GetUIHex()
+                charId,
+                view = ControllerView.Wait.ToString(),
+                bgColor = ((CharId)charId).GetUIHex()
             };
 
-            AirConsole.instance.Message(device_id, token);
+            AirConsole.instance.Message(deviceId, token);
+#endif
+            }
+            else
+            {
+                var token = new
+                {
+                    view = ControllerView.NoPlace.ToString(),
+                };
+
+                AirConsole.instance.Message(deviceId, token);
+            }
         }
     }
-#endif
 
     void OnReady(string str)
     {
-        var devicesIds = AirConsole.instance.GetActivePlayerDeviceIds;
-
-        for (int i = 0; i < devicesIds.Count; i++)
+        foreach (CharId charId in Enum.GetValues(typeof(CharId)))
         {
-            InstantiateCharacter(devicesIds[i]);
+            if (CharIdAllocator.DeviceIdToCharId.ContainsKey(charId))
+            {
+                int deviceId = CharIdAllocator.DeviceIdToCharId[charId];
+                InstantiateCharacter(deviceId, charId);
+            }
         }
     }
     #endregion
 
-    void InstantiateCharacter(int deviceId)
+    void InstantiateCharacter(int deviceId, CharId charId)
     {
-        bool isActivePlayer = (AirConsole.instance.ConvertDeviceIdToPlayerNumber(deviceId) != -1);
-
-        if (isActivePlayer)
+        if (_characters.ContainsKey(charId) && _characters[charId] != null)
         {
-            bool charIdFinded = false;
-
-            // find an availableCharId
-            foreach (CharID item in Enum.GetValues(typeof(CharID)))
-            {
-                if (_characters.ContainsKey(item) && _characters[item] != null)
-                    continue;
-
-                charIdFinded = true;
-
-                var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
-                player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
-                player.charID = item;
-
-                _characters[item] = player;
-                _charControllerToDeviceID[item] = deviceId;
-
-                Debug.Log("Character instantiated after find free charID: " + item);
-
-                break;
-            }
-
-            if (!charIdFinded)
-            {
-                // on retourne la view "Pas assez de place déso"
-            }
+            Debug.LogWarning("Trying to instantiate character already instantiated w/ charId: " + charId);
+            return;
         }
 
+        var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
+        player.transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+        player.ownerDeviceId = deviceId;
+        player.charID = charId;
+
+        _characters[charId] = player;
+
+        // update view
+        var token = new
+        {
+            charId,
+            view = ControllerView.Play.ToString(),
+            bgColor = charId.GetUIHex()
+        };
+
+        AirConsole.instance.Message(deviceId, token);
+
+        Debug.Log("Character instantiated after find free charID: " + charId);
         UIManager.Instance.SetAvatars();
     }
 
-    public void Victory(CharID winnerId)
+    public void Victory(CharId winnerId)
     {
         // mute & freeze characters
-        foreach (CharID item in Enum.GetValues(typeof(CharID)))
+        foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {
             if (_characters[item] != null)
             {
