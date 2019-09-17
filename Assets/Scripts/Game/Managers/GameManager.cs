@@ -34,7 +34,13 @@ public class GameManager : Singleton<GameManager>
         {
             _characters[item] = null;
         }
+#if !UNITY_EDITOR
+        _enableHotConnection = false;
+#endif
+    }
 
+    void Start()
+    {
         // AirConsole callbacks
         AirConsole.instance.onConnect += OnConnect;
 
@@ -46,14 +52,7 @@ public class GameManager : Singleton<GameManager>
         {
             AirConsole.instance.onReady += OnReady;
         }
-
-#if !UNITY_EDITOR
-        _enableHotConnection = false;
-#endif
-    }
-
-    void Start()
-    {
+        
         _gamemode = gamemodeType.ToGamemodeClass();
     }
 
@@ -96,9 +95,9 @@ public class GameManager : Singleton<GameManager>
             AirConsole.instance.onReady -= OnReady;
         }
     }
-#endregion
+    #endregion
 
-#region AirConsole events
+    #region AirConsole events
     void OnConnect(int deviceId)
     {
         CharId? charId = null;
@@ -150,11 +149,15 @@ public class GameManager : Singleton<GameManager>
             if (CharIdAllocator.DeviceIdToCharId.ContainsKey(charId))
             {
                 int deviceId = CharIdAllocator.DeviceIdToCharId[charId];
-                InstantiateCharacter(deviceId, charId);
+
+                if (deviceId != -1)
+                {
+                    InstantiateCharacter(deviceId, charId);
+                }
             }
         }
     }
-#endregion
+    #endregion
 
     void InstantiateCharacter(int deviceId, CharId charId)
     {
@@ -205,5 +208,5 @@ public class GameManager : Singleton<GameManager>
             Destroy(virus[i].gameObject);
         }
     }
-#endregion
+    #endregion
 }
