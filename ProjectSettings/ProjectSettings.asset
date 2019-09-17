@@ -633,10 +633,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: bec8ff20-ce9d-4c44-a6fc-15f63069a62b
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: StickWars_Phoenix
+  organizationId: lortedoo
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
