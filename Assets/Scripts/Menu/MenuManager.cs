@@ -177,7 +177,7 @@ public class MenuManager : Singleton<MenuManager>
         // display play view on controllers
         var token = new
         {
-            view = ControllerView.Play.ToString(),
+            view = ControllerView.Load.ToString(),
         };
 
         AirConsole.instance.Broadcast(token);

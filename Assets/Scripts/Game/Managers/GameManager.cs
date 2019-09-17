@@ -12,12 +12,13 @@ public class GameManager : Singleton<GameManager>
 
     #region Fields
     [SerializeField] private GameObject _prefabPlayer;
+    [Header("Debug")]
+    [SerializeField] private bool _enableHotConnection = false;
 
     private GamemodeType gamemodeType = GamemodeType.DeathMatch;
     private AbstractGamemode _gamemode;
 
     private Dictionary<CharId, CharController> _characters = new Dictionary<CharId, CharController>();
-
     #endregion
 
     #region Properties
@@ -45,6 +46,10 @@ public class GameManager : Singleton<GameManager>
         {
             AirConsole.instance.onReady += OnReady;
         }
+
+#if !UNITY_EDITOR
+        _enableHotConnection = false;
+#endif
     }
 
     void Start()
@@ -85,12 +90,15 @@ public class GameManager : Singleton<GameManager>
 
     void OnDestroy()
     {
-        AirConsole.instance.onConnect -= OnConnect;
-        AirConsole.instance.onReady -= OnReady;
+        if (AirConsole.instance != null)
+        {
+            AirConsole.instance.onConnect -= OnConnect;
+            AirConsole.instance.onReady -= OnReady;
+        }
     }
-    #endregion
+#endregion
 
-    #region AirConsole events
+#region AirConsole events
     void OnConnect(int deviceId)
     {
         CharId? charId = null;
@@ -107,18 +115,21 @@ public class GameManager : Singleton<GameManager>
             // Is there available charId
             if (charId != null)
             {
-#if UNITY_EDITOR
-                InstantiateCharacter(deviceId, (CharId)charId);
-#else
-            var token = new
-            {
-                charId,
-                view = ControllerView.Wait.ToString(),
-                bgColor = ((CharId)charId).GetUIHex()
-            };
+                if (_enableHotConnection)
+                {
+                    InstantiateCharacter(deviceId, (CharId)charId);
+                }
+                else
+                {
+                    var token = new
+                    {
+                        charId,
+                        view = ControllerView.W8GameToFinish.ToString(),
+                        bgColor = ((CharId)charId).GetUIHex()
+                    };
 
-            AirConsole.instance.Message(deviceId, token);
-#endif
+                    AirConsole.instance.Message(deviceId, token);
+                }
             }
             else
             {
@@ -143,7 +154,7 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
-    #endregion
+#endregion
 
     void InstantiateCharacter(int deviceId, CharId charId)
     {
@@ -194,5 +205,5 @@ public class GameManager : Singleton<GameManager>
             Destroy(virus[i].gameObject);
         }
     }
-    #endregion
+#endregion
 }
