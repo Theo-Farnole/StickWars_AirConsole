@@ -11,11 +11,22 @@ var disableFunctionMap = new Map();
 function init() {
     ViewManager.init();
     ViewManager.show("Load");
+    // ViewManager.show("Wait");
     // ViewManager.show("Play");
 
     airconsole = new AirConsole({
         "orientation": "landscape"
     });
+
+    var functionUpdateWaitMessage = function() 
+    {
+        var masterId = airconsole.getMasterControllerDeviceId();
+        var masterNickname = airconsole.getNickname(masterId);
+        document.getElementById("master_name").innerHTML = masterNickname;
+    };
+
+    airconsole.onConnect = function () { functionUpdateWaitMessage() };
+    airconsole.onDisconnect = function () { functionUpdateWaitMessage() };
 
     airconsole.onMessage = function (from, data) {
         if (from == AirConsole.SCREEN) {
