@@ -4,13 +4,26 @@ using UnityEngine;
 
 public class LevelData : Singleton<LevelData>
 {
+    #region Classes
+    [System.Serializable]
+    public class RespawnArea
+    {
+        public Vector3 p1 = Vector3.left;
+        public Vector3 p2 = Vector3.right;
+
+        public void DrawGizmos()
+        {
+            Gizmos.DrawLine(p1, p2);
+        }
+    }
+    #endregion
+
     #region Fields
-    public static readonly float SPAWN_REUSE_TIME = 1f;
-
-    [SerializeField] private Transform[] _spawnPoints = new Transform[4];
     [SerializeField] private Transform[] _virusSpawnerPosition = new Transform[3];
-
-    private List<Transform> _availableSpawnPoints = null;
+    [Space]
+    [EnumNamedArray(typeof(CharId))]
+    [SerializeField] private Transform[] _defaultSpawnPoint = new Transform[4];
+    [SerializeField] private RespawnArea[] _respawnArea;
     #endregion
 
     #region Properties
@@ -18,41 +31,29 @@ public class LevelData : Singleton<LevelData>
     #endregion
 
     #region Methods
-    public Transform GetRandomSpawnPoint()
+    public Vector3 GetDefaultSpawnPoint(CharId charId)
     {
-        // init spawn points
-        if (_availableSpawnPoints == null)
+        return _defaultSpawnPoint[(int)charId].position;
+    }
+
+    public Vector3 GetRandomSpawnPoint()
+    {
+        int random = Random.Range(0, _respawnArea.Length);
+
+        Vector3 p = Vector3.zero;
+        p.x = Random.Range(_respawnArea[random].p1.x, _respawnArea[random].p2.x);
+        p.y = Random.Range(_respawnArea[random].p1.y, _respawnArea[random].p2.y);
+        p.z = Random.Range(_respawnArea[random].p1.y, _respawnArea[random].p2.z);
+
+        return p;        
+    }
+
+    void OnDrawGizmos()
+    {
+        for (int i = 0; i < _respawnArea.Length; i++)
         {
-            _availableSpawnPoints = new List<Transform>(_spawnPoints);
+            _respawnArea[i].DrawGizmos();
         }
-
-        Transform point;
-
-        if (_availableSpawnPoints != null)
-        {
-            int randomIndex = Random.Range(0, _availableSpawnPoints.Count);
-            point = _availableSpawnPoints[randomIndex];
-
-            // avoid same spawn on multiple players
-            _availableSpawnPoints.Remove(point);
-
-            this.ExecuteAfterTime(SPAWN_REUSE_TIME, () =>
-            {
-                _availableSpawnPoints.Add(point);
-            });
-        }
-
-        // if not available spawn point exist,
-        // take random one in original array
-        else
-        {
-            Debug.Log("Not available spawn point, taking one random");
-
-            int randomIndex = Random.Range(0, _spawnPoints.Length);
-            point = _spawnPoints[randomIndex];
-        }
-
-        return point;
     }
     #endregion
 }

@@ -91,7 +91,7 @@ public class VirusSpawner : Entity
             {
                 var charController = GameManager.Instance.Characters[item];
 
-                if (charController.charID != killer.GetComponent<CharController>()?.charID || _debugAttackEveryCharacter)
+                if (charController.charId != killer.GetComponent<CharController>()?.charId || _debugAttackEveryCharacter)
                 {
                     var virus = Instantiate(_prefabVirus, transform.position, Quaternion.identity);
                     virus.GetComponent<VirusController>().target = charController.transform;

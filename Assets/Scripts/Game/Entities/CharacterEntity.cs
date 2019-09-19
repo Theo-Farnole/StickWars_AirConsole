@@ -21,7 +21,7 @@ public class CharacterEntity : Entity
 
     void Start()
     {
-        _myID = (int)_charController.charID;
+        _myID = (int)_charController.charId;
     }
     #endregion
 
@@ -43,7 +43,7 @@ public class CharacterEntity : Entity
 
         if (charController != null)
         {
-            killerId = killer.GetComponent<CharController>().charID;
+            killerId = killer.GetComponent<CharController>().charId;
         }
 
         GameManager.Instance.Gamemode.Kill(killerId);

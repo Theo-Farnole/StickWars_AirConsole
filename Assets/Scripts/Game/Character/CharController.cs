@@ -133,7 +133,7 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region serialized variables
-    public CharId charID;
+    public CharId charId;
     [Space]
     [SerializeField] private CharacterControllerData _data;
     [Header("Attacking")]
@@ -304,11 +304,11 @@ public class CharController : MonoBehaviour
 
     void Start()
     {
-        _spriteRenderer.color = charID.GetSpriteColor();
-        _keyboardControls = charID.ToControls();
+        _spriteRenderer.color = charId.GetSpriteColor();
+        _keyboardControls = charId.ToControls();
         _crown.enabled = false;
 
-        gameObject.name = gameObject.name.Replace("(Clone)", " " + charID.ToString());
+        gameObject.name = gameObject.name.Replace("(Clone)", " " + charId.ToString());
     }
     #endregion
 
@@ -378,7 +378,7 @@ public class CharController : MonoBehaviour
 #if UNITY_EDITOR
     void OnValidate()
     {
-        _spriteRenderer.color = charID.GetSpriteColor();
+        _spriteRenderer.color = charId.GetSpriteColor();
     }
 #endif
     #endregion
@@ -439,7 +439,7 @@ public class CharController : MonoBehaviour
         _charAudio.PlaySound(CharAudio.Sound.Death);
 
         // set new position
-        transform.position = LevelData.Instance.GetRandomSpawnPoint().position;
+        transform.position = LevelData.Instance.GetRandomSpawnPoint();
     }
 
     private void HitGround()
@@ -500,7 +500,7 @@ public class CharController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = charID.GetSpriteColor();
+        Gizmos.color = charId.GetSpriteColor();
         Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);
     }
     #endregion
