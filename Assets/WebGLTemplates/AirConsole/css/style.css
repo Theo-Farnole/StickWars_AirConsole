@@ -42,9 +42,10 @@ body {
 
     display: grid;
     grid-gap: var(--button-padding-size);
-    grid-template-columns: repeat(4, auto);
+    /* grid-template-columns: repeat(4, auto); */
     /* grid-template-rows: repeat(2, auto); */
     grid-auto-rows: 1fr;
+    grid-auto-columns: 1fr;
 }
 
 .buttons {
@@ -107,3 +108,27 @@ body {
 #button_a,#button_a_menu {
     font-variant: small-caps;
 }
+
+:root {
+    --arrow-size: 5vw;
+    --arrow-color: #404040;
+}
+
+
+.arrow-right {
+    width: 0; 
+    height: 0; 
+    border-top: var(--arrow-size) solid transparent;
+    border-bottom: var(--arrow-size) solid transparent;
+    
+    border-left: var(--arrow-size) solid var(--arrow-color);
+  }
+  
+  .arrow-left {
+    width: 0; 
+    height: 0; 
+    border-top: var(--arrow-size) solid transparent;
+    border-bottom: var(--arrow-size) solid transparent; 
+    
+    border-right:var(--arrow-size) solid var(--arrow-color); 
+  }

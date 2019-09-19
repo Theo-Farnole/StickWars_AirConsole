@@ -12,7 +12,7 @@ function init() {
     ViewManager.init();
     ViewManager.show("Load");
     // ViewManager.show("Wait");
-    // ViewManager.show("Play");
+    ViewManager.show("Play");
 
     airconsole = new AirConsole({
         "orientation": "landscape"
