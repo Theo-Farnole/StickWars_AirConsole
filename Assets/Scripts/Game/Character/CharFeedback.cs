@@ -36,6 +36,8 @@ public class CharFeedback : MonoBehaviour
     [Space]
     [EnumNamedArray(typeof(Particle))]
     [SerializeField] private ParticleSystem[] _nonOrientedParticles = new ParticleSystem[Enum.GetValues(typeof(Particle)).Length];
+    [Space]
+    [SerializeField] private ParticleSystem[] _respawnParticles;
 
     private CharController _charController;
     private bool _canPlayHitGround = false; // disable the first call of hitGround
@@ -98,6 +100,21 @@ public class CharFeedback : MonoBehaviour
     public ParticleSystem GetNonOrientedParticle(Particle particle)
     {
         return _nonOrientedParticles[(int)particle];
+    }
+
+    public void PlayRespawnParticle()
+    {
+        for (int i = 0; i < _respawnParticles.Length; i++)
+        {
+            _respawnParticles[i].Play();
+        }
+
+        new Timer(this, 1.8f, (float t) =>
+        {
+            var c= _charController.SpriteRenderer.color;
+            c.a = t;
+            _charController.SpriteRenderer.color = c;
+        });
     }
     #endregion
 }

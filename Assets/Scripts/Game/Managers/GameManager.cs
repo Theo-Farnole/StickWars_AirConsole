@@ -197,6 +197,7 @@ public class GameManager : Singleton<GameManager>
             {
                 _characters[item].CharAudio.EnableSound = false;
                 _characters[item].Freeze = true;
+                _characters[item].GetComponent<CharacterEntity>().isInvincible = true;
             }
         }
 

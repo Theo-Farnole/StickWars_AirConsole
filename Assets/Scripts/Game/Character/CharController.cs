@@ -284,6 +284,8 @@ public class CharController : MonoBehaviour
                 _state.OnStateEnter();
         }
     }
+
+    public SpriteRenderer SpriteRenderer { get => _spriteRenderer; set => _spriteRenderer = value; }
     #endregion
 
     #region Methods
@@ -408,7 +410,7 @@ public class CharController : MonoBehaviour
         CanThrowProjectile = false;
 
         var gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool("projectile", transform.position + _projectileOrigin, Quaternion.identity);
-        var projectile = gameObjectProjectile.GetComponent<Projectile>();        
+        var projectile = gameObjectProjectile.GetComponent<Projectile>();
 
         projectile.damage = _data.DamageProjectile;
         projectile.Direction = Vector3.right * (int)OrientationX;
@@ -431,7 +433,6 @@ public class CharController : MonoBehaviour
         State = new CharStateNormal(this);
         GetComponent<CharacterEntity>().ResetHP();
 
-
         // feedback
         var deathPS = _charFeedback.GetNonOrientedParticle(CharFeedback.Particle.Death);
         Instantiate(deathPS, transform.position, Quaternion.identity).Play();
@@ -440,6 +441,16 @@ public class CharController : MonoBehaviour
 
         // set new position
         transform.position = LevelData.Instance.GetRandomSpawnPoint();
+        _charFeedback.PlayRespawnParticle();
+
+        _freeze = true;
+        GetComponent<CharacterEntity>().isInvincible = true;
+        
+        this.ExecuteAfterTime(_data.RespawnDuration, () =>
+        {
+            _freeze = false;
+            GetComponent<CharacterEntity>().isInvincible = false;
+        });
     }
 
     private void HitGround()
@@ -453,7 +464,7 @@ public class CharController : MonoBehaviour
     {
         if (_freeze || deviceId != ownerDeviceId)
             return;
-        
+
         if (data["horizontal"] != null)
         {
             _inputs.horizontalInput = (int)data["horizontal"];

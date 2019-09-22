@@ -28,4 +28,8 @@ public class CharacterControllerData : ScriptableObject
     [SerializeField] private float _cadenceProjectile = 2;
     public float CadenceProjectile { get => _cadenceProjectile; }
 
+    [Header("Respawn")]
+
+    [SerializeField] private float _respawnDuration = 1.5f;
+    public float RespawnDuration { get => _respawnDuration; set => _respawnDuration = value; }
 }
