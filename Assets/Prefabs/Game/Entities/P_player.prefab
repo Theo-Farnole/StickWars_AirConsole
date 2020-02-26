@@ -142,8 +142,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -242,8 +240,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &2013334154943221900
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,8 +303,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -762,8 +756,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -836,8 +828,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -1045,8 +1035,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -1119,8 +1107,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -1231,16 +1217,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6379111327958834948}
     m_Modifications:
-    - target: {fileID: 7534876456046858837, guid: ed08050e0bf36e64e9af549d4df2c54b,
-        type: 3}
-      propertyPath: m_Name
-      value: P_PS_sliding_tackle RIGHT
-      objectReference: {fileID: 0}
-    - target: {fileID: 5324483823321786528, guid: ed08050e0bf36e64e9af549d4df2c54b,
-        type: 3}
-      propertyPath: lengthInSec
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 984188846087621463, guid: ed08050e0bf36e64e9af549d4df2c54b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1295,6 +1271,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5324483823321786528, guid: ed08050e0bf36e64e9af549d4df2c54b,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534876456046858837, guid: ed08050e0bf36e64e9af549d4df2c54b,
+        type: 3}
+      propertyPath: m_Name
+      value: P_PS_sliding_tackle RIGHT
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed08050e0bf36e64e9af549d4df2c54b, type: 3}
@@ -1564,22 +1550,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Explosion2
       objectReference: {fileID: 0}
-    - target: {fileID: 19800006, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800004, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800002, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800000, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.1545821
@@ -1622,6 +1592,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800006, guid: 8b940ede2c20ec44ba870a2cdd277051, type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1780,16 +1766,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6379111327958834948}
     m_Modifications:
-    - target: {fileID: 7534876456046858837, guid: ed08050e0bf36e64e9af549d4df2c54b,
-        type: 3}
-      propertyPath: m_Name
-      value: P_PS_sliding_tackle LEFT
-      objectReference: {fileID: 0}
-    - target: {fileID: 5324483823321786528, guid: ed08050e0bf36e64e9af549d4df2c54b,
-        type: 3}
-      propertyPath: lengthInSec
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 984188846087621463, guid: ed08050e0bf36e64e9af549d4df2c54b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1845,6 +1821,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: 5324483823321786528, guid: ed08050e0bf36e64e9af549d4df2c54b,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534876456046858837, guid: ed08050e0bf36e64e9af549d4df2c54b,
+        type: 3}
+      propertyPath: m_Name
+      value: P_PS_sliding_tackle LEFT
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed08050e0bf36e64e9af549d4df2c54b, type: 3}
 --- !u!4 &6128275266898555466 stripped
@@ -1870,21 +1856,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: P_PS_character_death
-      objectReference: {fileID: 0}
-    - target: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.9150943
-      objectReference: {fileID: 0}
-    - target: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.2978373
-      objectReference: {fileID: 0}
-    - target: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.2978373
       objectReference: {fileID: 0}
     - target: {fileID: 6843903831366001274, guid: 1307770aaa6d242438533fa18a62d92e,
         type: 3}
@@ -1940,6 +1911,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.9150943
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.2978373
+      objectReference: {fileID: 0}
+    - target: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.2978373
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1307770aaa6d242438533fa18a62d92e, type: 3}
