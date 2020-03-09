@@ -28,7 +28,7 @@ public struct CharControls
     }
 }
 
-static class CharIDExtensions
+public static class CharIDExtensions
 {
     public static string GetUIHex(this CharId playerId)
     {
