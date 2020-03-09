@@ -47,7 +47,8 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 3e003f4f9ffc67f4ba4819ff9c0397d4, type: 3}
     - {fileID: 2800000, guid: cbd38f318d9824f44bfa90b8279cda33, type: 3}
     - {fileID: 2800000, guid: 1ce6326b717786b40ae4c0d52aae2bf8, type: 3}
-    totalSpriteSurfaceArea: 173336
+    - {fileID: 2800000, guid: 8df9504dcdba45c4da90872452da49da, type: 3}
+    totalSpriteSurfaceArea: 177432
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -55,6 +56,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 93752eb90175ca147aa087e3ba6382b9, type: 3}
   - {fileID: 21300000, guid: c5874eca93699a4469be0c49d577d73f, type: 3}
   - {fileID: 21300000, guid: 1ce6326b717786b40ae4c0d52aae2bf8, type: 3}
+  - {fileID: 21300000, guid: 8df9504dcdba45c4da90872452da49da, type: 3}
   - {fileID: 21300000, guid: 3e003f4f9ffc67f4ba4819ff9c0397d4, type: 3}
   - {fileID: 21300000, guid: d48015bfa92e78c4c86fbe5cd6ada703, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -62,6 +64,7 @@ SpriteAtlas:
   - folder
   - ruban
   - topbar
+  - power-button_512
   - app_drawer
   - home
   m_Tag: AT_Game
