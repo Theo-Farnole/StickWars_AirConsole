@@ -133,7 +133,7 @@ document.addEventListener('touchmove', function (event) {
         var identifier = touch.identifier;
         var newTouchedElement = document.elementFromPoint(touch.pageX, touch.pageY);
 
-        if (touchedElement.get(identifier) !== newTouchedElement) {
+        if (touchedElement.get(identifier) !== null && touchedElement.get(identifier) !== newTouchedElement) {            
             var touchedElementId = touchedElement.get(identifier).id;
 
             // if old touched element has a disable function
