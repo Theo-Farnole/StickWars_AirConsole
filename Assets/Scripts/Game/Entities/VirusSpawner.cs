@@ -15,6 +15,8 @@ public class VirusSpawner : Entity
     [Space]
     [SerializeField] private AudioSource _audioDeath;
     [Space]
+    [SerializeField] private float _glitchEffectDuration = 1f;
+    [Space]
     [SerializeField] private bool _debugAttackEveryCharacter = false;
     [SerializeField] private bool _debugInstantKill = false;
 
@@ -70,6 +72,9 @@ public class VirusSpawner : Entity
 
             CameraShake.Instance.Shake(0.3f, 0.15f);
             CameraEffectController.Instance.EnableGlitch(true);
+
+            CameraEffectController.Instance.ExecuteAfterTime(_glitchEffectDuration, ()
+                => CameraEffectController.Instance.EnableGlitch(false));
         }
         else
         {
