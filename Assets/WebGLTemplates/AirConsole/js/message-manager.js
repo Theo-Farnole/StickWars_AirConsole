@@ -117,7 +117,7 @@ document.addEventListener('touchstart', function (event) {
             activeFunctionMap.get(touchedElementId)();
 
             // add visual feedback
-            touchedElement.get(identifier).className += " buttons_active";
+            touchedElement.get(identifier).className += "buttons_active";
         }
     }
 }, false);
@@ -141,18 +141,22 @@ document.addEventListener('touchmove', function (event) {
                 disableFunctionMap.get(touchedElementId)();
 
                 // remove visual feedback
-                touchedElement.get(identifier).className = touchedElement.get(identifier).className.replace(" buttons_active", "");
+                touchedElement.get(identifier).className = touchedElement.get(identifier).className.replace("buttons_active", "");
             }
 
             touchedElement.set(identifier, newTouchedElement);
-            touchedElementId = touchedElement.get(identifier).id;
 
-            // if new touched element has an active function
-            if (touchedElementId != undefined && activeFunctionMap.get(touchedElementId) != undefined) {
-                activeFunctionMap.get(touchedElementId)();
-
-                // add visual feedback
-                touchedElement.get(identifier).className += " buttons_active";
+            if (newTouchedElement !== null)
+            {
+                touchedElementId = newTouchedElement.id;
+                
+                // if new touched element has an active function
+                if (touchedElementId != undefined && activeFunctionMap.get(touchedElementId) != undefined) {
+                    activeFunctionMap.get(touchedElementId)();
+                    
+                    // add visual feedback
+                    touchedElement.get(identifier).className += " buttons_active";
+                }
             }
         }
     }
@@ -165,16 +169,19 @@ document.addEventListener("touchend", function (event) {
     for (var i = 0; i < touches.length; i++) {
         var identifier = touches[i].identifier;
 
-        var touchedElementId = touchedElement.get(identifier).id;
-
-        if (touchedElementId != undefined && disableFunctionMap.get(touchedElementId) != undefined) {
-            disableFunctionMap.get(touchedElementId)();
-
-            // remove visual feedback
-            touchedElement.get(identifier).className = touchedElement.get(identifier).className.replace(" buttons_active", "");
+        if (touchedElement.get(identifier) !== null)            
+        {
+            var touchedElementId = touchedElement.get(identifier).id;
+            
+            if (touchedElementId != undefined && disableFunctionMap.get(touchedElementId) != undefined) {
+                disableFunctionMap.get(touchedElementId)();
+                
+                // remove visual feedback
+                touchedElement.get(identifier).className = touchedElement.get(identifier).className.replace(" buttons_active", "");
+            }
+            
+            touchedElement.set(identifier, null);
         }
-
-        touchedElement.set(identifier, null);
     }
 });
 
