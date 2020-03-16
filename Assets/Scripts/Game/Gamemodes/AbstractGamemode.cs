@@ -29,7 +29,7 @@ public abstract class AbstractGamemode
     #region Fields
     public static int valueForVictory = 5;
     protected Dictionary<CharId, int> _charactersValue = new Dictionary<CharId, int>();
-    protected CharId? _mvpCharID = null;
+    protected CharId? _currentMVPCharID = null;
     #endregion
 
     #region Properties
@@ -90,20 +90,33 @@ public abstract class AbstractGamemode
         return false;
     }
 
-    protected void CheckForNewMvp(CharId? playerToCheck)
+    protected void CheckForNewMVP(CharId? charIDToCheck)
     {
-        if (_mvpCharID == null || playerToCheck == null) return;
+        // prevent check for new mvp is charID is null
+        if (charIDToCheck == null) return;
 
-        CharId mvpCharID = (CharId)_mvpCharID;
-        CharId newMvpToCheck = (CharId)playerToCheck;
-
-        if (_charactersValue[mvpCharID] < _charactersValue[newMvpToCheck])
+        // if there is no current mvp, let charId become the mvp
+        if (_currentMVPCharID == null)
         {
-            GameManager.Instance.Characters[mvpCharID].IsMVP = false;
+            GameManager.Instance.Characters[(CharId)charIDToCheck].IsMVP = true;
+            return;
+        }
+        
+        // converting from CharId? to CharId
+        CharId currentMVPCharIDConverted = (CharId)_currentMVPCharID; 
+        CharId charIDToCheckConverted = (CharId)charIDToCheck;        
+        
+        if (_charactersValue[currentMVPCharIDConverted] < _charactersValue[charIDToCheckConverted])
+        {
+            // remove isMvp status from old MVP
+            GameManager.Instance.Characters[currentMVPCharIDConverted].IsMVP = false;
 
-            _mvpCharID = playerToCheck;
+            // set new MVP
+            _currentMVPCharID = charIDToCheck;
+            currentMVPCharIDConverted = charIDToCheckConverted;
 
-            GameManager.Instance.Characters[mvpCharID].IsMVP = true;
+            // set isMvp to true to new MVP
+            GameManager.Instance.Characters[charIDToCheckConverted].IsMVP = true;
         }
     }
 

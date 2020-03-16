@@ -23,7 +23,7 @@ public class GamemodeDeathMatch : AbstractGamemode
         UIManager.Instance.UpdateGamemodeData(CharactersValueArray);
         CameraShake.Instance.Shake();
 
-        CheckForNewMvp(killerCharID);
+        CheckForNewMVP(killerCharID);
         CheckForVictory();
     }
 
