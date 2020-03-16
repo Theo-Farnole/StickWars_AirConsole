@@ -78,8 +78,9 @@ public class GameManager : Singleton<GameManager>
 
             _characters[c_charId] = player;
 
-
             UIManager.Instance.SetAvatars();
+
+            OnCharacterSpawn?.Invoke(player);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
