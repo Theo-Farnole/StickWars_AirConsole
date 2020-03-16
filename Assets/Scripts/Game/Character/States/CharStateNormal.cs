@@ -16,6 +16,7 @@ public class CharStateNormal : OwnerState<CharController>
         _owner.CharAudio.StopSound(CharAudio.Sound.Footstep);
     }
     #endregion
+
     #region Tick Callbacks
     public override void Tick()
     {
@@ -102,6 +103,10 @@ public class CharStateNormal : OwnerState<CharController>
 
         _owner.Rigidbody.velocity = new Vector2(_owner.Rigidbody.velocity.x, 0);
         _owner.Rigidbody.AddForce(Vector2.up * _owner.Data.JumpForce);
+
+        // on double jump
+        if (_jumpCount > 1)        
+            _owner.OnDoubleJump(_owner);        
     }
 
     void ManageFootstepSound(Vector2 velocity)

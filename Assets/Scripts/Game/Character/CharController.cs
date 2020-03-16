@@ -7,6 +7,8 @@ using System.Text;
 using System.ComponentModel;
 using UnityEngine;
 
+public delegate void CharControllerDelegate(CharController charController);
+
 public class CharController : MonoBehaviour
 {
     #region Classes
@@ -130,6 +132,10 @@ public class CharController : MonoBehaviour
     #region static readonly
     public readonly static int MAX_JUMPS_COUNT = 2;
     public readonly static float RAYCAST_DISTANCE = 0.1f;
+    #endregion
+
+    #region events
+    public CharControllerDelegate OnDoubleJump;
     #endregion
 
     #region serialized variables
