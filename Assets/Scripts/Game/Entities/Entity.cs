@@ -4,10 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public delegate void EntityDamage(Entity victim, int damageAmount);
+
 [SelectionBase]
 public class Entity : MonoBehaviour
 {
     #region Fields
+    public EntityDamage OnDamage;
+
     [Header("Entity Config")]
     [SerializeField] protected EntityData _entityData;
     public bool isInvincible = false;
@@ -51,6 +55,8 @@ public class Entity : MonoBehaviour
 
         _hp -= damage;
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
+
+        OnDamage?.Invoke(this, damage);
 
         UpdateHealthSlider();
         PopFloatingText(damage, attacker);

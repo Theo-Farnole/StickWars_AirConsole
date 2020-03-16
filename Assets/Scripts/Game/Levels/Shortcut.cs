@@ -31,6 +31,8 @@ public class Shortcut : Entity
     public override void GetDamage(int damage, Entity attacker)
     {
         SwitchWindowState();
+
+        OnDamage?.Invoke(this, damage);
     }
 
     private void SwitchWindowState()
