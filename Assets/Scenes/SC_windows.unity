@@ -191,26 +191,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3680399479780730012, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: _timeToCheckCondition
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3680399479780730012, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: _startTimerOnStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3680399479780730012, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: _textBoxContent
-      value: Hit shortcut to open a window
-      objectReference: {fileID: 0}
-    - target: {fileID: 5249211655573938685, guid: 7ab1c676aae425344ba0fff62480c6f3,
-        type: 3}
-      propertyPath: _displayDuration
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6125072410614328178, guid: 7ab1c676aae425344ba0fff62480c6f3,
         type: 3}
       propertyPath: m_Name
@@ -1698,7 +1678,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 215202210}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1187191889
+--- !u!114 &1187191886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1707,15 +1687,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1187191885}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c448dca2ddf2384c9cd92bf9eaf85ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 5555a12389240d748a91db2ac73cfb3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textBoxContent: Hit again shortcut to close window
-  _timeToCheckCondition: 5
-  _shortcut: {fileID: 0}
-  _hitCountToTriggerBox: 1
-  _startTimerOnStart: 0
-  _startTimerOnShortcutDamage: 1
+  _textBoxContent: Double jump by pressing "jump" button in the air!
+  _maxDoubleJumpsCount: 3
+  _timerToReachCondition: 5
 --- !u!1 &1204183463
 GameObject:
   m_ObjectHideFlags: 0
