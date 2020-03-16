@@ -991,6 +991,7 @@ GameObject:
   - component: {fileID: 4602638942038104756}
   - component: {fileID: 5249211655573938685}
   - component: {fileID: 3680399479780730012}
+  - component: {fileID: 1187191889}
   m_Layer: 0
   m_Name: Tutorial TextBox Manager
   m_TagString: Untagged
@@ -1024,7 +1025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50de6cbc7ad9104088e16824de6282b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _displayDuration: 1
+  _displayDuration: 3
   _textBox: {fileID: 4902170293292761168}
 --- !u!114 &3680399479780730012
 MonoBehaviour:
@@ -1038,10 +1039,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c448dca2ddf2384c9cd92bf9eaf85ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textBoxContent: Hit terminal shortcut to open a window.
-  _timeToCheckCondition: 10
+  _textBoxContent: Hit shortcut to open a window
+  _timeToCheckCondition: 3
   _shortcut: {fileID: 0}
-  _minHitsToShortcutToTrigger: 0
+  _hitCountToTriggerBox: 0
+  _startTimerOnStart: 1
+  _startTimerOnShortcutDamage: 0
+--- !u!114 &1187191889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6296701611741048936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c448dca2ddf2384c9cd92bf9eaf85ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textBoxContent: Hit again shortcut to close window
+  _timeToCheckCondition: 5
+  _shortcut: {fileID: 0}
+  _hitCountToTriggerBox: 1
+  _startTimerOnStart: 0
+  _startTimerOnShortcutDamage: 1
 --- !u!1 &6654174344683144745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1670,12 +1691,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9abd594f99e05c4dbeb040d0dc0d3cd, type: 3}
---- !u!224 &1473605059950817256 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
-    type: 3}
-  m_PrefabInstance: {fileID: 6704649450113600894}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &119451257141868927 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6675411550219547649, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
@@ -1688,6 +1703,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f01f6117c45984f8be9391d5a7c066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1473605059950817256 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 6704649450113600894}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8732989740205988651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1837,12 +1858,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9abd594f99e05c4dbeb040d0dc0d3cd, type: 3}
---- !u!224 &3479372927957727677 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
-    type: 3}
-  m_PrefabInstance: {fileID: 8732989740205988651}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2707257704371187498 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6675411550219547649, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
@@ -1855,3 +1870,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f01f6117c45984f8be9391d5a7c066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &3479372927957727677 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 8732989740205988651}
+  m_PrefabAsset: {fileID: 0}
