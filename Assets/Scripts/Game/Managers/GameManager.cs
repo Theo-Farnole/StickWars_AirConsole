@@ -11,6 +11,8 @@ public class GameManager : Singleton<GameManager>
     public static readonly int MAX_PLAYERS = 4;
 
     #region Fields
+    public CharControllerDelegate OnCharacterSpawn;
+
     [SerializeField] private GameObject _prefabPlayer;
     [Header("Debug")]
     [SerializeField] private bool _enableHotConnection = false;
@@ -186,6 +188,8 @@ public class GameManager : Singleton<GameManager>
 
         Debug.Log("Character instantiated after find free charID: " + charId);
         UIManager.Instance.SetAvatars();
+
+        OnCharacterSpawn?.Invoke(player);
     }
 
     public void Victory(CharId winnerId)
