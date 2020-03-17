@@ -35,16 +35,16 @@ public static class CharIDExtensions
         switch (playerId)
         {
             case CharId.Red:
-                return "c40233";
+                return "CF4436";
 
             case CharId.Blue:
-                return "0088bf";
+                return "2E87C2";
 
             case CharId.Green:
-                return "00a568";
+                return "28B263";
 
             case CharId.Purple:
-                return "A60092";
+                return "844C9C";
         }
 
         return "ffffff";
