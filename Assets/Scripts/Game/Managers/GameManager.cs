@@ -17,7 +17,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Debug")]
     [SerializeField] private bool _enableHotConnection = false;
 
-    private GamemodeType gamemodeType = GamemodeType.DeathMatch;
+    private GamemodeType _gamemodeType = GamemodeType.DeathMatch;
     private AbstractGamemode _gamemode;
 
     private Dictionary<CharId, CharController> _characters = new Dictionary<CharId, CharController>();
@@ -32,6 +32,8 @@ public class GameManager : Singleton<GameManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
+        _gamemode = _gamemodeType.ToGamemodeClass();
+
         foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {
             _characters[item] = null;
@@ -53,9 +55,7 @@ public class GameManager : Singleton<GameManager>
         else
         {
             AirConsole.instance.onReady += OnReady;
-        }
-        
-        _gamemode = gamemodeType.ToGamemodeClass();
+        }               
     }
 
 #if UNITY_EDITOR
