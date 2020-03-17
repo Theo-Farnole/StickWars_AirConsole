@@ -352,13 +352,9 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 442921267, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
-      propertyPath: m_Name
-      value: Slider green
-      objectReference: {fileID: 0}
-    - target: {fileID: 457211254, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
-      propertyPath: m_Name
-      value: Colored Sliders
+    - target: {fileID: 442921268, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 595260830, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -416,9 +412,9 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 856434923, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
-      propertyPath: m_Name
-      value: Slider blue
+    - target: {fileID: 856434924, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1087037412, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
       propertyPath: m_AnchorMin.y
@@ -460,9 +456,9 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1298587142, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
-      propertyPath: m_Name
-      value: Slider purple
+    - target: {fileID: 1298587143, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1376982669, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
       propertyPath: m_AnchorMin.y
@@ -500,9 +496,9 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1645608046, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
-      propertyPath: m_Name
-      value: Slider red
+    - target: {fileID: 1645608047, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1982706367, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -518,12 +514,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2015949108, guid: 7ab1c676aae425344ba0fff62480c6f3, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165015031502457906, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165015031502457906, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165015031502457906, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165015031502457906, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165015031502457906, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6125072410614328178, guid: 7ab1c676aae425344ba0fff62480c6f3,
         type: 3}
       propertyPath: m_Name
       value: P_UISystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6125072410614328178, guid: 7ab1c676aae425344ba0fff62480c6f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6125072410614328179, guid: 7ab1c676aae425344ba0fff62480c6f3,
         type: 3}
@@ -638,8 +664,6 @@ MonoBehaviour:
   _respawnArea:
   - p1: {x: -8.23, y: -3.95, z: 0}
     p2: {x: 8.42, y: -3.95, z: 0}
-  - p1: {x: -8.44, y: 2.18, z: 0}
-    p2: {x: -3.16, y: 2.18, z: 0}
 --- !u!1 &431451504
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,6 +2149,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: P_GameSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140513709645708289, guid: 25bd1b13870e64b409e94aeb923bd731,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4280474210882689148, guid: 25bd1b13870e64b409e94aeb923bd731,
         type: 3}
@@ -4557,6 +4586,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: explorer_window
       objectReference: {fileID: 0}
+    - target: {fileID: 6535182420067165184, guid: bfb37ccdadaf3dc42883962214195de5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6535182420067165187, guid: bfb37ccdadaf3dc42883962214195de5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4772,6 +4806,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6224115835675880408, guid: 06b058232b2b9ef499ec68b8fa73c6ec,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6224115835675880415, guid: 06b058232b2b9ef499ec68b8fa73c6ec,
         type: 3}
