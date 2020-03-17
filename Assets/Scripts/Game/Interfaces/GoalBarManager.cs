@@ -34,7 +34,7 @@ public class GoalBarManager : MonoBehaviour
         InitializeSliders();
 
         // reactive bar on spawn
-        GameManager.Instance.Gamemode.OnScoreUpdate += OnScoreUpdate;        
+        GameManager.Instance.Gamemode.OnScoreUpdate += OnScoreUpdate;
         GameManager.Instance.OnCharacterSpawn += SetSliderPicture;
 
         // if GameManager's Start() is called before this Start(), 
@@ -79,7 +79,7 @@ public class GoalBarManager : MonoBehaviour
     }
 
     void SetSliderPicture(CharId charId)
-    {        
+    {
         int index = (int)charId;
 
         // set outline
@@ -131,7 +131,6 @@ public class GoalBarManager : MonoBehaviour
             UpdateSlider_Content(_picturesSliders[i], score[i]);
 
         UpdateSliders_SortOrder(_coloredSliders, score);
-        UpdateSliders_SortOrder(_coloredSliders, score); // another pass to avoid sibling errors
     }
 
     void UpdateSlider_Content(Slider slider, int score)
@@ -143,13 +142,35 @@ public class GoalBarManager : MonoBehaviour
 
     void UpdateSliders_SortOrder(Slider[] sliders, int[] score)
     {
-        // order by descending order sliders
-        Slider[] orderedSliders = sliders.OrderByDescending(x => x.value).ToArray();
+        KeyValuePair<CharId, int>[] scoreByInt = new KeyValuePair<CharId, int>[4];
 
-        // then, set their sibling index
-        for (int i = 0; i < orderedSliders.Length; i++)
+        // fill scoreByInt
+        for (int i = 0; i < scoreByInt.Length; i++)
         {
-            orderedSliders[i].transform.SetSiblingIndex(i);
+            CharId charId = (CharId)i;
+
+            scoreByInt[i] = new KeyValuePair<CharId, int>(charId, score[i]);
+        }
+
+        // order scoreByInt
+        var orderedScoreByInt = scoreByInt.OrderBy(x => x.Value).ToArray();
+
+        // set sibling index
+        for (int i = 0; i < orderedScoreByInt.Length; i++)
+        {
+            // charId to index
+            int sliderIndex = (int)orderedScoreByInt[i].Key;
+
+            sliders[sliderIndex].transform.SetSiblingIndex(i);
+        }
+        
+        // reverse sliders order
+        var slidersParent = sliders[0].transform.parent;
+        int childCount = slidersParent.childCount;
+
+        for (int i = 0; i < childCount; i++)
+        {
+            slidersParent.GetChild(0).SetSiblingIndex((childCount - 1) - i);
         }
     }
     #endregion
