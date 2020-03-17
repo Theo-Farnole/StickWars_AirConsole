@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public delegate void EntityDamage(Entity victim, int damageAmount);
 
 [SelectionBase]
 public class Entity : MonoBehaviour
 {
+    private const Ease HEALTHBAR_ANIMATION_EASE = Ease.Linear;
+    private const float HEALTHBAR_ANIMATION_DURATION = 0.1f;
     #region Fields
     public EntityDamage OnDamage;
 
@@ -84,7 +87,8 @@ public class Entity : MonoBehaviour
 
         // update the value
         _healthSlider.maxValue = _maxHp;
-        _healthSlider.value = _hp;
+        _healthSlider.DOValue(_hp, HEALTHBAR_ANIMATION_DURATION).SetEase(HEALTHBAR_ANIMATION_EASE);
+        //_healthSlider.value = _hp;
     }
 
     protected virtual void Death(Entity killer)
