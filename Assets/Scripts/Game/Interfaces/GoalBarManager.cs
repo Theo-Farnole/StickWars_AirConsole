@@ -20,14 +20,32 @@ public class GoalBarManager : MonoBehaviour
 
     #region Methods
     #region MonoBehaviour Callbacks
+    void Awake()
+    {
+        // deactivate bar
+        foreach (var item in (CharId[])Enum.GetValues(typeof(CharId)))
+        {
+            ActivateProgressBar(item, false);
+        }
+    }
+
     void Start()
     {
         InitializeSliders();
 
-        GameManager.Instance.Gamemode.OnScoreUpdate += OnScoreUpdate;
-
-        // TODO: maj profiles picturess
+        // reactive bar on spawn
+        GameManager.Instance.Gamemode.OnScoreUpdate += OnScoreUpdate;        
         GameManager.Instance.OnCharacterSpawn += SetSliderPicture;
+
+        // if GameManager's Start() is called before this Start(), 
+        // set slider picture on each character spawned
+        foreach (var kvp in GameManager.Instance.Characters)
+        {
+            if (kvp.Value != null)
+            {
+                SetSliderPicture(kvp.Value);
+            }
+        }
     }
     #endregion
 
@@ -61,12 +79,11 @@ public class GoalBarManager : MonoBehaviour
     }
 
     void SetSliderPicture(CharId charId)
-    {
-        // TODO: maj profiles picturess
+    {        
         int index = (int)charId;
 
         // set outline
-        _playerPicturesWrapper[index].Outline.color = charId.GetUIColor();
+        _playerPicturesWrapper[index].gameObject.SetActive(true);
 
         // set avatar
         int deviceId = CharIdAllocator.GetDeviceId(charId);
@@ -74,6 +91,17 @@ public class GoalBarManager : MonoBehaviour
         {
             ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playerPicturesWrapper[index].Avatar);
         }
+
+        // activate progress bar
+        ActivateProgressBar(charId, true);
+    }
+
+    void ActivateProgressBar(CharId charId, bool active)
+    {
+        int index = (int)charId;
+
+        _coloredSliders[index].gameObject.SetActive(active);
+        _picturesSliders[index].gameObject.SetActive(active);
     }
     #endregion
 
@@ -109,7 +137,7 @@ public class GoalBarManager : MonoBehaviour
     void UpdateSlider_Content(Slider slider, int score)
     {
         slider.DOValue(score, _barAnimationDuration).SetEase(_barAnimationEase);
-       
+
         // TODO: que se passe-t-il quand il y a 2 joueurs au même score ?
     }
 
