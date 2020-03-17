@@ -77,9 +77,7 @@ public class GameManager : Singleton<GameManager>
             player.charId = c_charId;
 
             _characters[c_charId] = player;
-
-            UIManager.Instance.SetAvatars();
-
+            
             OnCharacterSpawn?.Invoke(player);
         }
 
@@ -188,8 +186,6 @@ public class GameManager : Singleton<GameManager>
         AirConsole.instance.Message(deviceId, token);
 
         Debug.Log("Character instantiated after find free charID: " + charId);
-        UIManager.Instance.SetAvatars();
-
         OnCharacterSpawn?.Invoke(player);
     }
 

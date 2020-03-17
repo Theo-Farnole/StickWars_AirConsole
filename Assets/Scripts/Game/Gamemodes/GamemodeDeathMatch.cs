@@ -7,7 +7,6 @@ public class GamemodeDeathMatch : AbstractGamemode
 {
     public GamemodeDeathMatch() : base()
     {
-        UIManager.Instance.UpdateGamemodeData(CharactersValueArray);
     }
 
     public override void Kill(CharId? killerCharID)
@@ -20,8 +19,9 @@ public class GamemodeDeathMatch : AbstractGamemode
 
         EventController.Instance.OnKill();
 
-        UIManager.Instance.UpdateGamemodeData(CharactersValueArray);
         CameraShake.Instance.Shake();
+
+        OnScoreUpdate?.Invoke(CharactersValueArray, valueForVictory);
 
         CheckForNewMVP(killerCharID);
         CheckForVictory();

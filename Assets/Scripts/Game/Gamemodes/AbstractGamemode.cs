@@ -24,10 +24,15 @@ public static class GamemodeTypeExtension
     }
 }
 
+public delegate void IntArrayDelegate(int[] score, int scoreForVictory);
+
 public abstract class AbstractGamemode
 {
     #region Fields
-    public static int valueForVictory = 5;
+    public static int valueForVictory = 8;
+
+    public IntArrayDelegate OnScoreUpdate;
+
     protected Dictionary<CharId, int> _charactersValue = new Dictionary<CharId, int>();
     protected CharId? _currentMVPCharID = null;
     #endregion
@@ -62,6 +67,8 @@ public abstract class AbstractGamemode
             return charactersValueArray;
         }
     }
+
+    public int ValueForVictory { get => valueForVictory;  }
     #endregion
 
     #region Methods

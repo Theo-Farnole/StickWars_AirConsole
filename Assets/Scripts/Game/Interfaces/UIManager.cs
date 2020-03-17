@@ -14,7 +14,7 @@ public class UIManager : Singleton<UIManager>
     #region Fields
     [SerializeField] private Canvas _mainCanvas;
     [Header("Game Panel")]
-    [SerializeField] private PlayerWrapper[] _playersWrappers = new PlayerWrapper[GameManager.MAX_PLAYERS];
+    [SerializeField] private GameObject _gamePanel;
     [Header("Victory Animation")]
     [SerializeField] private GameObject _victoryPanel;
     [SerializeField] private TextMeshProUGUI _textVictory;
@@ -27,49 +27,12 @@ public class UIManager : Singleton<UIManager>
     void Awake()
     {
         _victoryPanel.SetActive(false);
-
-        // hide avatar wrappers
-       for (int i = 0; i < _playersWrappers.Length; i++)
-        {
-            _playersWrappers[i].gameObject.SetActive(false);
-        }
     }
     #endregion
 
-    public void SetAvatars()
-    {
-        foreach (CharId charId in Enum.GetValues(typeof(CharId)))
-        {
-            int i = (int)charId;
-
-            // active or not wrapper
-            bool isPlayerActive = GameManager.Instance.Characters[charId] != null;
-            _playersWrappers[i].gameObject.SetActive(isPlayerActive);
-
-            // load avatar
-            if (isPlayerActive)
-            {
-                _playersWrappers[i].Outline.effectColor = ((CharId)i).GetUIColor();
-                int deviceId = CharIdAllocator.GetDeviceId(charId);
-
-                if (deviceId != -1)
-                {
-                    ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[i].Avatar);
-                }
-            }
-        }
-    }
-
-    public void UpdateGamemodeData(int[] arrayStr)
-    {
-        for (int i = 0; i < arrayStr.Length && i < _playersWrappers.Length; i++)
-        {
-            _playersWrappers[i].GetComponentInChildren<TextMeshProUGUI>().text = arrayStr[i].ToString();
-        }
-    }
-
     public void LaunchVictoryAnimation(CharId winnerCharId)
     {
+        _gamePanel.SetActive(false);
         CameraEffectController.Instance.EnableBlur(true);
 
         int winnerDeviceId = CharIdAllocator.GetDeviceId(winnerCharId);

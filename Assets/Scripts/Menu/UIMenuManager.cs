@@ -98,7 +98,7 @@ public class UIMenuManager : Singleton<UIMenuManager>
     {
         int index = (int)charId;
 
-        _playersWrappers[index].Outline.effectColor = charId.GetUIColor();
+        _playersWrappers[index].Outline.color = charId.GetUIColor();
         _playersWrappers[index].Name.text = AirConsole.instance.GetNickname(deviceId);
         ProfilePictureManager.Instance.SetProfilePicture(deviceId, _playersWrappers[index].Avatar);
         
