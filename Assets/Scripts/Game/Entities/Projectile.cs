@@ -9,6 +9,11 @@ public class Projectile : MonoBehaviour, IPooledObject
     public static readonly float LIFETIME = 10f;
     public static readonly float STICKED_LIFETIME = 1f;
 
+    /// <summary>
+    /// When, one of the projectile hits an entity. Used in "tackle to dodge" text box.
+    /// </summary>
+    public static EntityDelegate OnProjectileHitEntity;
+
     [SerializeField] private ProjectileData _data;
     [SerializeField] private AudioSource _audioHitProjectile;
 
@@ -68,12 +73,16 @@ public class Projectile : MonoBehaviour, IPooledObject
 
         var entity = other.GetComponent<Entity>();
 
+        // if projectile hit an entity, and that's not the sender
         if (entity != null && entity != sender)
         {
+            // do the damage
             entity.GetDamage(damage, sender);
 
             _audioHitProjectile.transform.parent = null;
             _audioHitProjectile.Play();
+
+            OnProjectileHitEntity?.Invoke(entity);
 
             if (entity is CharacterEntity || entity is VirusSpawner || entity.GetComponent<VirusController>() != null)
             {
