@@ -15,7 +15,8 @@ MonoBehaviour:
   _speed: 3
   _delayAfterTriggered: 1.5
   _attackRange: 1.8
+  _attackDamage: 25
   _preChargeDistance: 0.3
   _preChargeTime: 0.8
-  _chargeDistance: 1.8
+  _chargeDistance: 2.5
   _chargeTime: 0.3
