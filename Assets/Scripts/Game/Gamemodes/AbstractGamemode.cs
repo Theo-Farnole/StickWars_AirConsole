@@ -105,6 +105,7 @@ public abstract class AbstractGamemode
         // if there is no current mvp, let charId become the mvp
         if (_currentMVPCharID == null)
         {
+            _currentMVPCharID = charIDToCheck;
             GameManager.Instance.Characters[(CharId)charIDToCheck].IsMVP = true;
             return;
         }
