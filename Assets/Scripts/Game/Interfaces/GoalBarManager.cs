@@ -109,15 +109,6 @@ public class GoalBarManager : MonoBehaviour
     void OnScoreUpdate(int[] score, int scoreForVictory)
     {
         UpdateSliders(score);
-
-        string o = string.Empty;
-
-        foreach (var item in Enum.GetValues(typeof(CharId)))
-        {
-            o += item + " " + score[(int)item] + "\n";
-        }
-
-        Debug.Log(o);
     }
     #endregion
 
