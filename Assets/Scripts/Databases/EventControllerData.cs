@@ -6,11 +6,11 @@ using UnityEngine;
 public class EventControllerData : ScriptableObject
 {
     #region Fields
-    [SerializeField, Range(0, 5)] private int _killsNeededToSpawnVirusSpawner = 1;
+    [SerializeField, Range(0, 5)] private int _maxSpawnVirusSpawner = 3;
     #endregion
 
     #region Properties
-    public int KillsNeededToSpawnVirusSpawner { get => _killsNeededToSpawnVirusSpawner;}
+    public int MaxSpawnVirusSpawner { get => _maxSpawnVirusSpawner;}
     #endregion
 }
 

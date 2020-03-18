@@ -18,12 +18,22 @@ public class EventController : Singleton<EventController>
     #region Methods
     public void OnKill()
     {
-        var killNumber = GameManager.Instance.Gamemode.SumCharactersValue;
+        // calculating sum kills goal
+        int killsGoalPerPlayer = GameManager.Instance.Gamemode.ValueForVictory;
+        int playersCount = GameManager.Instance.InstantiatedCharactersCount;
+        int sumKillsGoal = killsGoalPerPlayer * playersCount; 
 
-        bool shouldSpawnVirus = (_data.KillsNeededToSpawnVirusSpawner != 0 && killNumber % _data.KillsNeededToSpawnVirusSpawner == 0);
+        // calcuting multiple to spawn virus spawner
+        int multiple = (sumKillsGoal - 2 * playersCount) / _data.MaxSpawnVirusSpawner;
 
+        Debug.LogFormat("Multiple is {0}; value is {1}", multiple, GameManager.Instance.Gamemode.ValueForVictory);
+
+        // check if kill number is a multiple of multiple
+        int killNumber = GameManager.Instance.Gamemode.SumCharactersValue;
+        bool shouldSpawnVirus = (killNumber % multiple == 0);
+          
         // spawn virus spawner if there isn't VirusController in the map
-        if (shouldSpawnVirus && _currentVirusSpawner == null && FindObjectsOfType<VirusController>().Length == 0)
+        if (shouldSpawnVirus)
         {
             InstantiateVirusSpawner(killNumber);
         }
@@ -31,6 +41,14 @@ public class EventController : Singleton<EventController>
 
     private void InstantiateVirusSpawner(int killNumber)
     {
+        // prevent spawning another virus spawner
+        if (_currentVirusSpawner != null)
+            return;
+        
+        // prevent spawning if viruses are on the map
+        if (FindObjectsOfType<VirusController>().Length != 0)
+            return;
+
         Debug.Log("Creating CurrentVirusSpawner at " + killNumber + " kills.");
         _currentVirusSpawner = Instantiate(_prefabVirusSpawner, _positionVirusSpawner.position, Quaternion.identity);
 

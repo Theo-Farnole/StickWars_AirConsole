@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     #region Properties
     public AbstractGamemode Gamemode { get => _gamemode; }
     public Dictionary<CharId, CharController> Characters { get => _characters; }
+    public int InstantiatedCharactersCount { get => _characters.Where(x => x.Value != null).Count(); }
     #endregion
 
     #region Methods
@@ -55,7 +57,7 @@ public class GameManager : Singleton<GameManager>
         else
         {
             AirConsole.instance.onReady += OnReady;
-        }               
+        }
     }
 
 #if UNITY_EDITOR
@@ -77,7 +79,7 @@ public class GameManager : Singleton<GameManager>
             player.charId = c_charId;
 
             _characters[c_charId] = player;
-            
+
             OnCharacterSpawn?.Invoke(player);
         }
 
