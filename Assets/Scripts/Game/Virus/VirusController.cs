@@ -19,7 +19,7 @@ public class VirusController : MonoBehaviour
     private bool _isApplicationQuitting = false;
 
     private Entity _entity;
-    private List<CharacterEntity> _hitCharacterEntity = new List<CharacterEntity>();
+    private Dictionary<CharacterEntity, float> _hitCharacterEntityByTime = new Dictionary<CharacterEntity, float>();
     #endregion
 
     #region Properties
@@ -92,7 +92,7 @@ public class VirusController : MonoBehaviour
         {
             Instantiate(_prefabDestroyParticleSystem, transform.position, Quaternion.identity).GetComponent<ParticleSystem>().Play();
             _audioDeath.transform.parent = null;
-            _audioDeath.Play();            
+            _audioDeath.Play();
         }
     }
 
@@ -124,21 +124,21 @@ public class VirusController : MonoBehaviour
     {
         var characterEntity = collision.GetComponent<CharacterEntity>();
 
-        if (characterEntity != null && !_hitCharacterEntity.Contains(characterEntity))
+        // prevent inflict dmaage to non character entity
+        if (characterEntity == null)
+            return;
+
+        if (!_hitCharacterEntityByTime.ContainsKey(characterEntity))
+            _hitCharacterEntityByTime.Add(characterEntity, 0);
+
+        if (_hitCharacterEntityByTime[characterEntity] <= Time.time)
         {
-            _hitCharacterEntity.Add(characterEntity);
+            _hitCharacterEntityByTime[characterEntity] = Time.time + _data.DelayBetweenAttackInflict;
 
             characterEntity.GetDamage(_data.AttackDamage, _entity);
             _audioDoDamage.Stop();
             _audioDoDamage.Play();
         }
-    }
-    #endregion
-
-    #region Getter
-    public void ResetHitCharacterEntity()
-    {
-        _hitCharacterEntity.Clear();
     }
     #endregion
     #endregion

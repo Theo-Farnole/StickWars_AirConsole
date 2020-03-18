@@ -15,8 +15,7 @@ public class VirusStateCharge : OwnerState<VirusController>
     {
         base.OnStateEnter();
 
-        _targetPosition = _owner.transform.position + _owner.transform.up * _owner.Data.ChargeDistance;
-        _owner.ResetHitCharacterEntity();
+        _targetPosition = _owner.transform.position + _owner.transform.up * _owner.Data.ChargeDistance;        
     }
 
     public override void FixedTick() { }
