@@ -149,6 +149,9 @@ public class CharController : MonoBehaviour
     [SerializeField] private Vector3 _projectileOrigin;
     [Header("Collisions")]
     [SerializeField] private CharacterCollisions _collisions;
+    [Space]
+    [SerializeField] private Collider2D _normalCollider;
+    [SerializeField] private Collider2D _jumpingCollider;
     [Header("Rendering")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
@@ -331,13 +334,21 @@ public class CharController : MonoBehaviour
         HandleKeyboardInput();
 #endif
 
-        UpdateCollisions();
+        UpdateTriggerCollisions();
+        UpdateHardCollisions();
+
         State?.Tick();
+    }
+
+    private void UpdateHardCollisions()
+    {
+        _normalCollider.enabled = _raycast.down;
+        _jumpingCollider.enabled = !_raycast.down;
     }
 
     void FixedUpdate()
     {
-        UpdateCollisions();
+        UpdateTriggerCollisions();
         State?.FixedTick();
     }
 
@@ -395,7 +406,7 @@ public class CharController : MonoBehaviour
 #endif
     #endregion
 
-    void UpdateCollisions()
+    void UpdateTriggerCollisions()
     {
         bool wasGrounded = _raycast.down;
 
