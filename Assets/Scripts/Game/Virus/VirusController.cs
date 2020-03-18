@@ -19,6 +19,7 @@ public class VirusController : MonoBehaviour
     private bool _isApplicationQuitting = false;
 
     private Entity _entity;
+    private List<CharacterEntity> _hitCharacterEntity = new List<CharacterEntity>();
     #endregion
 
     #region Properties
@@ -45,6 +46,8 @@ public class VirusController : MonoBehaviour
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
+    #region Initialization
     void Awake()
     {
         _entity = GetComponent<Entity>();
@@ -62,7 +65,9 @@ public class VirusController : MonoBehaviour
 
         DynamicsObjects.Instance.SetToParent(transform, "virus");
     }
+    #endregion
 
+    #region Tick
     void Update()
     {
         _state?.Tick();
@@ -72,25 +77,14 @@ public class VirusController : MonoBehaviour
     {
         _state?.FixedTick();
     }
+    #endregion
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        var characterEntity = collision.GetComponent<CharacterEntity>();
+    #region Collision
+    void OnTriggerStay2D(Collider2D collision) => OnCollision(collision);
+    void OnTriggerEnter2D(Collider2D collision) => OnCollision(collision);
+    #endregion
 
-        if (characterEntity != null)
-        {
-            characterEntity.GetDamage(_data.AttackDamage, _entity);
-            _audioDoDamage.Stop();
-            _audioDoDamage.Play();
-        }
-    }
-
-    // not a mistake: virus do damage OnEnter & OnExit
-    void OnTriggerExit2D(Collider2D collision)
-    {
-        collision.GetComponent<CharacterEntity>()?.GetDamage(_data.AttackDamage, _entity);
-    }
-
+    #region Miscellaneous
     void OnDestroy()
     {
         // prevent Instantiating while we are quitting the game
@@ -106,7 +100,9 @@ public class VirusController : MonoBehaviour
     {
         _isApplicationQuitting = true;
     }
+    #endregion
 
+    #region Debug
     void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, _data.AttackRange);
@@ -120,5 +116,30 @@ public class VirusController : MonoBehaviour
             Gizmos.DrawSphere(transform.position + transform.forward * _data.ChargeDistance, 0.1f);
         }
     }
+    #endregion
+    #endregion
+
+    #region On Collision manager
+    void OnCollision(Collider2D collision)
+    {
+        var characterEntity = collision.GetComponent<CharacterEntity>();
+
+        if (characterEntity != null && !_hitCharacterEntity.Contains(characterEntity))
+        {
+            _hitCharacterEntity.Add(characterEntity);
+
+            characterEntity.GetDamage(_data.AttackDamage, _entity);
+            _audioDoDamage.Stop();
+            _audioDoDamage.Play();
+        }
+    }
+    #endregion
+
+    #region Getter
+    public void ResetHitCharacterEntity()
+    {
+        _hitCharacterEntity.Clear();
+    }
+    #endregion
     #endregion
 }

@@ -15,7 +15,15 @@ public class VirusStatePreCharge : OwnerState<VirusController>
     {
         base.OnStateEnter();
 
+        _owner.ResetHitCharacterEntity();
         _startingPosition = _owner.transform.position - _owner.transform.up * _owner.Data.PreChargeDistance;
+    }
+
+    public override void OnStateExit()
+    {
+        base.OnStateExit();
+
+        _owner.ResetHitCharacterEntity();
     }
 
     public override void FixedTick() { }

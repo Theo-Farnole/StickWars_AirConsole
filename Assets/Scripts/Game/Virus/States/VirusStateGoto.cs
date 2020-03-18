@@ -8,6 +8,21 @@ public class VirusStateGoto : OwnerState<VirusController>
     public VirusStateGoto(VirusController owner) : base(owner) { }
 
     public override void FixedTick() { }
+
+    public override void OnStateEnter()
+    {
+        base.OnStateEnter();
+
+        _owner.ResetHitCharacterEntity();
+    }
+
+    public override void OnStateExit()
+    {
+        base.OnStateExit();
+
+        _owner.ResetHitCharacterEntity();
+    }
+
     public override void Tick()
     {
         Transform ownerTrf = _owner.transform;
