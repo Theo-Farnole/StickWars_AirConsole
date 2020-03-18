@@ -5,6 +5,8 @@ using UnityEngine;
 public class EventController : Singleton<EventController>
 {
     #region Fields
+    public VirusSpawnerDelegate OnVirusSpawnerSpawned;
+
     [SerializeField] private EventControllerData _data;
     [Space]
     [SerializeField] private GameObject _prefabVirusSpawner;
@@ -23,9 +25,16 @@ public class EventController : Singleton<EventController>
         // spawn virus spawner if there isn't VirusController in the map
         if (shouldSpawnVirus && _currentVirusSpawner == null && FindObjectsOfType<VirusController>().Length == 0)
         {
-            Debug.Log("Creating CurrentVirusSpawner at " + killNumber + " kills.");
-            _currentVirusSpawner = Instantiate(_prefabVirusSpawner, _positionVirusSpawner.position, Quaternion.identity);
+            InstantiateVirusSpawner(killNumber);
         }
+    }
+
+    private void InstantiateVirusSpawner(int killNumber)
+    {
+        Debug.Log("Creating CurrentVirusSpawner at " + killNumber + " kills.");
+        _currentVirusSpawner = Instantiate(_prefabVirusSpawner, _positionVirusSpawner.position, Quaternion.identity);
+
+        OnVirusSpawnerSpawned?.Invoke(_currentVirusSpawner.GetComponent<VirusSpawner>());
     }
     #endregion
 }

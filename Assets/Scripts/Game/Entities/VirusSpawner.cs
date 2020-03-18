@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+public delegate void VirusSpawnerDelegate(VirusSpawner virusController);
+
 public class VirusSpawner : Entity
 {
     #region Fields
