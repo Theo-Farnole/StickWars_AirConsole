@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EventController : Singleton<EventController>
 {
+    private const KeyCode DEBUG_KEY_SPAWNVIRUSSPAWNER = KeyCode.P;
     #region Fields
     public VirusSpawnerDelegate OnVirusSpawnerSpawned;
 
@@ -16,6 +17,14 @@ public class EventController : Singleton<EventController>
     #endregion
 
     #region Methods
+#if UNITY_EDITOR
+    void Update()
+    {
+        if (Input.GetKey(DEBUG_KEY_SPAWNVIRUSSPAWNER))
+            InstantiateVirusSpawner();
+    }
+#endif
+
     public void OnKill()
     {
         // calculating sum kills goal
@@ -35,11 +44,11 @@ public class EventController : Singleton<EventController>
         // spawn virus spawner if there isn't VirusController in the map
         if (shouldSpawnVirus)
         {
-            InstantiateVirusSpawner(killNumber);
+            InstantiateVirusSpawner();
         }
     }
 
-    private void InstantiateVirusSpawner(int killNumber)
+    private void InstantiateVirusSpawner()
     {
         // prevent spawning another virus spawner
         if (_currentVirusSpawner != null)
@@ -48,8 +57,7 @@ public class EventController : Singleton<EventController>
         // prevent spawning if viruses are on the map
         if (FindObjectsOfType<VirusController>().Length != 0)
             return;
-
-        Debug.Log("Creating CurrentVirusSpawner at " + killNumber + " kills.");
+        
         _currentVirusSpawner = Instantiate(_prefabVirusSpawner, _positionVirusSpawner.position, Quaternion.identity);
 
         OnVirusSpawnerSpawned?.Invoke(_currentVirusSpawner.GetComponent<VirusSpawner>());
