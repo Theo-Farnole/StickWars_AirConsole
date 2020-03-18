@@ -26,8 +26,8 @@ public class CharacterEntity : Entity
     #endregion
 
     public override void GetDamage(int damage, Entity attacker)
-    {
-        if (attacker.GetComponent<VirusController>() && damage > _hp)
+    {        
+        if (attacker.GetComponent<VirusController>() && damage >= _hp)
         {
             damage = _hp - 1;
         }
