@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharStateNormal : OwnerState<CharController>
+public class CharStateNormal : AbstractCharState
 {
     private int _jumpCount = 0;
 

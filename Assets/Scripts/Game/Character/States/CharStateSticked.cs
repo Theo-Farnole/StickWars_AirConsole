@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharStateSticked : OwnerState<CharController>
+public class CharStateSticked : AbstractCharState
 {
     public CharStateSticked(CharController charController) : base(charController)
     { }

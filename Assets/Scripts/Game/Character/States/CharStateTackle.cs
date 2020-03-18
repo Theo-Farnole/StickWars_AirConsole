@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharStateTackle : OwnerState<CharController>
+public class CharStateTackle : AbstractCharState
 {
     #region Fields
     public readonly static float TACKLE_TRANSITION_TIME = 0.1f;
