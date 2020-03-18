@@ -3736,6 +3736,7 @@ GameObject:
   - component: {fileID: 3680399479780730012}
   - component: {fileID: 1187191889}
   - component: {fileID: 1187191890}
+  - component: {fileID: 6434765833163762778}
   m_Layer: 0
   m_Name: Tutorial TextBox Manager
   m_TagString: Untagged
@@ -3784,6 +3785,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textBoxContent: Hit shortcut to open a window
+  _destroyAfterTriggers: 0
+  _triggersCountToDestroy: 2
   _timeToCheckCondition: 3
   _hitCountToTriggerBox: 0
   _startTimerOnStart: 1
@@ -3801,6 +3804,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textBoxContent: Hit again shortcut to close window
+  _destroyAfterTriggers: 0
+  _triggersCountToDestroy: 2
   _timeToCheckCondition: 5
   _hitCountToTriggerBox: 1
   _startTimerOnStart: 0
@@ -3818,8 +3823,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textBoxContent: Double jump by pressing "jump" button in the air!
+  _destroyAfterTriggers: 0
+  _triggersCountToDestroy: 2
   _maxDoubleJumpsCount: 2
   _timerToReachCondition: 5
+--- !u!114 &6434765833163762778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6296701611741048936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a268cd37456ae64c824582ec76cd847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textBoxContent: Tackle to dodge projectile.
+  _destroyAfterTriggers: 0
+  _triggersCountToDestroy: 2
+  _projectilesHitCountToTrigger: 2
 --- !u!1 &6654174344683144745
 GameObject:
   m_ObjectHideFlags: 0
@@ -4083,12 +4106,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9abd594f99e05c4dbeb040d0dc0d3cd, type: 3}
---- !u!224 &4613217931169516582 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
-    type: 3}
-  m_PrefabInstance: {fileID: 683854022927347376}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6187482940842072753 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6675411550219547649, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
@@ -4101,6 +4118,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f01f6117c45984f8be9391d5a7c066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &4613217931169516582 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 683854022927347376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3542328093220126822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4604,12 +4627,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9abd594f99e05c4dbeb040d0dc0d3cd, type: 3}
---- !u!224 &3597149997148711913 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
-    type: 3}
-  m_PrefabInstance: {fileID: 8688389284010690943}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2607741872556522878 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6675411550219547649, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
@@ -4622,3 +4639,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f01f6117c45984f8be9391d5a7c066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &3597149997148711913 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5294254970317316758, guid: c9abd594f99e05c4dbeb040d0dc0d3cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 8688389284010690943}
+  m_PrefabAsset: {fileID: 0}
