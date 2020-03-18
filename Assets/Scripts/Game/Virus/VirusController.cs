@@ -93,6 +93,7 @@ public class VirusController : MonoBehaviour
 
     void OnDestroy()
     {
+        // prevent Instantiating while we are quitting the game
         if (!_isApplicationQuitting)
         {
             Instantiate(_prefabDestroyParticleSystem, transform.position, Quaternion.identity).GetComponent<ParticleSystem>().Play();
