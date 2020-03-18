@@ -1,4 +1,4 @@
-﻿using NDream.AirConsole;
+using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -157,7 +157,7 @@ public class CharController : MonoBehaviour
     [HideInInspector] public int ownerDeviceId = -1;
     private bool _freeze;
     private CharacterRaycast _raycast = new CharacterRaycast();
-    private OwnerState<CharController> _state;
+    private AbstractCharState _state;
 
     private CharControls _keyboardControls;
     private bool _isMVP = false;
@@ -272,7 +272,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-    public OwnerState<CharController> State
+    public AbstractCharState State
     {
         get
         {
