@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public delegate void EntityDamage(Entity victim, int damageAmount);
+public delegate void EntityDelegate(Entity entity);
 
 [SelectionBase]
 public class Entity : MonoBehaviour
