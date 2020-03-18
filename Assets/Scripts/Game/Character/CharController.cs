@@ -1,4 +1,4 @@
-using NDream.AirConsole;
+﻿using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -8,6 +8,7 @@ using System.ComponentModel;
 using UnityEngine;
 
 public delegate void CharControllerDelegate(CharController charController);
+public delegate void CharControllerStateDelegate(CharController charController, AbstractCharState state);
 
 public class CharController : MonoBehaviour
 {
@@ -136,6 +137,7 @@ public class CharController : MonoBehaviour
 
     #region events
     public CharControllerDelegate OnDoubleJump;
+    public CharControllerStateDelegate OnStateChanged;
     #endregion
 
     #region serialized variables
@@ -288,6 +290,8 @@ public class CharController : MonoBehaviour
 
             if (_state != null)
                 _state.OnStateEnter();
+
+            OnStateChanged?.Invoke(this, _state);
         }
     }
 
