@@ -6,8 +6,8 @@ using UnityEngine;
 public class DoubleJumpTextBoxTrigger : AbstractTextBoxTrigger
 {
     [Header("Condition")]
-    [SerializeField] private int _maxDoubleJumpsCount = 3;
     [SerializeField] private float _timerToReachCondition = 5;
+    [SerializeField] private int _maxDoubleJumpsCount = 3;
 
     private Dictionary<CharController, int> _doubleJumpsCount = new Dictionary<CharController, int>();
 

@@ -6,7 +6,6 @@ public class ShortcutTextBoxTrigger : AbstractTextBoxTrigger
 {
     [Header("Condition")]
     [SerializeField] private float _timeToCheckCondition = 10;
-    [Space]
     [SerializeField] private int _hitCountToTriggerBox;
     [Header("Miscellaneous")]
     [SerializeField] private bool _startTimerOnStart;

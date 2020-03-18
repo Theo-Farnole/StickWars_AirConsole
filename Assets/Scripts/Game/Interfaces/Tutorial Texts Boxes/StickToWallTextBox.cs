@@ -14,8 +14,8 @@ public class StickToWallTextBox : AbstractTextBoxTrigger
 {
     #region Fields
     [Header("Condition")]
-    [SerializeField] private int _maxCountSwitchToStickedForm = 3;
     [SerializeField] private float _timerToReachCondition = 5;
+    [SerializeField] private int _maxCountSwitchToStickedForm = 3;
 
     private Dictionary<CharController, int> _countSwitchToStickedForm = new Dictionary<CharController, int>();
     #endregion
