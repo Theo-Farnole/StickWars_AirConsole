@@ -31,6 +31,7 @@ public abstract class AbstractGamemode
     #region Fields
     public static int valueForVictory = 8;
 
+    public CharIdDelegate OnCharacterKill;
     public IntArrayDelegate OnScoreUpdate;
 
     protected Dictionary<CharId, int> _charactersValue = new Dictionary<CharId, int>();
@@ -147,6 +148,13 @@ public abstract class AbstractGamemode
     }
 
     protected abstract void Victory(CharId winnerID);
-    public abstract void Kill(CharId? killerCharID);
+
+    public virtual void Kill(CharId? killerCharID)
+    {
+        if (killerCharID != null)
+        {
+            OnCharacterKill?.Invoke((CharId)killerCharID);
+        }
+    }
     #endregion
 }

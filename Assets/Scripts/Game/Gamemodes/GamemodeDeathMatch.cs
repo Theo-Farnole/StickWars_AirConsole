@@ -11,6 +11,8 @@ public class GamemodeDeathMatch : AbstractGamemode
 
     public override void Kill(CharId? killerCharID)
     {
+        base.Kill(killerCharID);
+
         if (killerCharID == null) return;
 
         CharId c_killerCharID = (CharId)killerCharID;

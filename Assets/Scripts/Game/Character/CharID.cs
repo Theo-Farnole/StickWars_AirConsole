@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void CharIdDelegate(CharId charId);
+
 public enum CharId
 {
     Red = 0,
