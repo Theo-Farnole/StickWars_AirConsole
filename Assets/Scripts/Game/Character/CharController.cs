@@ -338,7 +338,7 @@ public class CharController : MonoBehaviour
 
         gameObject.name = gameObject.name.Replace("(Clone)", " " + charId.ToString());
 
-        CurrentAmountProjectilesCarried = _data.MaxProjectilesCarried;
+        FillCarriedProjectilesAmount();
     }
     #endregion
 
@@ -476,6 +476,11 @@ public class CharController : MonoBehaviour
         projectile.sender = GetComponent<Entity>();
 
         OnProjectileAmountUpdated?.Invoke(this, CurrentAmountProjectilesCarried);
+    }
+
+    public void FillCarriedProjectilesAmount()
+    {
+        CurrentAmountProjectilesCarried = _data.MaxProjectilesCarried;
     }
     #endregion
 
