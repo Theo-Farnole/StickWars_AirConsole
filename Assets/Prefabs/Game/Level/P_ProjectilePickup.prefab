@@ -62,7 +62,7 @@ MonoBehaviour:
   _rotateSpeed: {x: 0, y: 0, z: 0}
   _shouldTranslate: 1
   _translateSpeed: 1
-  _translateDistance: 0.2
+  _translateDistance: 0.1
 --- !u!61 &56157985
 BoxCollider2D:
   m_ObjectHideFlags: 0

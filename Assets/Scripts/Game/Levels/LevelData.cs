@@ -11,6 +11,7 @@ public class LevelData : Singleton<LevelData>
     [EnumNamedArray(typeof(CharId))]
     [SerializeField] private Transform[] _defaultSpawnPoint = new Transform[4];
     [SerializeField] private LineData[] _respawnArea;
+    [SerializeField] private LineData[] _projectilePickupSpawnArea;
     #endregion
 
     #region Properties
@@ -21,10 +22,15 @@ public class LevelData : Singleton<LevelData>
     #region MonoBehaviour Callbacks
     void OnDrawGizmos()
     {
+        // draw respawn area
+        Gizmos.color = Color.red;
         for (int i = 0; i < _respawnArea.Length; i++)
-        {
             _respawnArea[i].DrawGizmos();
-        }
+
+        // draw pickup area
+        Gizmos.color = Color.yellow;
+        foreach ( var pickupArea in _projectilePickupSpawnArea)
+            pickupArea.DrawGizmos();
     }
     #endregion
 
@@ -57,6 +63,14 @@ public class LevelData : Singleton<LevelData>
         int randomIndex = Random.Range(0, result.Length);
         return result[randomIndex].position;
     }
+    #endregion
+
+    #region Projectile Pickup position
+    public Vector3 GetRandomProjectilePickupPosition()
+    {
+        return _projectilePickupSpawnArea.GetRandomPoint();
+    }
+    #endregion
     #endregion
     #endregion
 }

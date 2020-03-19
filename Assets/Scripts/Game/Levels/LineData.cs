@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class LineData
-{
+{    
     public Vector3 p1 = Vector3.left;
     public Vector3 p2 = Vector3.right;
 

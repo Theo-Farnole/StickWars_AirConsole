@@ -124,6 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8011801065220136739}
   - component: {fileID: 779570745710546895}
+  - component: {fileID: 3763089528586309993}
   m_Layer: 0
   m_Name: Event Controller
   m_TagString: Untagged
@@ -160,6 +161,21 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 0b955978c622e534ea9835cf435c9766, type: 2}
   _prefabVirusSpawner: {fileID: 4755789436170763417, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
     type: 3}
+--- !u!114 &3763089528586309993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5237759257506658875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a164f0bec7e40064ea98f6bef2281b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxProjectilePickupsSimultaneously: 1
+  _timeToSpawnPickup: 2
+  _killAmountToSpawnPickup: 2
 --- !u!1 &5295693004472178848
 GameObject:
   m_ObjectHideFlags: 0
