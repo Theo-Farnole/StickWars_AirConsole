@@ -160,7 +160,6 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 0b955978c622e534ea9835cf435c9766, type: 2}
   _prefabVirusSpawner: {fileID: 4755789436170763417, guid: 59b5d8bc936e1ac4fbee5d041488b1f3,
     type: 3}
-  _positionVirusSpawner: {fileID: 0}
 --- !u!1 &5295693004472178848
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,8 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabPlayer: {fileID: 3867000743114586834, guid: b97c64250caf0614e9a09d3cb1f19321,
     type: 3}
-  _prefabFloatingText: {fileID: 8925926180478064266, guid: dfd7d801ec43e9c4d95782aae59a5751,
-    type: 3}
+  _enableHotConnection: 0
 --- !u!1 &9165742343477394748
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,4 +328,7 @@ MonoBehaviour:
       type: 3}
   - tag: floating_text
     prefab: {fileID: 6277080515121283850, guid: 1838053a672016a4885f6f2f06fac89e,
+      type: 3}
+  - tag: projectile_pickup
+    prefab: {fileID: 1350346606293663752, guid: dd263a3d2050e1843938c0e3c064b34f,
       type: 3}

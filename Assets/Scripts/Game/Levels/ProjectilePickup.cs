@@ -11,7 +11,7 @@ public class ProjectilePickup : MonoBehaviour
         if (hitCharController)
         {
             hitCharController.FillCarriedProjectilesAmount();
-            Destroy(gameObject);
+            ObjectPooler.Instance.EnqueueGameObject("projectile_pickup", gameObject);
         }
     }
 }
