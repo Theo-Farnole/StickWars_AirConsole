@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelData : Singleton<LevelData>
@@ -46,6 +47,22 @@ public class LevelData : Singleton<LevelData>
         p.z = Random.Range(_respawnArea[random].p1.y, _respawnArea[random].p2.z);
 
         return p;        
+    }
+
+    public Vector3 GetRandomVirusSpawnerPosition()
+    {
+        int randomIndex = Random.Range(0, _virusSpawnerPosition.Length);
+
+        return _virusSpawnerPosition[randomIndex].position;
+    }
+
+    public Vector3 GetRandomVirusSpawnerPosition(Vector3 dontInclude)
+    {
+        // remove dontInclude from list
+        var result = _virusSpawnerPosition.Where((v, i) => v.position != dontInclude).ToArray();
+
+        int randomIndex = Random.Range(0, result.Length);
+        return result[randomIndex].position;
     }
 
     void OnDrawGizmos()

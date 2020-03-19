@@ -9,9 +9,8 @@ public class EventController : Singleton<EventController>
     public VirusSpawnerDelegate OnVirusSpawnerSpawned;
 
     [SerializeField] private EventControllerData _data;
-    [Space]
+    [Header("Virus spawner settings")]
     [SerializeField] private GameObject _prefabVirusSpawner;
-    [SerializeField] private Transform _positionVirusSpawner;
 
     private GameObject _currentVirusSpawner = null;
     #endregion
@@ -35,8 +34,6 @@ public class EventController : Singleton<EventController>
         // calcuting multiple to spawn virus spawner
         int multiple = (sumKillsGoal - 2 * playersCount) / _data.MaxSpawnVirusSpawner;
 
-        Debug.LogFormat("Multiple is {0}; value is {1}", multiple, GameManager.Instance.Gamemode.ValueForVictory);
-
         // check if kill number is a multiple of multiple
         int killNumber = GameManager.Instance.Gamemode.SumCharactersValue;
         bool shouldSpawnVirus = (killNumber % multiple == 0);
@@ -57,8 +54,11 @@ public class EventController : Singleton<EventController>
         // prevent spawning if viruses are on the map
         if (FindObjectsOfType<VirusController>().Length != 0)
             return;
-        
-        _currentVirusSpawner = Instantiate(_prefabVirusSpawner, _positionVirusSpawner.position, Quaternion.identity);
+
+        var position = LevelData.Instance.GetRandomVirusSpawnerPosition();
+        Quaternion rot = Quaternion.identity;
+
+        _currentVirusSpawner = Instantiate(_prefabVirusSpawner, position, rot);
 
         OnVirusSpawnerSpawned?.Invoke(_currentVirusSpawner.GetComponent<VirusSpawner>());
     }

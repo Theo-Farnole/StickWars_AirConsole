@@ -10,22 +10,22 @@ public delegate void VirusSpawnerDelegate(VirusSpawner virusController);
 public class VirusSpawner : Entity
 {
     #region Fields
-    [Header("Virus Config")]
+    [Header("Main settings")]
     [SerializeField] private GameObject _prefabVirus;
+    [SerializeField] private int _deathCountToReleaseVirus = 3;
+    [Header("Interface")]
     [SerializeField] private GameObject _sliderCanvas;
-    [SerializeField] private Slider[] _healthSliders = new Slider[3];
-    [Space]
-    [SerializeField] private AudioSource _audioDeath;
-    [Space]
-    [SerializeField] private float _glitchEffectDuration = 1f;
-    [Space]
+    [SerializeField] private Slider[] _healthSliders = new Slider[3];    
+    [Header("Feedbacks")]
+    [SerializeField] private AudioSource _audioDeath;    
+    [SerializeField] private float _glitchEffectDuration = 1f;    
+    [Header("Debug")]
     [SerializeField] private bool _debugAttackEveryCharacter = false;
     [SerializeField] private bool _debugInstantKill = false;
 
     private bool _isApplicationQuitting = false;
 
-    private Transform[] _positions;
-    private int _deathCount = 0;
+    private int _currentDeathCount = 0;
     #endregion
 
     #region Methods
@@ -41,9 +41,6 @@ public class VirusSpawner : Entity
 
     void Start()
     {
-        Transform[] currentPositionArray = new Transform[] { transform };
-        _positions = currentPositionArray.Union(LevelData.Instance.VirusSpawnerPosition).ToArray();
-
         for (int i = 0; i < _healthSliders.Length; i++)
         {
             _healthSliders[i].maxValue = MaxHp;
@@ -58,17 +55,17 @@ public class VirusSpawner : Entity
     {
         base.GetDamage(damage, attacker);
 
-        bool shouldHideCanvas = (_deathCount == 0 && _hp == MaxHp);
+        bool shouldHideCanvas = (_currentDeathCount == 0 && _hp == MaxHp);
         _sliderCanvas.SetActive(!shouldHideCanvas);
     }
 
     protected override void Death(Entity killer)
     {
-        _deathCount++;
+        _currentDeathCount++;
         SetCurrentHealthBar();
 
         // VirusTriggerer has reach last position
-        if (_deathCount >= _positions.Length || _debugInstantKill)
+        if (_currentDeathCount >= _deathCountToReleaseVirus || _debugInstantKill)
         {
             TriggerVirus(killer);
 
@@ -80,7 +77,8 @@ public class VirusSpawner : Entity
         }
         else
         {
-            GetComponent<FancyObject>()?.ResetStartingPosition(_positions[_deathCount].position);
+            var newPosition = LevelData.Instance.GetRandomVirusSpawnerPosition(transform.position);
+            GetComponent<FancyObject>()?.ResetStartingPosition(newPosition);
 
             _hp = MaxHp;
             UpdateHealthSlider();
@@ -111,13 +109,13 @@ public class VirusSpawner : Entity
 
     void SetCurrentHealthBar()
     {
-        if (_deathCount < _healthSliders.Length)
+        if (_currentDeathCount < _healthSliders.Length)
         {
-            _healthSlider = _healthSliders[_deathCount];
+            _healthSlider = _healthSliders[_currentDeathCount];
         }
         else
         {
-            Debug.LogWarning("No Health Slider for " + _deathCount + "th death of " + transform.name);
+            Debug.LogWarning("No Health Slider for " + _currentDeathCount + "th death of " + transform.name);
         }
     }
 
