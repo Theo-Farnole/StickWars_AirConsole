@@ -9,6 +9,7 @@ using UnityEngine;
 
 public delegate void CharControllerDelegate(CharController charController);
 public delegate void CharControllerStateDelegate(CharController charController, AbstractCharState state);
+public delegate void CharControllerIntDelegate(CharController charController, int integer);
 
 public class CharController : MonoBehaviour
 {
@@ -138,6 +139,7 @@ public class CharController : MonoBehaviour
     #region events
     public CharControllerDelegate OnDoubleJump;
     public CharControllerStateDelegate OnStateChanged;
+    public CharControllerIntDelegate OnProjectileAmountUpdated;
     #endregion
 
     #region serialized variables
@@ -170,6 +172,7 @@ public class CharController : MonoBehaviour
     private Orientation _orientationX = Orientation.Left;
 
     // attack variables
+    private int _currentAmountProjectilesCarried = 0;
     private List<Entity> _entitiesHit = new List<Entity>();
     private PlayerInputs _inputs = new PlayerInputs();
 
@@ -299,6 +302,16 @@ public class CharController : MonoBehaviour
     }
 
     public SpriteRenderer SpriteRenderer { get => _spriteRenderer; set => _spriteRenderer = value; }
+    public int CurrentAmountProjectilesCarried
+    {
+        get => _currentAmountProjectilesCarried;
+
+        private set
+        {
+            _currentAmountProjectilesCarried = value;
+            OnProjectileAmountUpdated?.Invoke(this, _currentAmountProjectilesCarried);
+        }
+    }
     #endregion
 
     #region Methods
@@ -324,6 +337,8 @@ public class CharController : MonoBehaviour
         _crown.enabled = false;
 
         gameObject.name = gameObject.name.Replace("(Clone)", " " + charId.ToString());
+
+        CurrentAmountProjectilesCarried = _data.MaxProjectilesCarried;
     }
     #endregion
 
@@ -398,14 +413,23 @@ public class CharController : MonoBehaviour
     }
     #endregion
 
+    #region Miscellaneous
 #if UNITY_EDITOR
     void OnValidate()
     {
         _spriteRenderer.color = charId.GetSpriteColor();
     }
 #endif
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = charId.GetSpriteColor();
+        Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);
+    }
+    #endregion
     #endregion
 
+    #region Collisions
     void UpdateTriggerCollisions()
     {
         bool wasGrounded = _raycast.down;
@@ -426,9 +450,23 @@ public class CharController : MonoBehaviour
         }
     }
 
+    private void HitGround()
+    {
+        _charFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.HitGround);
+        _charAudio.PlaySound(CharAudio.Sound.HitGround);
+    }
+    #endregion
+
+    #region Attack methods
     public void ThrowProjectile()
     {
         CanThrowProjectile = false;
+
+        // prevent throw projectile if not amount
+        if (CurrentAmountProjectilesCarried <= 0)
+            return;
+
+        CurrentAmountProjectilesCarried--;
 
         var gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool("projectile", transform.position + _projectileOrigin, Quaternion.identity);
         var projectile = gameObjectProjectile.GetComponent<Projectile>();
@@ -436,8 +474,12 @@ public class CharController : MonoBehaviour
         projectile.damage = _data.DamageProjectile;
         projectile.Direction = Vector3.right * (int)OrientationX;
         projectile.sender = GetComponent<Entity>();
-    }
 
+        OnProjectileAmountUpdated?.Invoke(this, CurrentAmountProjectilesCarried);
+    }
+    #endregion
+
+    #region Respawn methods
     public void Respawn()
     {
         // reset value
@@ -466,19 +508,14 @@ public class CharController : MonoBehaviour
 
         _freeze = true;
         GetComponent<CharacterEntity>().isInvincible = true;
-        
+
         this.ExecuteAfterTime(_data.RespawnDuration, () =>
         {
             _freeze = false;
             GetComponent<CharacterEntity>().isInvincible = false;
         });
     }
-
-    private void HitGround()
-    {
-        _charFeedback.PlayNonOrientedParticle(true, CharFeedback.Particle.HitGround);
-        _charAudio.PlaySound(CharAudio.Sound.HitGround);
-    }
+    #endregion
 
     #region Inputs Management
     void HandleInput(int deviceId, JToken data)
@@ -529,11 +566,5 @@ public class CharController : MonoBehaviour
     }
 #endif
     #endregion
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = charId.GetSpriteColor();
-        Gizmos.DrawSphere(transform.position + _projectileOrigin, 0.05f);
-    }
     #endregion
 }

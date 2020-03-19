@@ -23,13 +23,17 @@ public class CharacterControllerData : ScriptableObject
     public int DamageTackle { get => _damageTackle; }
 
     [SerializeField] private int _damageProjectile = 2;
-    public int DamageProjectile { get => _damageProjectile;  }
+    public int DamageProjectile { get => _damageProjectile; }
 
     [SerializeField] private float _cadenceProjectile = 2;
     public float CadenceProjectile { get => _cadenceProjectile; }
 
+    [SerializeField] private int _maxProjectilesCarried = 2;
+
     [Header("Respawn")]
 
     [SerializeField] private float _respawnDuration = 1.5f;
-    public float RespawnDuration { get => _respawnDuration; set => _respawnDuration = value; }
+
+    public float RespawnDuration { get => _respawnDuration; }
+    public int MaxProjectilesCarried { get => _maxProjectilesCarried; }
 }
