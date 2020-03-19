@@ -631,6 +631,7 @@ MonoBehaviour:
   _healthSlider: {fileID: 4676883534530697953}
   _prefabVirus: {fileID: 1890174931713293412, guid: f821400d679224f49a2784434c648a21,
     type: 3}
+  _deathCountToReleaseVirus: 3
   _sliderCanvas: {fileID: 6939837523756616893}
   _healthSliders:
   - {fileID: 4676883534530697953}
