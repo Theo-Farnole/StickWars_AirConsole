@@ -44,6 +44,9 @@ TagManager:
   - name: Projectile
     uniqueID: 3780416923
     locked: 0
+  - name: Environment
+    uniqueID: 147096233
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
