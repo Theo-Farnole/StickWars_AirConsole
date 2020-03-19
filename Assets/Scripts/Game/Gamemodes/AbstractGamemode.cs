@@ -57,7 +57,7 @@ public abstract class AbstractGamemode
     {
         get
         {
-            int[] charactersValueArray = new int [Enum.GetValues(typeof(CharId)).Length];
+            int[] charactersValueArray = new int[Enum.GetValues(typeof(CharId)).Length];
 
             foreach (CharId item in Enum.GetValues(typeof(CharId)))
             {
@@ -68,7 +68,7 @@ public abstract class AbstractGamemode
         }
     }
 
-    public int ValueForVictory { get => valueForVictory;  }
+    public int ValueForVictory { get => valueForVictory; }
     #endregion
 
     #region Methods
@@ -79,6 +79,24 @@ public abstract class AbstractGamemode
         {
             _charactersValue[item] = 0;
         }
+    }
+
+    public int GetPlayersCountAtScore(int score)
+    {
+        return _charactersValue.Select(x => x.Value == score).Count();
+    }
+
+    public int GetPositionInPlayersAtScore(CharId charId)
+    {
+        int charIdScore = _charactersValue[charId];
+
+        var array = _charactersValue
+                        .Where(x => x.Value == charIdScore)
+                        .OrderByDescending(x => x.Key)
+                        .Select(x => x.Key)
+                        .ToArray();
+
+        return Array.FindIndex(array, x => x == charId);
     }
 
     public bool CheckForVictory()
@@ -109,11 +127,11 @@ public abstract class AbstractGamemode
             GameManager.Instance.Characters[(CharId)charIDToCheck].IsMVP = true;
             return;
         }
-        
+
         // converting from CharId? to CharId
-        CharId currentMVPCharIDConverted = (CharId)_currentMVPCharID; 
-        CharId charIDToCheckConverted = (CharId)charIDToCheck;        
-        
+        CharId currentMVPCharIDConverted = (CharId)_currentMVPCharID;
+        CharId charIDToCheckConverted = (CharId)charIDToCheck;
+
         if (_charactersValue[currentMVPCharIDConverted] < _charactersValue[charIDToCheckConverted])
         {
             // remove isMvp status from old MVP

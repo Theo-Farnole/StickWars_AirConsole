@@ -13,6 +13,8 @@ public class GoalBarManager : MonoBehaviour
     [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _picturesSliders;
     [Space]
     [SerializeField, EnumNamedArray(typeof(CharId))] private PlayerWrapper[] _playerPicturesWrapper;
+    [Header("Concurrency")]
+    [SerializeField] private float _avatarOffsetOnConcurrency = 10;
     [Header("Animation")]
     [SerializeField] private float _barAnimationDuration = 1f;
     [SerializeField] private Ease _barAnimationEase = Ease.OutCubic;
@@ -36,6 +38,8 @@ public class GoalBarManager : MonoBehaviour
         // reactive bar on spawn
         GameManager.Instance.Gamemode.OnScoreUpdate += OnScoreUpdate;
         GameManager.Instance.OnCharacterSpawn += SetSliderPicture;
+        GameManager.Instance.OnCharacterSpawn += 
+            (CharController charController) => UpdateSliders_PicturesPosition();
 
         // if GameManager's Start() is called before this Start(), 
         // set slider picture on each character spawned
@@ -122,13 +126,12 @@ public class GoalBarManager : MonoBehaviour
             UpdateSlider_Content(_picturesSliders[i], score[i]);
 
         UpdateSliders_SortOrder(_coloredSliders, score);
+        UpdateSliders_PicturesPosition();
     }
 
     void UpdateSlider_Content(Slider slider, int score)
     {
         slider.DOValue(score, _barAnimationDuration).SetEase(_barAnimationEase);
-
-        // TODO: que se passe-t-il quand il y a 2 joueurs au même score ?
     }
 
     void UpdateSliders_SortOrder(Slider[] sliders, int[] score)
@@ -154,7 +157,7 @@ public class GoalBarManager : MonoBehaviour
 
             sliders[sliderIndex].transform.SetSiblingIndex(i);
         }
-        
+
         // reverse sliders order
         var slidersParent = sliders[0].transform.parent;
         int childCount = slidersParent.childCount;
@@ -162,6 +165,23 @@ public class GoalBarManager : MonoBehaviour
         for (int i = 0; i < childCount; i++)
         {
             slidersParent.GetChild(0).SetSiblingIndex((childCount - 1) - i);
+        }
+    }
+
+    void UpdateSliders_PicturesPosition()
+    {
+        var charIds = (CharId[])Enum.GetValues(typeof(CharId));
+
+        for (int i = 0; i < _playerPicturesWrapper.Length; i++)
+        {
+            var charId = charIds[i];
+
+            var rectTransform = _playerPicturesWrapper[i].GetComponent<RectTransform>();
+
+            var index = GameManager.Instance.Gamemode.GetPositionInPlayersAtScore(charId);
+            var newPosition = index * _avatarOffsetOnConcurrency * -1;
+
+            rectTransform.DOAnchorPosY(newPosition, _barAnimationDuration).SetEase(Ease.InOutSine);
         }
     }
     #endregion
