@@ -36,6 +36,8 @@ public abstract class AbstractGamemode
 
     protected Dictionary<CharId, int> _charactersValue = new Dictionary<CharId, int>();
     protected CharId? _currentMVPCharID = null;
+
+    private int _killCount = 0;
     #endregion
 
     #region Properties
@@ -70,6 +72,7 @@ public abstract class AbstractGamemode
     }
 
     public int ValueForVictory { get => valueForVictory; }
+    public int KillCount { get => _killCount; }
     #endregion
 
     #region Methods
@@ -151,6 +154,8 @@ public abstract class AbstractGamemode
 
     public virtual void Kill(CharId? killerCharID)
     {
+        _killCount++;
+
         if (killerCharID != null)
         {
             OnCharacterKill?.Invoke((CharId)killerCharID);
