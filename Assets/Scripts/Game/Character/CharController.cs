@@ -101,17 +101,47 @@ public class CharController : MonoBehaviour
 
     public class PlayerInputs
     {
-        public int horizontalInput = 0;
-        public bool jumpPressed = false;
-        public bool tacklePressed = false;
-        public bool throwPressed = false;        
+        private int _horizontalInput = 0;
+        private bool _jumpPressed = false;
+        private bool _tacklePressed = false;
+        private bool _throwPressed = false;
+
+        private bool _throwDown = false;
+
+        public int HorizontalInput { get => _horizontalInput; set => _horizontalInput = value; }
+        public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
+        public bool TacklePressed { get => _tacklePressed; set => _tacklePressed = value; }
+        public bool ThrowPressed
+        {
+            get => _throwPressed;
+
+            set
+            {
+                _throwPressed = value;
+
+                if (_throwPressed == true)
+                {
+                    _throwDown = true;
+                }
+            }
+        }
+
+        public bool ThrowDown { get => _throwDown; }
+
+        /// <summary>
+        /// Set "downs" variable as true
+        /// </summary>
+        public void Tick()
+        {
+            _throwDown = false;
+        }
 
         public void Reset()
         {
-            horizontalInput = 0;
-            jumpPressed = false;
-            tacklePressed = false;
-            throwPressed = false;
+            HorizontalInput = 0;
+            JumpPressed = false;
+            TacklePressed = false;
+            ThrowPressed = false;
         }
     }
     #endregion
@@ -160,7 +190,7 @@ public class CharController : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _crown;
     [Header("Events")]
-    [SerializeField] private UnityEvent OnThrowProjectileButNoCarriedProjectile; // a bit too long, I apologize
+    public UnityEvent NoCarriedProjectileOnThrow; // a bit too long, I apologize
     #endregion
 
     #region internals variables
@@ -304,6 +334,8 @@ public class CharController : MonoBehaviour
         }
     }
 
+    public bool HasEnoughtCarriedProjectileToThrow { get => CurrentAmountProjectilesCarried > 0; }
+
     public SpriteRenderer SpriteRenderer { get => _spriteRenderer; set => _spriteRenderer = value; }
     public int CurrentAmountProjectilesCarried
     {
@@ -372,7 +404,7 @@ public class CharController : MonoBehaviour
 
     void LateUpdate()
     {
-        _animator.SetBool(_hashRunning, (_inputs.horizontalInput != 0));
+        _animator.SetBool(_hashRunning, (_inputs.HorizontalInput != 0));
         _animator.SetBool(_hashJump, !_raycast.down);
 
         if (_state != null)
@@ -380,6 +412,8 @@ public class CharController : MonoBehaviour
             _animator.SetBool(_hashWallSliding, _state is CharStateSticked);
             _animator.SetBool(_hashTackle, _state is CharStateTackle);
         }
+
+        _inputs.Tick();
     }
     #endregion
 
@@ -469,9 +503,9 @@ public class CharController : MonoBehaviour
         CanThrowProjectile = false;
 
         // prevent throw projectile if not amount
-        if (CurrentAmountProjectilesCarried <= 0)
+        if (!HasEnoughtCarriedProjectileToThrow)
         {
-            OnThrowProjectileButNoCarriedProjectile?.Invoke();
+            NoCarriedProjectileOnThrow?.Invoke();
             return;
         }
 
@@ -539,22 +573,22 @@ public class CharController : MonoBehaviour
 
         if (data["horizontal"] != null)
         {
-            _inputs.horizontalInput = (int)data["horizontal"];
+            _inputs.HorizontalInput = (int)data["horizontal"];
         }
 
         if (data["bPressed"] != null)
         {
-            _inputs.tacklePressed = (bool)data["bPressed"];
+            _inputs.TacklePressed = (bool)data["bPressed"];
         }
 
         if (data["aPressed"] != null)
         {
-            _inputs.jumpPressed = (bool)data["aPressed"];
+            _inputs.JumpPressed = (bool)data["aPressed"];
         }
 
         if (data["xPressed"] != null)
         {
-            _inputs.throwPressed = (bool)data["xPressed"];
+            _inputs.ThrowPressed = (bool)data["xPressed"];
         }
     }
 
@@ -564,19 +598,19 @@ public class CharController : MonoBehaviour
         if (_freeze)
             return;
 
-        if (Input.GetKeyDown(_keyboardControls.Right)) _inputs.horizontalInput = 1;
-        if (Input.GetKeyUp(_keyboardControls.Right) && _inputs.horizontalInput != -1) _inputs.horizontalInput = 0;
-        if (Input.GetKeyDown(_keyboardControls.Left)) _inputs.horizontalInput = -1;
-        if (Input.GetKeyUp(_keyboardControls.Left) && _inputs.horizontalInput != 1) _inputs.horizontalInput = 0;
+        if (Input.GetKeyDown(_keyboardControls.Right)) _inputs.HorizontalInput = 1;
+        if (Input.GetKeyUp(_keyboardControls.Right) && _inputs.HorizontalInput != -1) _inputs.HorizontalInput = 0;
+        if (Input.GetKeyDown(_keyboardControls.Left)) _inputs.HorizontalInput = -1;
+        if (Input.GetKeyUp(_keyboardControls.Left) && _inputs.HorizontalInput != 1) _inputs.HorizontalInput = 0;
 
-        if (Input.GetKeyDown(_keyboardControls.Jump)) _inputs.jumpPressed = true;
-        if (Input.GetKeyUp(_keyboardControls.Jump)) _inputs.jumpPressed = false;
+        if (Input.GetKeyDown(_keyboardControls.Jump)) _inputs.JumpPressed = true;
+        if (Input.GetKeyUp(_keyboardControls.Jump)) _inputs.JumpPressed = false;
 
-        if (Input.GetKeyDown(_keyboardControls.Throw)) _inputs.throwPressed = true;
-        if (Input.GetKeyUp(_keyboardControls.Throw)) _inputs.throwPressed = false;
+        if (Input.GetKeyDown(_keyboardControls.Throw)) _inputs.ThrowPressed = true;
+        if (Input.GetKeyUp(_keyboardControls.Throw)) _inputs.ThrowPressed = false;
 
-        if (Input.GetKeyDown(_keyboardControls.Tackle)) _inputs.tacklePressed = true;
-        if (Input.GetKeyUp(_keyboardControls.Tackle)) _inputs.tacklePressed = false;
+        if (Input.GetKeyDown(_keyboardControls.Tackle)) _inputs.TacklePressed = true;
+        if (Input.GetKeyUp(_keyboardControls.Tackle)) _inputs.TacklePressed = false;
     }
 #endif
     #endregion

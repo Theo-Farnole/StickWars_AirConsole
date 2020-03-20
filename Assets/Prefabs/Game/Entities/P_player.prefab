@@ -1463,7 +1463,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 8160361011068639438}
   _animator: {fileID: 4215037579328184273}
   _crown: {fileID: 4180734011860687220}
-  OnThrowProjectileButNoCarriedProjectile:
+  NoCarriedProjectileOnThrow:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7462937066820440468}

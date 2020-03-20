@@ -40,11 +40,17 @@ public class CharStateNormal : AbstractCharState
     #region Update
     void ProcessAttackInputs()
     {
-        if (_owner.Inputs.throwPressed)
+        // c'est très sale :/
+        if (_owner.Inputs.ThrowDown && !_owner.HasEnoughtCarriedProjectileToThrow)
+        {
+            _owner.NoCarriedProjectileOnThrow?.Invoke();
+        }
+
+        if (_owner.Inputs.ThrowPressed)
         {            
             _owner.ThrowProjectile();
         }
-        else if (_owner.Inputs.tacklePressed)
+        else if (_owner.Inputs.TacklePressed)
         {
             _owner.State = new CharStateTackle(_owner);
         }
@@ -53,8 +59,8 @@ public class CharStateNormal : AbstractCharState
     void ManageStick()
     {
         if (_owner.Raycast.down == false &&
-            ((_owner.Inputs.horizontalInput < 0 && _owner.Raycast.left) ||
-            (_owner.Inputs.horizontalInput > 0 && _owner.Raycast.right)))
+            ((_owner.Inputs.HorizontalInput < 0 && _owner.Raycast.left) ||
+            (_owner.Inputs.HorizontalInput > 0 && _owner.Raycast.right)))
         {
             _owner.State = new CharStateSticked(_owner);
         }
@@ -64,16 +70,16 @@ public class CharStateNormal : AbstractCharState
     #region Fixed Update
     void ProcessVerticalInput()
     {
-        if (_owner.Inputs.jumpPressed && _jumpCount < CharController.MAX_JUMPS_COUNT)
+        if (_owner.Inputs.JumpPressed && _jumpCount < CharController.MAX_JUMPS_COUNT)
         {
-            _owner.Inputs.jumpPressed = false;
+            _owner.Inputs.JumpPressed = false;
             Jump();
         }
     }
 
     void ProcessHorizontalInput()
     {
-        float direction = _owner.Inputs.horizontalInput;
+        float direction = _owner.Inputs.HorizontalInput;
         Vector2 velocity = _owner.Rigidbody.velocity;
 
         if ((direction < 0 && _owner.Raycast.left == false) || (direction > 0 && _owner.Raycast.right == false))
