@@ -14,6 +14,8 @@ public class ShortcutTextBoxTrigger : AbstractTextBoxTrigger
     private Shortcut _shortcut;
     private int _hitsOnShortcut;
 
+    private bool _shortcutTimerStarted = false;
+
     void Start()
     {
         _shortcut = FindObjectOfType<Shortcut>();
@@ -27,8 +29,9 @@ public class ShortcutTextBoxTrigger : AbstractTextBoxTrigger
 
     void OnDamage(Entity victim, int damage)
     {
-        if (_startTimerOnShortcutDamage)
+        if (_startTimerOnShortcutDamage && !_shortcutTimerStarted)
         {
+            _shortcutTimerStarted = true;
             StartTimer(_timeToCheckCondition, OnTimerEnded);
         }
 
