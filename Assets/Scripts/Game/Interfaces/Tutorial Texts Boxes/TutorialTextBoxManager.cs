@@ -6,8 +6,10 @@ using UnityEngine;
 public class TutorialTextBoxManager : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private float _displayDuration;
     [SerializeField] private TextMeshProUGUI _textBox;
+    [Space]
+    [SerializeField] private float _displayDuration;
+    [SerializeField] private float _timeBetweenTwoQueuedMessages = 0.3f;
 
     private Queue<string> _queuedTextsBoxes = new Queue<string>();
     private float _timerTextBoxDisplay = 0;
@@ -70,8 +72,11 @@ public class TutorialTextBoxManager : MonoBehaviour
         // is a message is waiting to be displayed ?
         if (_queuedTextsBoxes.Count > 0)
         {
-            var nextMessage = _queuedTextsBoxes.Dequeue();
-            DisplayTextBox(nextMessage);
+            this.ExecuteAfterTime(_timeBetweenTwoQueuedMessages, () =>
+            {
+                var nextMessage = _queuedTextsBoxes.Dequeue();
+                DisplayTextBox(nextMessage);
+            });
         }
         else
         {
