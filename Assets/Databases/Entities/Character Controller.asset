@@ -16,5 +16,7 @@ MonoBehaviour:
   _jumpForce: 325
   _slidingDownSpeed: -0.2
   _damageTackle: 10
-  _damageProjectile: 10
+  _damageProjectile: 20
   _cadenceProjectile: 1
+  _maxProjectilesCarried: 2
+  _respawnDuration: 1.5
