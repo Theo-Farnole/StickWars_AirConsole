@@ -41,9 +41,6 @@ TagManager:
   - name: Background
     uniqueID: 939904059
     locked: 0
-  - name: Projectile
-    uniqueID: 3780416923
-    locked: 0
   - name: Environment
     uniqueID: 147096233
     locked: 0
@@ -52,6 +49,9 @@ TagManager:
     locked: 0
   - name: Shortcut
     uniqueID: 1337531291
+    locked: 0
+  - name: Projectile
+    uniqueID: 3780416923
     locked: 0
   - name: Entities
     uniqueID: 4018885121

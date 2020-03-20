@@ -179,6 +179,8 @@ public class CharController : MonoBehaviour
     [SerializeField] private CharacterControllerData _data;
     [Header("Attacking")]
     [SerializeField] private GameObject _prefabProjectile;
+    [Tooltip("When no projectile carried, we instanciate a emit a feedback.")]
+    [SerializeField] private GameObject _prefabWhenNoProjectileCarried;
     [SerializeField] private Vector3 _projectileOrigin;
     [Header("Collisions")]
     [SerializeField] private CharacterCollisions _collisions;
@@ -203,6 +205,8 @@ public class CharController : MonoBehaviour
     private bool _isMVP = false;
     private bool _canThrowProjectile = true;
     private Orientation _orientationX = Orientation.Left;
+
+    private bool _badProjectileAlreadyInstanciatedThisFrame = false;
 
     // attack variables
     private int _currentAmountProjectilesCarried = 0;
@@ -374,12 +378,16 @@ public class CharController : MonoBehaviour
         gameObject.name = gameObject.name.Replace("(Clone)", " " + charId.ToString());
 
         FillCarriedProjectilesAmount();
+
+        NoCarriedProjectileOnThrow?.AddListener(ThrowBadProjectile);
     }
     #endregion
 
     #region Tick
     void Update()
     {
+        _badProjectileAlreadyInstanciatedThisFrame = false;
+
 #if UNITY_EDITOR
         HandleKeyboardInput();
 #endif
@@ -519,6 +527,21 @@ public class CharController : MonoBehaviour
         projectile.sender = GetComponent<Entity>();
 
         OnProjectileAmountUpdated?.Invoke(this, CurrentAmountProjectilesCarried);
+    }
+
+    public void ThrowBadProjectile()
+    {
+        if (_badProjectileAlreadyInstanciatedThisFrame)
+            return;
+
+        _badProjectileAlreadyInstanciatedThisFrame = true;
+
+        var gameObject = GameObject.Instantiate(_prefabWhenNoProjectileCarried, transform.position + _projectileOrigin - Vector3.up * 0.3f, Quaternion.identity);
+
+        gameObject.GetComponent<Rigidbody2D>().AddForce(Vector3.right * (int)OrientationX * 180);
+
+        const float lifetime = 2.3f;
+        Destroy(gameObject, lifetime);
     }
 
     public void FillCarriedProjectilesAmount()
