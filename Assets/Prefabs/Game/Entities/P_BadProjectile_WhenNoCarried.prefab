@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6775877794562691723}
   - component: {fileID: 6651563825173157380}
-  - component: {fileID: 8454759485886886833}
   m_Layer: 9
   m_Name: sprite
   m_TagString: Untagged
@@ -80,39 +79,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8454759485886886833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4209620959130422327}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 993524aad5e32ec44b7da0a7c433498c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sprites:
-  - {fileID: 21300000, guid: ddada150263c27049a2bcda680b5c788, type: 3}
-  - {fileID: 21300000, guid: 4e9bb280f6862514f93c29c180b149e6, type: 3}
-  - {fileID: 21300000, guid: 9cbb33b029f515f4a887c64e7ff366ef, type: 3}
-  - {fileID: 21300000, guid: 3d60a342117578545bee1af05ac2315d, type: 3}
-  - {fileID: 21300000, guid: d5d14c84a9f83c34f8146f3a732fcbf1, type: 3}
-  - {fileID: 21300000, guid: 5d2ea0d45744b0c4b9b9d4a98e041124, type: 3}
-  - {fileID: 21300000, guid: 6d77fb95c3a9f5d4eb7472896762da7c, type: 3}
-  - {fileID: 21300000, guid: cd596bd5b3d8af348a875f6252e29c41, type: 3}
-  - {fileID: 21300000, guid: 19b7d7177989120479282ded62ea0e8a, type: 3}
-  - {fileID: 21300000, guid: 4a76cb179fda2d643a5345e7002e46a0, type: 3}
-  - {fileID: 21300000, guid: 5e3d50484280aee4eb64c5d50a48785c, type: 3}
-  - {fileID: 21300000, guid: 2f3834c92b3f2fb439b5ddc155d97724, type: 3}
-  - {fileID: 21300000, guid: 1d7819d9e3613cc4095b24d92b8e4c19, type: 3}
-  - {fileID: 21300000, guid: 9ba9020adce54204ea429db82e3c3b8d, type: 3}
-  - {fileID: 21300000, guid: 762ce5bbdcec24c4d961fadbbcc26d44, type: 3}
-  - {fileID: 21300000, guid: 7da9330d6e055274b9983e326faff56a, type: 3}
-  - {fileID: 21300000, guid: ce034e8de9b6a0c45aa530d6080e6cc8, type: 3}
-  - {fileID: 21300000, guid: b70f743ed99df9949ba736a719fef231, type: 3}
-  - {fileID: 21300000, guid: 92a0a18e3adfdc044bc3683692c5418e, type: 3}
-  - {fileID: 21300000, guid: 3f21c1ee634057145a1f6e3a2f3a5cef, type: 3}
 --- !u!1 &4424431625613385964
 GameObject:
   m_ObjectHideFlags: 0
