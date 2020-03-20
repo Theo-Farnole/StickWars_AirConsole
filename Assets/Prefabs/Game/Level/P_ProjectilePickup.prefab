@@ -76,8 +76,8 @@ MonoBehaviour:
   _shouldRotate: 0
   _rotateSpeed: {x: 0, y: 0, z: 0}
   _shouldTranslate: 1
-  _translateSpeed: 1
-  _translateDistance: 0.1
+  _translateSpeed: 3
+  _translateDistance: 0.05
   _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
   _segmentSize: 0.1
 --- !u!61 &56157985
