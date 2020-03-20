@@ -1,9 +1,9 @@
 version: 2
 importPivots: 1
 tpsheetFileNames:
-- Assets/Sprites/game/stickman/stickman_data.tpsheet
+- Assets/Sprites/Game/Entities/stickman_data.tpsheet
 textureFileNames:
-- Assets/Sprites/game/stickman/stickman_tex.png
+- Assets/Sprites/Game/Entities/stickman_tex.png
 normalmapFileNames:
 - 
 enableDebugOutput: 0

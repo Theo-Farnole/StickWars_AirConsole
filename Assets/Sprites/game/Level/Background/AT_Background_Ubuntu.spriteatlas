@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AT_Background
+  m_Name: AT_Background_Ubuntu
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -42,12 +42,12 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: 69e77787061213941b79ef30baf93ac4, type: 3}
-    totalSpriteSurfaceArea: 2620160
+    totalSpriteSurfaceArea: 163520
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 69e77787061213941b79ef30baf93ac4, type: 3}
   m_PackedSpriteNamesToIndex:
-  - background
-  m_Tag: AT_Background
+  - S_Background_Ubuntu
+  m_Tag: AT_Background_Ubuntu
   m_IsVariant: 0

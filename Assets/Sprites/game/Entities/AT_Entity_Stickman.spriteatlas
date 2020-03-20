@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AT_Stickman
+  m_Name: AT_Entity_Stickman
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -183,5 +183,5 @@ SpriteAtlas:
   - run-0016
   - run-0017
   - run-0007
-  m_Tag: AT_Stickman
+  m_Tag: AT_Entity_Stickman
   m_IsVariant: 0

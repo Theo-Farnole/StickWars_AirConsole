@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AT_Virus
+  m_Name: AT_Entity_Virus
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -81,5 +81,5 @@ SpriteAtlas:
   - virus_4
   - virus_9
   - virus_8
-  m_Tag: AT_Virus
+  m_Tag: AT_Entity_Virus
   m_IsVariant: 0
