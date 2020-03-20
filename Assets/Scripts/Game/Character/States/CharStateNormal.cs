@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharStateNormal : AbstractCharState
 {
-    private int _jumpCount = 0;
+    private int _jumpCount = 0;    
 
     public CharStateNormal(CharController charController) : base(charController)
     { }
@@ -40,8 +40,8 @@ public class CharStateNormal : AbstractCharState
     #region Update
     void ProcessAttackInputs()
     {
-        if (_owner.Inputs.throwPressed && _owner.CanThrowProjectile)
-        {
+        if (_owner.Inputs.throwPressed)
+        {            
             _owner.ThrowProjectile();
         }
         else if (_owner.Inputs.tacklePressed)

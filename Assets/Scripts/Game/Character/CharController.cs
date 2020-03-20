@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.Events;
 
 public delegate void CharControllerDelegate(CharController charController);
 public delegate void CharControllerStateDelegate(CharController charController, AbstractCharState state);
@@ -103,7 +104,7 @@ public class CharController : MonoBehaviour
         public int horizontalInput = 0;
         public bool jumpPressed = false;
         public bool tacklePressed = false;
-        public bool throwPressed = false;
+        public bool throwPressed = false;        
 
         public void Reset()
         {
@@ -158,6 +159,8 @@ public class CharController : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
     [SerializeField] private SpriteRenderer _crown;
+    [Header("Events")]
+    [SerializeField] private UnityEvent OnThrowProjectileButNoCarriedProjectile; // a bit too long, I apologize
     #endregion
 
     #region internals variables
@@ -460,11 +463,17 @@ public class CharController : MonoBehaviour
     #region Attack methods
     public void ThrowProjectile()
     {
+        if (_canThrowProjectile == false)
+            return;
+
         CanThrowProjectile = false;
 
         // prevent throw projectile if not amount
         if (CurrentAmountProjectilesCarried <= 0)
+        {
+            OnThrowProjectileButNoCarriedProjectile?.Invoke();
             return;
+        }
 
         CurrentAmountProjectilesCarried--;
 
