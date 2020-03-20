@@ -536,7 +536,7 @@ public class CharController : MonoBehaviour
 
         _badProjectileAlreadyInstanciatedThisFrame = true;
 
-        var gameObject = GameObject.Instantiate(_prefabWhenNoProjectileCarried, transform.position + _projectileOrigin - Vector3.up * 0.3f, Quaternion.identity);
+        var gameObject = GameObject.Instantiate(_prefabWhenNoProjectileCarried, transform.position + _projectileOrigin, Quaternion.identity);
 
         gameObject.GetComponent<Rigidbody2D>().AddForce(Vector3.right * (int)OrientationX * 180);
 
