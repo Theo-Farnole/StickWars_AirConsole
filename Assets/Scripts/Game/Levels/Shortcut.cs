@@ -12,7 +12,7 @@ public class Shortcut : Entity
     [SerializeField] private float _transitionDuration = 0.1f;
     [SerializeField] private bool _closeOnStart = true;
 
-    private bool _isWindowOpen = false;
+    private bool _isWindowOpen = true;
 
     // cache variables
     private Vector3 _deltaTargetPosition;
@@ -27,6 +27,8 @@ public class Shortcut : Entity
 
         if (_closeOnStart)
         {
+            _isWindowOpen = false;
+
             _window.transform.localScale = Vector3.zero;
             _window.transform.position = transform.position;
         }
