@@ -1,7 +1,0 @@
-app_drawner https://www.flaticon.com/free-icon/dial_2089242#term=dot&page=1&position=39
-terminal https://www.flaticon.com/free-icon/terminal_446969#term=terminal&page=1&position=13
-terminal_002_48 https://icones8.fr/icons/set/terminal
-turn off icon https://www.flaticon.com/free-icon/power-button_2537#term=turn%20off&page=1&position=22
-internet icon https://icones8.fr/icons/set/internet
-
-c sharp https://icones8.fr/icons/set/logo

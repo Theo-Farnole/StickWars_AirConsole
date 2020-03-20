@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AT_Items
+  m_Name: AT_Global
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -38,25 +38,19 @@ SpriteAtlas:
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
-      enableTightPacking: 0
+      enableTightPacking: 1
     variantMultiplier: 1
     packables:
-    - {fileID: 2800000, guid: ce034e8de9b6a0c45aa530d6080e6cc8, type: 3}
-    - {fileID: 2800000, guid: 0af563fe90a6c014bbc9148718ff9884, type: 3}
-    - {fileID: 2800000, guid: 894dff6807206f44391057b7baf9b43f, type: 3}
-    - {fileID: 2800000, guid: 8f6ecebdfb915d045a74f031572875bd, type: 3}
-    totalSpriteSurfaceArea: 271439
+    - {fileID: 2800000, guid: e7ec34aa077f39246b11bc75bd2fed27, type: 3}
+    - {fileID: 2800000, guid: 33e1415fdde951d40bf932fab538f5f0, type: 3}
+    totalSpriteSurfaceArea: 80000
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 894dff6807206f44391057b7baf9b43f, type: 3}
-  - {fileID: 21300000, guid: ce034e8de9b6a0c45aa530d6080e6cc8, type: 3}
-  - {fileID: 21300000, guid: 8f6ecebdfb915d045a74f031572875bd, type: 3}
-  - {fileID: 21300000, guid: 0af563fe90a6c014bbc9148718ff9884, type: 3}
+  - {fileID: 21300000, guid: e7ec34aa077f39246b11bc75bd2fed27, type: 3}
+  - {fileID: 21300000, guid: 33e1415fdde951d40bf932fab538f5f0, type: 3}
   m_PackedSpriteNamesToIndex:
-  - S_Item_Projectile
-  - S_Item_BadProjectile
-  - S_Item_ProjectilePickup_Glow
-  - S_Item_Crown
-  m_Tag: AT_Items
+  - S_Global_Circle
+  - S_Global_Square
+  m_Tag: AT_Global
   m_IsVariant: 0
