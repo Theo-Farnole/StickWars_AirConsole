@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public delegate void ProjectilePickupDelegate(ProjectilePickup projectilePickup);
 
 public class ProjectilePickup : MonoBehaviour, IPooledObject
 {
-    #region Fields
+    #region Fields    
+    public UnityEvent OnPickup;
+
     // cache variable
     private FancyObject _fancyObject;
     #endregion
@@ -32,6 +35,8 @@ public class ProjectilePickup : MonoBehaviour, IPooledObject
         if (hitCharController)
         {
             hitCharController.FillCarriedProjectilesAmount();
+            OnPickup?.Invoke();
+
             ObjectPooler.Instance.EnqueueGameObject("projectile_pickup", gameObject);
         }
     }
