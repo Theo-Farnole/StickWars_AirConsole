@@ -10,6 +10,7 @@ public class Shortcut : Entity
     [SerializeField] private GameObject _window;
     [Space]
     [SerializeField] private float _transitionDuration = 0.1f;
+    [SerializeField] private bool _closeOnStart = true;
 
     private bool _isWindowOpen = false;
 
@@ -24,8 +25,11 @@ public class Shortcut : Entity
         _deltaTargetPosition = _window.transform.position - transform.position;
         _images = transform.GetComponentsInChildren<Image>();
 
-        _window.transform.localScale = Vector3.zero;
-        _window.transform.position = transform.position;
+        if (_closeOnStart)
+        {
+            _window.transform.localScale = Vector3.zero;
+            _window.transform.position = transform.position;
+        }
     }
 
     public override void GetDamage(int damage, Entity attacker)
