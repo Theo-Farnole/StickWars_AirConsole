@@ -102,7 +102,7 @@ public class Projectile : MonoBehaviour, IPooledObject
             bool a = other.transform.CompareTag("Player");
             bool b = (other.transform.parent != null && other.transform.parent.CompareTag("Player"));
 
-            if (!(a || b) && other.GetComponent<Projectile>() == null)
+            if (!(a || b) && other.GetComponent<Projectile>() == null && other.GetComponent<ProjectilePickup>() == null)
             {
                 _isFreeze = true;
                 ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject, _data.LifetimeOnCollision);
