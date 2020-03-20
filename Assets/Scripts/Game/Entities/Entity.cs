@@ -13,7 +13,9 @@ public class Entity : MonoBehaviour
 {
     private const Ease HEALTHBAR_ANIMATION_EASE = Ease.Linear;
     private const float HEALTHBAR_ANIMATION_DURATION = 0.1f;
+
     #region Fields
+    public EntityDelegate OnHealthPointsChanged;
     public EntityDamage OnDamage;
 
     [Header("Entity Config")]
@@ -23,7 +25,6 @@ public class Entity : MonoBehaviour
     [SerializeField] private bool _hideHealthSliderIfFull = true;
     [SerializeField] protected Slider _healthSlider;
 
-
     protected int _hp;
     private int _maxHp;
     #endregion
@@ -32,6 +33,8 @@ public class Entity : MonoBehaviour
     public int MaxHp { get => _maxHp; }
     public int Hp { get => _hp; }
     public bool IsAlive { get => _hp > 0 ? true : false; }
+    public bool IsFullLife { get => _hp == MaxHp; }
+    public Slider HealthSlider { get => _healthSlider; }
     #endregion
 
     protected virtual void Awake()
@@ -69,6 +72,8 @@ public class Entity : MonoBehaviour
         {
             Death(attacker);
         }
+
+        OnHealthPointsChanged?.Invoke(this);
     }
 
     protected void UpdateHealthSlider()
@@ -101,7 +106,7 @@ public class Entity : MonoBehaviour
     {
         float direction = transform.position.x - attacker.transform.position.x;
 
-        var floatingText = ObjectPooler.Instance.SpawnFromPool("floating_text", transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();        
+        var floatingText = ObjectPooler.Instance.SpawnFromPool("floating_text", transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();
         floatingText.direction = (FloatingText.Direction)Mathf.Sign(direction);
         floatingText.Text.text = damage.ToString();
 
