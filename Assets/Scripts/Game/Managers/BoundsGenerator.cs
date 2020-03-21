@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class BoundsGenerator : MonoBehaviour
 {
+    [Header("Vertical colliders")]
+    [SerializeField] private bool _generateTop = true;
+    [SerializeField] private bool _generateBottom = false;
+    [Header("Horizontal colliders")]
+    [SerializeField] private bool _generateLeft = true;
+    [SerializeField] private bool _generateRight = true;
 
     void Start()
     {
@@ -23,13 +29,19 @@ public class BoundsGenerator : MonoBehaviour
         Vector2 sideSize = new Vector2(1, heightIG + 5);
         Vector2 sideOffset = new Vector2(widthIG / 2 + 0.5f, 0);
 
-        var left = bounds.AddComponent<BoxCollider2D>();
-        left.size = sideSize;
-        left.offset = sideOffset;
+        if (_generateLeft)
+        {
+            var left = bounds.AddComponent<BoxCollider2D>();
+            left.size = sideSize;
+            left.offset = sideOffset;
+        }
 
-        var right = bounds.AddComponent<BoxCollider2D>();
-        right.size = sideSize;
-        right.offset = -sideOffset;
+        if (_generateRight)
+        {
+            var right = bounds.AddComponent<BoxCollider2D>();
+            right.size = sideSize;
+            right.offset = -sideOffset;
+        }
 
 
         // ===
@@ -37,12 +49,18 @@ public class BoundsGenerator : MonoBehaviour
         Vector2 size = new Vector2(widthIG + 5, 1);
         Vector2 offset = new Vector2(0, heightIG / 2 + 0.5f);
 
-        var top = bounds.AddComponent<BoxCollider2D>();
-        top.size = size;
-        top.offset = offset;
+        if (_generateTop)
+        {
+            var top = bounds.AddComponent<BoxCollider2D>();
+            top.size = size;
+            top.offset = offset;
+        }
 
-        var bot = bounds.AddComponent<BoxCollider2D>();
-        bot.size = size;
-        bot.offset = -offset;
+        if (_generateBottom)
+        {
+            var bot = bounds.AddComponent<BoxCollider2D>();
+            bot.size = size;
+            bot.offset = -offset;
+        }
     }
 }
