@@ -13,17 +13,17 @@ public class GamemodeDeathMatch : AbstractGamemode
     {
         base.Kill(killerCharID);
 
-        if (killerCharID == null) return;
+        // update score
+        if (killerCharID != null)
+        {
+            CharId c_killerCharID = (CharId)killerCharID;
+            _charactersValue[c_killerCharID]++;
 
-        CharId c_killerCharID = (CharId)killerCharID;
-
-        _charactersValue[c_killerCharID]++;
+            OnScoreUpdate?.Invoke(CharactersValueArray, valueForVictory);
+        }
 
         EventController.Instance.OnKill();
-
         CameraShake.Instance.Shake();
-
-        OnScoreUpdate?.Invoke(CharactersValueArray, valueForVictory);
 
         CheckForNewMVP(killerCharID);
         CheckForVictory();
