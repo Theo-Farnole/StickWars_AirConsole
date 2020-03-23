@@ -10,7 +10,7 @@ public class LevelLayoutElement : MonoBehaviour
     [DrawIf(nameof(_destroyOnSpecificLayout), true, ComparisonType.Equals, DisablingType.ReadOnly)]
     [SerializeField] private int _destroyOnLayoutIndex = 0;
 
-    private Vector3[] _positions = new Vector3[0];
+    [SerializeField, HideInInspector] private Vector3[] _positions = new Vector3[0];
 
 #if UNITY_EDITOR
     public void SaveChanges()
