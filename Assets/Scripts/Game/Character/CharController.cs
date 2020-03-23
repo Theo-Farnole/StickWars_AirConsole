@@ -165,6 +165,7 @@ public class CharController : MonoBehaviour
     #region static readonly
     public readonly static int MAX_JUMPS_COUNT = 2;
     public readonly static float RAYCAST_DISTANCE = 0.1f;
+    public readonly static float FORCEKILL_MIN_Y = -10;
     #endregion
 
     #region events
@@ -394,8 +395,19 @@ public class CharController : MonoBehaviour
 
         UpdateTriggerCollisions();
         UpdateHardCollisions();
+        ManageAutoKill();
 
         State?.Tick();
+    }
+
+    private void ManageAutoKill()
+    {
+        // if player is falling infinitly, auto
+        if (transform.position.y <= FORCEKILL_MIN_Y)
+        {
+            Debug.LogErrorFormat("{0} is below {1} on Y. Automaticaly kiling {0}", name, FORCEKILL_MIN_Y);
+            GetComponent<CharacterEntity>().Kill(null);
+        }
     }
 
     private void UpdateHardCollisions()
