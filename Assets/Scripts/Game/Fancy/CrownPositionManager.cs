@@ -74,20 +74,14 @@ public class CrownPositionManager : MonoBehaviour
 
     void ReturnToOriginalPosition()
     {
-        Debug.LogFormat("{0}# ReturnToOriginalPosition", transform.parent.name);
-
         if (IsAtOriginalPosition)
             return;
 
         SetNewPosition(_originalLocalPosition);
-        Debug.LogFormat("local position = {0}", _originalLocalPosition);
     }
 
     void GotoSliderPosition()
     {
-        if (transform.parent.name == "P_player Blue")
-            Debug.LogFormat("{0}# GotoSliderPosition", transform.parent.name);
-
         if (_isAtCopyPosition)
             return;
 
@@ -97,7 +91,6 @@ public class CrownPositionManager : MonoBehaviour
         SetNewPosition(_copyPosition);
 
         Debug.DrawLine(transform.position + _originalLocalPosition, transform.position + _originalLocalPosition + Vector3.right, Color.magenta, Mathf.Infinity);
-        Debug.LogFormat("local position = {0}", _originalLocalPosition);
     }
 
     void SetNewPosition(Vector3 position)
