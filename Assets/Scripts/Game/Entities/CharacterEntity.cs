@@ -63,12 +63,8 @@ public class CharacterEntity : Entity
         else // has not been killed by a CharacterController.
         {
             // has been previously hit by a CharacterController ?
-            Debug.LogFormat("Key: {0} & Value: {1} + {2} <= {3}", _lastCharacterAttacker.Key, _lastCharacterAttacker.Value, _lastHitLifetimeToAttributeKill, Time.time);
-
             if (_lastCharacterAttacker.Key != null && _lastCharacterAttacker.Value + _lastHitLifetimeToAttributeKill >= Time.time)
             {
-                Debug.LogFormat("key is {0}", _lastCharacterAttacker.Key.name);
-
                 killerId = _lastCharacterAttacker.Key.GetComponent<CharController>().charId;
             }
             else
@@ -76,8 +72,6 @@ public class CharacterEntity : Entity
                 killerId = null;
             }
         }
-
-        Debug.LogFormat("Death of {0}, killed by {1}", name, killer ? killer.name : "NULL");
 
         GameManager.Instance.Gamemode.Kill(killerId);
         _charController.Respawn();
