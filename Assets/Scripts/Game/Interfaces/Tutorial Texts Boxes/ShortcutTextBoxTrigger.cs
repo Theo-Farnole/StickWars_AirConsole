@@ -19,7 +19,7 @@ public class ShortcutTextBoxTrigger : AbstractTextBoxTrigger
     void Start()
     {
         _shortcut = FindObjectOfType<Shortcut>();
-        _shortcut.OnDamage += OnDamage;
+        _shortcut.OnDamage.AddListener(OnDamage);
 
         if (_startTimerOnStart)
         {

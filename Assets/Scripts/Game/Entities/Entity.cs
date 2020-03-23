@@ -4,9 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public delegate void EntityDamage(Entity victim, int damageAmount);
 public delegate void EntityDelegate(Entity entity);
+[System.Serializable] public class UnityEventEntityDamage : UnityEvent<Entity, int> { }
 
 [SelectionBase]
 public class Entity : MonoBehaviour
@@ -16,7 +18,7 @@ public class Entity : MonoBehaviour
 
     #region Fields
     public EntityDelegate OnHealthPointsChanged;
-    public EntityDamage OnDamage;
+    public UnityEventEntityDamage OnDamage;
 
     [Header("Entity Config")]
     [SerializeField] protected EntityData _entityData;

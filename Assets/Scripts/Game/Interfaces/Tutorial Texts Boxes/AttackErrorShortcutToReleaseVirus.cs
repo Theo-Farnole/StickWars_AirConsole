@@ -25,7 +25,7 @@ public class AttackErrorShortcutToReleaseVirus : AbstractTextBoxTrigger
             EventController.Instance.OnVirusSpawnerSpawned -= OnVirusSpawnerSpawned;
 
         if (_currentVirusSpawner != null)
-            _currentVirusSpawner.OnDamage -= OnDamage;
+            _currentVirusSpawner.OnDamage.RemoveListener(OnDamage);
     }
     #endregion
 
@@ -40,7 +40,7 @@ public class AttackErrorShortcutToReleaseVirus : AbstractTextBoxTrigger
         StartTimer(_timeToTriggerTextBox, CheckConditionToTriggerTextBox);
 
         // record virus spawner's hits count
-        _currentVirusSpawner.OnDamage += OnDamage;
+    
     }
 
     void OnDamage(Entity victim, int damageAmount)
