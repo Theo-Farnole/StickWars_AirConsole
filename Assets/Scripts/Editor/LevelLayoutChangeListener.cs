@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -31,6 +31,7 @@ class LevelLayoutChangeListener
         if (transformHasChanged)
         {
             _selectedLevelLayout.SaveChanges();
+            _selectedLevelLayout_LastPosition = _selectedLevelLayout.transform.position;
         }
     }
 
@@ -39,7 +40,7 @@ class LevelLayoutChangeListener
         if (Selection.activeGameObject != null)
         {
             _selectedLevelLayout = Selection.activeGameObject.GetComponent<LevelLayoutElement>();
-            
+
             // set _selectedLevelLayout position, or reset it
             _selectedLevelLayout_LastPosition = _selectedLevelLayout != null ?
                 _selectedLevelLayout.transform.position : Vector3.zero;

@@ -29,7 +29,7 @@ public class LevelLayoutManager : MonoBehaviour
     #region Methods
     public static void LoadLayoutWithoutAnimation(int layout)
     {
-        Debug.LogFormat("Loading layout {0}...", layout);
+        //Debug.LogFormat("Loading layout {0}...", layout);
 
         var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
 
@@ -38,7 +38,7 @@ public class LevelLayoutManager : MonoBehaviour
             element.LoadLayout();
         }
 
-        Debug.LogFormat("Loading of layout {0} ended.", layout);
+        //Debug.LogFormat("Loading of layout {0} ended.", layout);
     }
     #endregion
 }

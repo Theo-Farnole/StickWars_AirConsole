@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent()]
 public class LevelLayoutElement : MonoBehaviour
 {
     [SerializeField] private bool _destroyOnSpecificLayout = false;
@@ -14,23 +15,22 @@ public class LevelLayoutElement : MonoBehaviour
 #if UNITY_EDITOR
     public void SaveChanges()
     {
-        int layoutState = LevelLayoutManager.LevelLayoutState;
+        Debug.LogFormat("Save changes of {0}", name);
 
         // prevent Out of bounds exception
-        if (layoutState >= _positions.Length)
-            Array.Resize(ref _positions, layoutState + 1);
+        FitPositionArrayInsideLayoutState();
 
+        int layoutState = LevelLayoutManager.LevelLayoutState;
         _positions[layoutState] = transform.position;
     }
 
     public void LoadLayout()
     {
-        int layoutState = LevelLayoutManager.LevelLayoutState;
-
         // prevent Out of bounds exception
-        if (layoutState >= _positions.Length)
-            Array.Resize(ref _positions, layoutState + 1);
+        FitPositionArrayInsideLayoutState();
 
+
+        int layoutState = LevelLayoutManager.LevelLayoutState;
         bool destroyOnThisLayout = _destroyOnSpecificLayout && layoutState >= _destroyOnLayoutIndex;
 
         // we should disable the game object,
@@ -41,8 +41,25 @@ public class LevelLayoutElement : MonoBehaviour
         Vector3 newPosition = destroyOnThisLayout ? farPosition : _positions[layoutState];
 
         transform.position = newPosition;
+    }
 
-        Debug.LogFormat("{0} => destroyOnThisLayout = {1}", name, destroyOnThisLayout);
+    public void FitPositionArrayInsideLayoutState()
+    {
+        int layoutState = LevelLayoutManager.LevelLayoutState;
+        int oldPositionsLength = _positions.Length;
+
+        // we don't need to resize the array
+        if (layoutState < oldPositionsLength)
+            return;
+
+        Array.Resize(ref _positions, layoutState + 1);
+
+        // initialize new elements by the current position of the array
+        for (int i = oldPositionsLength; i < _positions.Length; i++)
+        {
+            Debug.LogFormat("populate array at index {0}", i);
+            _positions[i] = transform.position;
+        }
     }
 #endif
 }
