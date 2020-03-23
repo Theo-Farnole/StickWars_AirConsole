@@ -1494,6 +1494,7 @@ MonoBehaviour:
   isInvincible: 0
   _hideHealthSliderIfFull: 1
   _healthSlider: {fileID: 9076951675531308484}
+  _lastHitLifetimeToAttributeKill: 3
 --- !u!114 &7649409384958866699
 MonoBehaviour:
   m_ObjectHideFlags: 0

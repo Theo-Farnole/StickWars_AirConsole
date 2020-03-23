@@ -73,7 +73,13 @@ public class Entity : MonoBehaviour
             Death(attacker);
         }
 
+
         OnHealthPointsChanged?.Invoke(this);
+    }
+
+    public void Kill(Entity attacker)
+    {
+        GetDamage(_hp, attacker);
     }
 
     protected void UpdateHealthSlider()
@@ -94,7 +100,6 @@ public class Entity : MonoBehaviour
         // update the value
         _healthSlider.maxValue = _maxHp;
         _healthSlider.DOValue(_hp, HEALTHBAR_ANIMATION_DURATION).SetEase(HEALTHBAR_ANIMATION_EASE);
-        //_healthSlider.value = _hp;
     }
 
     protected virtual void Death(Entity killer)
@@ -104,6 +109,9 @@ public class Entity : MonoBehaviour
 
     private void PopFloatingText(int damage, Entity attacker)
     {
+        if (attacker == null)
+            return;
+
         float direction = transform.position.x - attacker.transform.position.x;
 
         var floatingText = ObjectPooler.Instance.SpawnFromPool("floating_text", transform.position + Vector3.up * 1, Quaternion.identity).GetComponent<FloatingText>();

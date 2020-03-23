@@ -6,8 +6,14 @@ using UnityEngine;
 public class CharacterEntity : Entity
 {
     #region Fields
+    [Header("Character Entity configuration")]
+    [Tooltip("Eg. If the character die in a deathzone, the last opponent who hit this character will be attributed the kill (if the last hit isn't old from _lastHitLifetimeToAttributeKill value).")]
+    [SerializeField] private float _lastHitLifetimeToAttributeKill = 3;
+
     private int _myID = -1;
     private CharController _charController;
+
+    private KeyValuePair<CharacterEntity, float> _lastCharacterAttacker = new KeyValuePair<CharacterEntity, float>(null, -1);
     #endregion
 
     #region Methods
@@ -26,28 +32,54 @@ public class CharacterEntity : Entity
     #endregion
 
     public override void GetDamage(int damage, Entity attacker)
-    {        
-        if (attacker.GetComponent<VirusController>() && damage >= _hp)
+    {
+        bool hasHitVirusController = attacker != null && attacker.GetComponent<VirusController>();
+        if (hasHitVirusController)
         {
-            damage = _hp - 1;
+            // prevent VirusController to kill CharacterEntity
+            if (damage >= _hp)
+            {
+                damage = _hp - 1;
+            }
         }
 
         base.GetDamage(damage, attacker);
+
+        if (attacker is CharacterEntity)
+        {
+            _lastCharacterAttacker = new KeyValuePair<CharacterEntity, float>(attacker as CharacterEntity, Time.time);
+        }
     }
 
     protected override void Death(Entity killer)
     {
-        // retrieve killer 
-        var charController = killer.GetComponent<CharController>();
         CharId? killerId = null;
 
-        if (charController != null)
+        // Retrieve killer
+        if (killer != null && killer.GetComponent<CharController>())
         {
             killerId = killer.GetComponent<CharController>().charId;
         }
+        else // has not been killed by a CharacterController.
+        {
+            // has been previously hit by a CharacterController ?
+            Debug.LogFormat("Key: {0} & Value: {1} + {2} <= {3}", _lastCharacterAttacker.Key, _lastCharacterAttacker.Value, _lastHitLifetimeToAttributeKill, Time.time);
+
+            if (_lastCharacterAttacker.Key != null && _lastCharacterAttacker.Value + _lastHitLifetimeToAttributeKill >= Time.time)
+            {
+                Debug.LogFormat("key is {0}", _lastCharacterAttacker.Key.name);
+
+                killerId = _lastCharacterAttacker.Key.GetComponent<CharController>().charId;
+            }
+            else
+            {
+                killerId = null;
+            }
+        }
+
+        Debug.LogFormat("Death of {0}, killed by {1}", name, killer ? killer.name : "NULL");
 
         GameManager.Instance.Gamemode.Kill(killerId);
-
         _charController.Respawn();
     }
 
