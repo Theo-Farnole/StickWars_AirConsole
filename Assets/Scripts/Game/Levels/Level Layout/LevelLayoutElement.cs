@@ -12,6 +12,14 @@ public class LevelLayoutElement : MonoBehaviour
 
     [SerializeField, HideInInspector] private Vector3[] _positions = new Vector3[0];
 
+    public Vector3 GetPosition(int layoutState)
+    {
+        Vector3 farPosition = Vector3.right * 20f;
+        bool destroyOnThisLayout = _destroyOnSpecificLayout && layoutState >= _destroyOnLayoutIndex;
+
+        return destroyOnThisLayout ? farPosition : _positions[layoutState];
+    }
+
 #if UNITY_EDITOR
     public void SaveChanges()
     {
@@ -29,18 +37,12 @@ public class LevelLayoutElement : MonoBehaviour
         // prevent Out of bounds exception
         FitPositionArrayInsideLayoutState();
 
-
         int layoutState = LevelLayoutManager.LevelLayoutState;
-        bool destroyOnThisLayout = _destroyOnSpecificLayout && layoutState >= _destroyOnLayoutIndex;
 
         // we should disable the game object,
         // however, FindObjectsOfType doesn't work on disable gameObject
-
         // so, we just set far the level layout
-        Vector3 farPosition = Vector3.right * 20f;
-        Vector3 newPosition = destroyOnThisLayout ? farPosition : _positions[layoutState];
-
-        transform.position = newPosition;
+        transform.position = GetPosition(layoutState);
     }
 
     public void FitPositionArrayInsideLayoutState()

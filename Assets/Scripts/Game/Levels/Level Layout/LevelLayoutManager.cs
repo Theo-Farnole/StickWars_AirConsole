@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelLayoutManager : MonoBehaviour
-{
+{    
     #region Fields
     [SerializeField] private static int _levelLayoutState = 0;
+
+    [SerializeField] private CursorManager _cursor;
+    [Header("DEBUG")]
+    [SerializeField] private KeyCode _triggerLevelLayoutLoading = KeyCode.R;
     #endregion
 
     #region Properties
@@ -15,7 +19,7 @@ public class LevelLayoutManager : MonoBehaviour
         set
         {
             bool levelLayoutStateChanged = _levelLayoutState != value;
-            
+
             _levelLayoutState = value;
 
             if (levelLayoutStateChanged)
@@ -27,18 +31,96 @@ public class LevelLayoutManager : MonoBehaviour
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
+    void Start()
+    {
+        _levelLayoutState = 0;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(_triggerLevelLayoutLoading))
+        {
+            _levelLayoutState++;
+            LoadLayoutWithAnimation();
+        }
+    }
+    #endregion
+
+    #region Load layout
+    private void LoadLayoutWithAnimation()
+    {
+        Queue<AbstractCursorCommand> cursorCommands = new Queue<AbstractCursorCommand>();
+
+        // TODO: destroy pickup & errors virus
+
+        // open every shortcut
+        OpenShortcuts(ref cursorCommands);
+
+        // then, move layout
+        MoveLevelLayout(ref cursorCommands);
+
+        Debug.LogFormat("Executing {0} commands.", cursorCommands.Count);
+        _cursor.StartCommandsSequence(cursorCommands);
+    }
+
+    void OpenShortcuts(ref Queue<AbstractCursorCommand> cursorCommands)
+    {
+        // Shortcut must be open to don't forget window
+        var shortcuts = GameObject.FindObjectsOfType<Shortcut>();
+
+        for (int i = 0; i < shortcuts.Length; i++)
+        {
+            var shortcut = shortcuts[i];
+
+            var moveToShortcut = new MoveToCommand(shortcut.transform.position);
+            var openWindow = new OpenWindowCommand(shortcut);
+
+            cursorCommands.Enqueue(moveToShortcut);
+            cursorCommands.Enqueue(openWindow);
+        }
+    }
+
+    void MoveLevelLayout(ref Queue<AbstractCursorCommand> cursorCommands)
+    {
+        const bool DEBUG_onlyPlayFirstElement = false;
+
+        var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
+
+        for (int i = 0; i < levelLayoutElements.Length; i++)
+        {
+            if (DEBUG_onlyPlayFirstElement && i != 0)
+                break;
+
+            var element = levelLayoutElements[i];
+
+            var moveToWindow = new MoveToCommand(element.transform);
+            var dragWindow = new StartDragCommand(element);
+            var moveToNewPosition = new MoveToCommand(element.GetPosition(_levelLayoutState));
+            var stopDrag = new StopDragCommand(); // OPTIMIZATION: sortir cette line de la loop
+
+            //Debug.LogFormat("Window position: {0} & New position is {1}", 
+            //    element.transform.position,
+            //    element.GetPosition(_levelLayoutState));
+
+            cursorCommands.Enqueue(moveToWindow);
+            cursorCommands.Enqueue(dragWindow);
+            cursorCommands.Enqueue(moveToNewPosition);
+            cursorCommands.Enqueue(stopDrag);
+
+            Debug.LogFormat("Processing commands for {0}", element.name);
+        }
+    }
+
     public static void LoadLayoutWithoutAnimation(int layout)
     {
-        //Debug.LogFormat("Loading layout {0}...", layout);
-
         var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
 
         foreach (var element in levelLayoutElements)
         {
             element.LoadLayout();
         }
-
-        //Debug.LogFormat("Loading of layout {0} ended.", layout);
     }
+    #endregion
     #endregion
 }

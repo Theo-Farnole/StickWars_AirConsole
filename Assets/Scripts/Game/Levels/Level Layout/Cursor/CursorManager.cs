@@ -19,6 +19,8 @@ public class CursorManager : MonoBehaviour
     [SerializeField] private float _speed = 3;
     [SerializeField, EnumNamedArray(typeof(CursorState))] private Sprite[] _spritesCursor = new Sprite[3];
 
+    private Queue<AbstractCursorCommand> _commands;
+
     // drag variables
     private LevelLayoutElement _draggedElement;
     private Vector3 _deltaPositionDraggedElement;
@@ -47,10 +49,6 @@ public class CursorManager : MonoBehaviour
     #region MonoBehaviour Callbacks
     void Update()
     {
-        // inputs
-        Input_FollowRealCursor();
-        Input_Drag();
-
         // movement
         ManageDragMovement();
     }
@@ -62,15 +60,6 @@ public class CursorManager : MonoBehaviour
     #endregion
 
     #region Movements methods
-    void Input_FollowRealCursor()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            MoveTo(mousePosition);
-        }
-    }
-
     public void MoveTo(Vector3 targetPosition)
     {
         // security: lock cursor position
@@ -80,7 +69,9 @@ public class CursorManager : MonoBehaviour
         float moveDuration = distance / _speed;
 
         transform.DOKill();
-        transform.DOMove(targetPosition, moveDuration).SetEase(Ease.InOutCubic);
+        transform.DOMove(targetPosition, moveDuration)
+                .SetEase(Ease.InOutCubic)
+                .OnComplete(() => ExecuteNextCommand());
     }
     #endregion
 
@@ -108,29 +99,12 @@ public class CursorManager : MonoBehaviour
     #endregion
 
     #region Dragging methods
-    void Input_Drag()
-    {
-        var cachedHit = HitBehindCursor;
-
-        if (Input.GetMouseButtonDown(0) && cachedHit.collider != null)
-        {
-            StopDrag();
-
-            StartDrag(cachedHit.collider.gameObject.GetComponentInParent<LevelLayoutElement>());
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            StopDrag();
-        }
-    }
-
     void ManageDragMovement()
     {
         if (_draggedElement != null)
         {
             Vector3 delta = transform.position - _lastFramePosition;
-            DragGameObject(delta);
+            DragGameObject(delta);            
         }
 
         _lastFramePosition = transform.position;
@@ -153,13 +127,38 @@ public class CursorManager : MonoBehaviour
         }
 
         _draggedElement = levelLayoutElement;
-
         _deltaPositionDraggedElement = transform.position - levelLayoutElement.transform.position;
+
+        ExecuteNextCommand();
     }
 
     public void StopDrag()
     {
         _draggedElement = null;
+
+        ExecuteNextCommand();
+    }
+    #endregion
+
+    #region Commands methods
+    public void ExecuteNextCommand()
+    {
+        if (_commands == null || _commands.Count == 0)
+            return;
+
+        var nextCommand = _commands.Dequeue();
+        nextCommand.Execute(this);
+
+        Debug.LogFormat("ExecuteNextCommand passed w/ command of type {0} => {1}.", 
+            nextCommand.GetType(), nextCommand.ToString());
+
+        //Debug.Break();
+    }
+
+    public void StartCommandsSequence(Queue<AbstractCursorCommand> cursorCommands)
+    {
+        _commands = cursorCommands;
+        ExecuteNextCommand();
     }
     #endregion
     #endregion
