@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class Shortcut : Entity
 {
     #region Fields
+    public static readonly float TRANSITION_DURATION = 0.1f;
+
     [Header("Shortcut")]
     [SerializeField] private GameObject _window;
-    [Space]
-    [SerializeField] private float _transitionDuration = 0.1f;
     [SerializeField] private bool _closeOnStart = true;
 
     private bool _isWindowOpen = true;
@@ -45,11 +45,11 @@ public class Shortcut : Entity
     {
         _isWindowOpen = !_isWindowOpen;
 
-        new Timer(this, _transitionDuration, (float t) =>
+        new Timer(this, TRANSITION_DURATION, (float t) =>
         {
             if (!_isWindowOpen)
             {
-                t = -1 * t + 1;
+                t = -1 * t + 1; // reverse t parameter
             }
 
             _window.transform.localScale = Vector3.one * t;
@@ -60,6 +60,14 @@ public class Shortcut : Entity
                 _images[i].color.SetAlpha(t);
             }
         });
+    }
+
+    public void OpenWindow()
+    {
+        if (_isWindowOpen)
+            return;
+
+        SwitchWindowState();
     }
     #endregion
 }
