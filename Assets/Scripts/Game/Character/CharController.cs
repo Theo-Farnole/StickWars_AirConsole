@@ -586,7 +586,7 @@ public class CharController : MonoBehaviour
         _charAudio.PlaySound(CharAudio.Sound.Death);
 
         // set new position
-        transform.position = LevelData.Instance.GetRandomSpawnPoint();
+        transform.position = LevelDataLocator.GetLevelData().GetRandomSpawnPoint();
         _charFeedback.PlayRespawnParticle();
 
         _freeze = true;

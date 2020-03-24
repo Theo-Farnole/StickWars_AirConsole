@@ -77,7 +77,7 @@ public class VirusSpawner : Entity
         }
         else
         {
-            var newPosition = LevelData.Instance.GetRandomVirusSpawnerPosition(transform.position);
+            var newPosition = LevelDataLocator.GetLevelData().GetRandomVirusSpawnerPosition(transform.position);
             GetComponent<FancyObject>()?.ResetStartingPosition(newPosition);
 
             _hp = MaxHp;

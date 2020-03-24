@@ -55,7 +55,7 @@ public class EventController : Singleton<EventController>
         if (FindObjectsOfType<VirusController>().Length != 0)
             return;
 
-        var position = LevelData.Instance.GetRandomVirusSpawnerPosition();
+        var position = LevelDataLocator.GetLevelData().GetRandomVirusSpawnerPosition();
         Quaternion rot = Quaternion.identity;
 
         _currentVirusSpawner = Instantiate(_prefabVirusSpawner, position, rot);

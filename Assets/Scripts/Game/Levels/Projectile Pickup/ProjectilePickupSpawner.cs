@@ -71,7 +71,7 @@ public class ProjectilePickupSpawner : MonoBehaviour
         if (projectilePickupInLevel >= _maxProjectilePickupsSimultaneously)
             return;
 
-        var position = LevelData.Instance.GetRandomProjectilePickupPosition();
+        var position = LevelDataLocator.GetLevelData().GetRandomProjectilePickupPosition();
         var rotation = Quaternion.identity;
 
         var projectilePickup = ObjectPooler.Instance.SpawnFromPool(TAG_PROJECTILEPICKUP, position, rotation).GetComponent<ProjectilePickup>();

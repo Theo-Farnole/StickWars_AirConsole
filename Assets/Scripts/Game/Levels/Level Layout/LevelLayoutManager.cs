@@ -74,6 +74,14 @@ public class LevelLayoutManager : MonoBehaviour
         {
             element.LoadLayout();
         }
+
+        var levelDatas = FindObjectsOfType<LevelData>();
+
+        foreach (var levelData in levelDatas)
+        {
+            bool isCurrentLevelData = levelData.ActiveOnLayout == _levelLayoutState;
+            levelData.enabled = isCurrentLevelData;
+        }
     }
     #endregion    
 

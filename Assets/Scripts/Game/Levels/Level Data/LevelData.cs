@@ -3,33 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LevelData : Singleton<LevelData>
+public class LevelData : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private Transform[] _virusSpawnerPosition = new Transform[3];
-    [Space]
-    [EnumNamedArray(typeof(CharId))]
-    [SerializeField] private Transform[] _defaultSpawnPoint = new Transform[4];
+    [SerializeField] private int _activeOnLayout;
+    [Header("PLAYERS SPAWN / RESPAWN")]
+    [SerializeField, EnumNamedArray(typeof(CharId))] private Transform[] _defaultSpawnPoint = new Transform[4];
     [SerializeField] private LineData[] _respawnArea;
+    [Header("COLLECTABLES SPAWN")]
+    [SerializeField] private Transform[] _virusSpawnerPosition = new Transform[3];
     [SerializeField] private LineData[] _projectilePickupSpawnArea;
     #endregion
 
     #region Properties
-    public Transform[] VirusSpawnerPosition { get => _virusSpawnerPosition;}
+    public Transform[] VirusSpawnerPosition { get => _virusSpawnerPosition; }
+    public int ActiveOnLayout { get => _activeOnLayout; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
+    void Start()
+    {
+        LevelDataLocator.RegisterLevelData(this);
+    }
+
     void OnDrawGizmos()
     {
+        if (!enabled)
+            return;
+
+        const float gizmosSphereRadius = 0.1f;
+
+        // draw default spawn point
+        Gizmos.color = Color.black;
+        foreach (var defaultSpawn in _defaultSpawnPoint)
+        {
+            if (defaultSpawn != null)
+                Gizmos.DrawSphere(defaultSpawn.position, gizmosSphereRadius);
+        }
+
         // draw respawn area
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.green;
         for (int i = 0; i < _respawnArea.Length; i++)
             _respawnArea[i].DrawGizmos();
 
+        // draw virus spawner position
+        Gizmos.color = Color.red;
+        foreach (var virusSpawner in _virusSpawnerPosition)
+        {
+            if (virusSpawner != null)
+                Gizmos.DrawSphere(virusSpawner.position, gizmosSphereRadius);
+        }
+
         // draw pickup area
         Gizmos.color = Color.yellow;
-        foreach ( var pickupArea in _projectilePickupSpawnArea)
+        foreach (var pickupArea in _projectilePickupSpawnArea)
             pickupArea.DrawGizmos();
     }
     #endregion
@@ -43,7 +71,7 @@ public class LevelData : Singleton<LevelData>
 
     public Vector3 GetRandomSpawnPoint()
     {
-        return _respawnArea.GetRandomPoint();        
+        return _respawnArea.GetRandomPoint();
     }
     #endregion
 
