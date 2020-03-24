@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-// TODO: update _draggedGameObject position in Update
+using DG.Tweening;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class CursorManager : MonoBehaviour
@@ -20,14 +19,10 @@ public class CursorManager : MonoBehaviour
     [SerializeField] private float _speed = 3;
     [SerializeField, EnumNamedArray(typeof(CursorState))] private Sprite[] _spritesCursor = new Sprite[3];
 
-    // move to variable
-    private bool _isMoving = false;
-    private Vector3 _directionToMoveToPosition;
-    private Vector3 _moveToPosition;
-
     // drag variables
     private LevelLayoutElement _draggedElement;
     private Vector3 _deltaPositionDraggedElement;
+    private Vector3 _lastFramePosition;
 
     // cache variable
     private SpriteRenderer _spriteRenderer;
@@ -56,8 +51,8 @@ public class CursorManager : MonoBehaviour
         Input_FollowRealCursor();
         Input_Drag();
 
-        // movements
-        ManageMovement();
+        // movement
+        ManageDragMovement();
     }
 
     void LateUpdate()
@@ -69,19 +64,10 @@ public class CursorManager : MonoBehaviour
     #region Movements methods
     void Input_FollowRealCursor()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        MoveTo(mousePosition);
-    }
-
-    void ManageMovement()
-    {
-        if (_isMoving)
+        if (Input.GetMouseButtonDown(1))
         {
-            Vector3 delta = _directionToMoveToPosition * (_speed * Time.deltaTime);
-
-            transform.position += delta;
-            DragGameObject(delta);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            MoveTo(mousePosition);
         }
     }
 
@@ -90,20 +76,11 @@ public class CursorManager : MonoBehaviour
         // security: lock cursor position
         targetPosition.z = transform.position.z;
 
-        _directionToMoveToPosition = (targetPosition - transform.position).normalized;
-        _moveToPosition = targetPosition;
+        float distance = Vector3.Distance(transform.position, targetPosition);
+        float moveDuration = distance / _speed;
 
-        StartMovement();
-    }
-
-    public void StartMovement()
-    {
-        _isMoving = true;
-    }
-
-    public void StopMovement()
-    {
-        _isMoving = false;
+        transform.DOKill();
+        transform.DOMove(targetPosition, moveDuration).SetEase(Ease.InOutCubic);
     }
     #endregion
 
@@ -146,6 +123,17 @@ public class CursorManager : MonoBehaviour
         {
             StopDrag();
         }
+    }
+
+    void ManageDragMovement()
+    {
+        if (_draggedElement != null)
+        {
+            Vector3 delta = transform.position - _lastFramePosition;
+            DragGameObject(delta);
+        }
+
+        _lastFramePosition = transform.position;
     }
 
     void DragGameObject(Vector3 offset)
