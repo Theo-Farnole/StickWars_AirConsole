@@ -59,3 +59,6 @@ TagManager:
   - name: ParticleSystem
     uniqueID: 488346217
     locked: 0
+  - name: Cursor
+    uniqueID: 63022297
+    locked: 0

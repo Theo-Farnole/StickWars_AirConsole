@@ -938,7 +938,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604883072}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.453352, y: -4.130869, z: 0.095703125}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1503075854}
@@ -2498,7 +2498,7 @@ GameObject:
   - component: {fileID: 1712415131}
   - component: {fileID: 1712415129}
   - component: {fileID: 1712415132}
-  m_Layer: 2
+  m_Layer: 9
   m_Name: Shortcut Terminal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2513,7 +2513,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712415126}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.8199997, y: -3.1999998, z: -0.24902344}
+  m_LocalPosition: {x: 4.53, y: -1.6099997, z: -0.24902344}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1806929500}
@@ -2769,7 +2769,7 @@ GameObject:
   - component: {fileID: 1806929503}
   - component: {fileID: 1806929502}
   - component: {fileID: 1806929501}
-  m_Layer: 2
+  m_Layer: 9
   m_Name: label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3729,12 +3729,12 @@ PrefabInstance:
     - target: {fileID: 6535182420067165187, guid: bfb37ccdadaf3dc42883962214195de5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.7866473
+      value: -4.5533524
       objectReference: {fileID: 0}
     - target: {fileID: 6535182420067165187, guid: bfb37ccdadaf3dc42883962214195de5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.2091312
+      value: 0.24000001
       objectReference: {fileID: 0}
     - target: {fileID: 6535182420067165187, guid: bfb37ccdadaf3dc42883962214195de5,
         type: 3}
@@ -3893,7 +3893,7 @@ PrefabInstance:
     - target: {fileID: 6224115835215465233, guid: 06b058232b2b9ef499ec68b8fa73c6ec,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.92
+      value: 4.8300004
       objectReference: {fileID: 0}
     - target: {fileID: 6224115835215465233, guid: 06b058232b2b9ef499ec68b8fa73c6ec,
         type: 3}
