@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c717089d2ed47241958568ec95cc8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _priorityOrder: 3
   _destroyOnSpecificLayout: 0
   _destroyOnLayoutIndex: 0
   _positions:
@@ -1019,6 +1020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c717089d2ed47241958568ec95cc8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _priorityOrder: 0
   _destroyOnSpecificLayout: 0
   _destroyOnLayoutIndex: 1
   _positions:
@@ -2539,11 +2541,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4276988732628576109, guid: ecc86ecb7482c0746bbaf6c7c73b2596,
-        type: 3}
-      propertyPath: _speed
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecc86ecb7482c0746bbaf6c7c73b2596, type: 3}
 --- !u!1 &1712415126
@@ -2710,6 +2707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c717089d2ed47241958568ec95cc8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _priorityOrder: 1
   _destroyOnSpecificLayout: 0
   _destroyOnLayoutIndex: 0
   _positions:
@@ -3892,6 +3890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c717089d2ed47241958568ec95cc8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _priorityOrder: 2
   _destroyOnSpecificLayout: 0
   _destroyOnLayoutIndex: 0
   _positions:

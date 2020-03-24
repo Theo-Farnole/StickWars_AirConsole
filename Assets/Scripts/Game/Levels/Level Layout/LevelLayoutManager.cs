@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelLayoutManager : MonoBehaviour
@@ -102,15 +103,12 @@ public class LevelLayoutManager : MonoBehaviour
 
     void MoveLevelLayout(ref Queue<AbstractCursorCommand> cursorCommands)
     {
-        const bool DEBUG_onlyPlayFirstElement = false;
-
         var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
+
+        levelLayoutElements = levelLayoutElements.OrderBy(x => x.PriorityOrder).ToArray();
 
         for (int i = 0; i < levelLayoutElements.Length; i++)
         {
-            if (DEBUG_onlyPlayFirstElement && i != 0)
-                break;
-
             var element = levelLayoutElements[i];
 
             var moveToWindow = new MoveToCommand(element.transform);
@@ -118,16 +116,10 @@ public class LevelLayoutManager : MonoBehaviour
             var moveToNewPosition = new MoveToCommand(element.GetPosition(_levelLayoutState));
             var stopDrag = new StopDragCommand(); // OPTIMIZATION: sortir cette line de la loop
 
-            //Debug.LogFormat("Window position: {0} & New position is {1}", 
-            //    element.transform.position,
-            //    element.GetPosition(_levelLayoutState));
-
             cursorCommands.Enqueue(moveToWindow);
             cursorCommands.Enqueue(dragWindow);
             cursorCommands.Enqueue(moveToNewPosition);
             cursorCommands.Enqueue(stopDrag);
-
-            Debug.LogFormat("Processing commands for {0}", element.name);
         }
     }
     #endregion

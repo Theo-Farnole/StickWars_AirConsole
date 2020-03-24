@@ -6,11 +6,14 @@ using UnityEngine;
 [DisallowMultipleComponent()]
 public class LevelLayoutElement : MonoBehaviour
 {
+    [SerializeField] private int _priorityOrder = 0;
     [SerializeField] private bool _destroyOnSpecificLayout = false;
     [DrawIf(nameof(_destroyOnSpecificLayout), true, ComparisonType.Equals, DisablingType.ReadOnly)]
     [SerializeField] private int _destroyOnLayoutIndex = 0;
 
     [SerializeField, HideInInspector] private Vector3[] _positions = new Vector3[0];
+
+    public int PriorityOrder { get => _priorityOrder; }
 
     public Vector3 GetPosition(int layoutState)
     {
