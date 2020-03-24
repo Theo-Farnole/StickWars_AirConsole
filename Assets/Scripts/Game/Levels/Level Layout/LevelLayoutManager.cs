@@ -52,7 +52,8 @@ public class LevelLayoutManager : MonoBehaviour
     {
         Queue<AbstractCursorCommand> cursorCommands = new Queue<AbstractCursorCommand>();
 
-        // TODO: destroy pickup & errors virus
+        // destroy pickup & errors virus
+        DestroyCollectiblesAndBonus();
 
         // open every shortcut
         OpenShortcuts(ref cursorCommands);
@@ -62,6 +63,24 @@ public class LevelLayoutManager : MonoBehaviour
 
         Debug.LogFormat("Executing {0} commands.", cursorCommands.Count);
         _cursor.StartCommandsSequence(cursorCommands);
+    }
+
+    public static void LoadLayoutWithoutAnimation(int layout)
+    {
+        var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
+
+        foreach (var element in levelLayoutElements)
+        {
+            element.LoadLayout();
+        }
+    }
+    #endregion    
+
+    #region
+    void DestroyCollectiblesAndBonus()
+    {
+        GameHelper.DestroyGameObjectsInScene<ProjectilePickup>();
+        GameHelper.DestroyGameObjectsInScene<VirusSpawner>();
     }
 
     void OpenShortcuts(ref Queue<AbstractCursorCommand> cursorCommands)
@@ -109,16 +128,6 @@ public class LevelLayoutManager : MonoBehaviour
             cursorCommands.Enqueue(stopDrag);
 
             Debug.LogFormat("Processing commands for {0}", element.name);
-        }
-    }
-
-    public static void LoadLayoutWithoutAnimation(int layout)
-    {
-        var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
-
-        foreach (var element in levelLayoutElements)
-        {
-            element.LoadLayout();
         }
     }
     #endregion
