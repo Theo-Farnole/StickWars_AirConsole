@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,13 +11,17 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     [SerializeField] private static int _levelLayoutState = 0;
 
     public LevelLayoutManagerDelegate OnLevelLayoutAnimationStart;
-    public LevelLayoutManagerDelegate OnLevelLayoutAnimationEnded;
+    public LevelLayoutManagerDelegate OnLevelLayoutAnimationEnd;
 
-    [SerializeField] private CursorManager _cursor;
+    [SerializeField] private CursorManager _mainCursor;
+    [SerializeField, EnumNamedArray(typeof(CharId))] private CursorManager[] _grabStickmanCursors = new CursorManager[4];
     [Header("DEBUG")]
     [SerializeField] private KeyCode _triggerLevelLayoutLoading = KeyCode.R;
+    [SerializeField] private KeyCode _triggerStickmanNextPoints = KeyCode.T;
 
     private bool _isLevelLayoutAnimationRunning = false;
+
+    private AbstractState_LevelLayoutManager _currentState;
     #endregion
 
     #region Properties
@@ -36,6 +40,24 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
             }
         }
     }
+
+    public AbstractState_LevelLayoutManager CurrentState
+    {
+        get => _currentState;
+
+        private set
+        {
+            _currentState?.OnStateExit();
+
+            _currentState = value;
+            Debug.LogFormat("New state is {0}", _currentState);
+
+            _currentState?.OnStateEnter();
+        }
+    }
+
+    public CursorManager[] GrabStickmanCursors { get => _grabStickmanCursors; }
+    public CursorManager MainCursor { get => _mainCursor; }
     #endregion
 
     #region Methods
@@ -49,38 +71,27 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     {
         if (Input.GetKeyDown(_triggerLevelLayoutLoading))
         {
-            _levelLayoutState++;
-            LoadLayoutWithAnimation();
+            StartLoadLayout();
         }
     }
 
     void OnEnable()
     {
-        _cursor.OnCommandsQueueEmpty += OnCommandsQueueEmpty;
+        _mainCursor.OnCommandsQueueEmpty += SpreadLevelLayoutAnimationEnded;
     }
 
     void OnDisable()
     {
-        _cursor.OnCommandsQueueEmpty -= OnCommandsQueueEmpty;
+        _mainCursor.OnCommandsQueueEmpty -= SpreadLevelLayoutAnimationEnded;
     }
     #endregion
 
-    #region Load layout
-    private void LoadLayoutWithAnimation()
+    #region Load Layout methods
+    void StartLoadLayout()
     {
-        Queue<AbstractCursorCommand> cursorCommands = new Queue<AbstractCursorCommand>();
+        _levelLayoutState++;
 
-        // destroy pickup & errors virus
-        DestroyCollectiblesAndBonus();
-
-        // open every shortcut
-        OpenShortcuts(ref cursorCommands);
-
-        // then, move layout
-        MoveLevelLayout(ref cursorCommands);
-
-        Debug.LogFormat("Executing {0} commands.", cursorCommands.Count);
-        _cursor.StartCommandsSequence(cursorCommands);
+        CurrentState = new State_GrabStickmanToNextSpawnPoints(this);
 
         _isLevelLayoutAnimationRunning = true;
         OnLevelLayoutAnimationStart?.Invoke(this);
@@ -106,63 +117,71 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     #endregion
 
     #region Events Handler
-    void OnCommandsQueueEmpty(CursorManager cursorManager)
+    void SpreadLevelLayoutAnimationEnded(CursorManager cursorManager)
     {
         if (_isLevelLayoutAnimationRunning)
         {
-            OnLevelLayoutAnimationEnded?.Invoke(this);
+            OnLevelLayoutAnimationEnd?.Invoke(this);
         }
 
         _isLevelLayoutAnimationRunning = false;
     }
     #endregion
 
-    #region Layout modifications methods
-    void DestroyCollectiblesAndBonus()
+    public void GoToNextState()
     {
-        GameHelper.DestroyGameObjectsInScene<ProjectilePickup>();
-        GameHelper.DestroyGameObjectsInScene<VirusSpawner>();
-        GameHelper.DestroyGameObjectsInScene<VirusController>();
-        GameHelper.DestroyGameObjectsInScene<Projectile>();
-    }
-
-    void OpenShortcuts(ref Queue<AbstractCursorCommand> cursorCommands)
-    {
-        // Shortcut must be open to don't forget window
-        var shortcuts = GameObject.FindObjectsOfType<Shortcut>();
-
-        for (int i = 0; i < shortcuts.Length; i++)
+        if (CurrentState is State_GrabStickmanToNextSpawnPoints)
         {
-            var shortcut = shortcuts[i];
+            CurrentState = new State_LoadLevelLayout(this);
+        }
+        else if (CurrentState is State_LoadLevelLayout)
+        {
+            CurrentState = new State_ReleaseStickman(this);
+        }
+        else if (CurrentState is State_ReleaseStickman)
+        {
+            CurrentState = null;
 
-            var moveToShortcut = new MoveToCommand(shortcut.transform.position);
-            var openWindow = new OpenWindowCommand(shortcut);
-
-            cursorCommands.Enqueue(moveToShortcut);
-            cursorCommands.Enqueue(openWindow);
+            _isLevelLayoutAnimationRunning = false;
+            OnLevelLayoutAnimationEnd?.Invoke(this);
         }
     }
 
-    void MoveLevelLayout(ref Queue<AbstractCursorCommand> cursorCommands)
+    #region Getter
+    public bool DoStickmanCursorsCommandsEmpty()
     {
-        var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
-
-        levelLayoutElements = levelLayoutElements.OrderBy(x => x.PriorityOrder).ToArray();
-
-        for (int i = 0; i < levelLayoutElements.Length; i++)
+        for (int i = 0; i < _grabStickmanCursors.Length; i++)
         {
-            var element = levelLayoutElements[i];
+            var cursor = _grabStickmanCursors[i];
 
-            var moveToWindow = new MoveToCommand(element.transform);
-            var dragWindow = new StartDragCommand(element.transform);
-            var moveToNewPosition = new MoveToCommand(element.GetPosition(_levelLayoutState));
-            var stopDrag = new StopDragCommand(); // OPTIMIZATION: sortir cette line de la loop
+            bool isActiveCursor = IsActiveStickmanCursor(cursor);
 
-            cursorCommands.Enqueue(moveToWindow);
-            cursorCommands.Enqueue(dragWindow);
-            cursorCommands.Enqueue(moveToNewPosition);
-            cursorCommands.Enqueue(stopDrag);
+            if (isActiveCursor && !cursor.IsCommandsEmpty)
+                return false;
         }
+
+        return true;
+    }
+
+    public bool IsActiveStickmanCursor(CursorManager cursor)
+    {
+        if (!_grabStickmanCursors.Contains(cursor))
+            return false;
+
+        int index = System.Array.IndexOf(_grabStickmanCursors, cursor);
+        return IsActiveStickmanCursor(index);
+    }
+
+    public bool IsActiveStickmanCursor(int index)
+    {
+        if (index < 0 || index >= _grabStickmanCursors.Length)
+            return false;
+
+        CharId charId = (CharId)index;
+
+        bool isActiveCursor = GameManager.Instance.Characters[charId] != null;
+
+        return isActiveCursor;
     }
     #endregion
     #endregion

@@ -166,6 +166,12 @@ public class CharController : MonoBehaviour
     public readonly static int MAX_JUMPS_COUNT = 2;
     public readonly static float RAYCAST_DISTANCE = 0.1f;
     public readonly static float FORCEKILL_MIN_Y = -10;
+
+    public readonly static int HASH_ANIMATOR_ATTACK = Animator.StringToHash("attack");
+    public readonly static int HASH_ANIMATOR_JUMP = Animator.StringToHash("jump");
+    public readonly static int HASH_ANIMATOR_TACKLE = Animator.StringToHash("tackle");
+    public readonly static int HASH_ANIMATOR_WALLSLIDING = Animator.StringToHash("wall_sliding");
+    public readonly static int HASH_ANIMATOR_RUNNING = Animator.StringToHash("running");
     #endregion
 
     #region events
@@ -220,12 +226,6 @@ public class CharController : MonoBehaviour
     private CharFeedback _charFeedback;
 
     private int _layerMask;
-
-    private readonly int _hashAttack = Animator.StringToHash("attack");
-    private readonly int _hashJump = Animator.StringToHash("jump");
-    private readonly int _hashTackle = Animator.StringToHash("tackle");
-    private readonly int _hashWallSliding = Animator.StringToHash("wall_sliding");
-    private readonly int _hashRunning = Animator.StringToHash("running");
     #endregion
     #endregion
     #endregion
@@ -250,6 +250,7 @@ public class CharController : MonoBehaviour
         set
         {
             _freeze = value;
+            _rigidbody.isKinematic = value;
 
             if (_freeze == true)
             {
@@ -352,6 +353,8 @@ public class CharController : MonoBehaviour
             OnProjectileAmountUpdated?.Invoke(this, _currentAmountProjectilesCarried);
         }
     }
+
+    public Animator Animator { get => _animator; }
     #endregion
 
     #region Methods
@@ -424,13 +427,13 @@ public class CharController : MonoBehaviour
 
     void LateUpdate()
     {
-        _animator.SetBool(_hashRunning, (_inputs.HorizontalInput != 0));
-        _animator.SetBool(_hashJump, !_raycast.down);
+        _animator.SetBool(HASH_ANIMATOR_RUNNING, (_inputs.HorizontalInput != 0));
+        _animator.SetBool(HASH_ANIMATOR_JUMP, !_raycast.down);
 
         if (_state != null)
         {
-            _animator.SetBool(_hashWallSliding, _state is CharStateSticked);
-            _animator.SetBool(_hashTackle, _state is CharStateTackle);
+            _animator.SetBool(HASH_ANIMATOR_WALLSLIDING, _state is CharStateSticked);
+            _animator.SetBool(HASH_ANIMATOR_TACKLE, _state is CharStateTackle);
         }
 
         _inputs.Tick();

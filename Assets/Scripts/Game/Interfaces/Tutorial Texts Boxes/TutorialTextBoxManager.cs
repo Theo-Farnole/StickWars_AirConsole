@@ -37,7 +37,7 @@ public class TutorialTextBoxManager : MonoBehaviour
     void OnEnable()
     {
         LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
-        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd += OnLevelLayoutAnimationEnded;
     }
 
     void OnDisable()
@@ -45,7 +45,7 @@ public class TutorialTextBoxManager : MonoBehaviour
         if (LevelLayoutManager.Instance != null)
         {
             LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
-            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd += OnLevelLayoutAnimationEnded;
         }
     }
     #endregion

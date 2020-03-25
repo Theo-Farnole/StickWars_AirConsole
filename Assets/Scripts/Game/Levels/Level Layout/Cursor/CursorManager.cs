@@ -82,14 +82,21 @@ public class CursorManager : MonoBehaviour
     #region Aspects methods
     void UpdateCursorSprite()
     {
-        // If hits something
-        if (HitBehindCursor.collider != null)
+        if (_draggedElement != null)
         {
-            SetSprite(CursorState.Hover);
+            SetSprite(CursorState.Drag);
         }
         else
         {
-            SetSprite(CursorState.Default);
+            // If hits something
+            if (HitBehindCursor.collider != null)
+            {
+                SetSprite(CursorState.Hover);
+            }
+            else
+            {
+                SetSprite(CursorState.Default);
+            }
         }
     }
 
@@ -108,7 +115,7 @@ public class CursorManager : MonoBehaviour
         if (_draggedElement != null)
         {
             Vector3 delta = transform.position - _lastFramePosition;
-            DragGameObject(delta);            
+            DragGameObject(delta);
         }
 
         _lastFramePosition = transform.position;
@@ -149,6 +156,7 @@ public class CursorManager : MonoBehaviour
     {
         if (_commands == null || _commands.Count == 0)
         {
+            Debug.LogFormat("{0} OnCommandsQueueEmpty", name);
             OnCommandsQueueEmpty?.Invoke(this);
             return;
         }
@@ -156,17 +164,23 @@ public class CursorManager : MonoBehaviour
         var nextCommand = _commands.Dequeue();
         nextCommand.Execute(this);
 
-        Debug.LogFormat("ExecuteNextCommand passed w/ command of type {0} => {1}.", 
-            nextCommand.GetType(), nextCommand.ToString());
+        //Debug.LogFormat("ExecuteNextCommand passed w/ command of type {0} => {1}.",
+        //    nextCommand.GetType(), nextCommand.ToString());
 
         //Debug.Break();
     }
 
     public void StartCommandsSequence(Queue<AbstractCursorCommand> cursorCommands)
     {
+        Debug.LogFormat("{0} starts a sequence of {1} commands.", name, cursorCommands.Count);
+
         _commands = cursorCommands;
         ExecuteNextCommand();
     }
+    #endregion
+
+    #region Getter
+    public bool IsCommandsEmpty => _commands.Count == 0;
     #endregion
     #endregion
 }

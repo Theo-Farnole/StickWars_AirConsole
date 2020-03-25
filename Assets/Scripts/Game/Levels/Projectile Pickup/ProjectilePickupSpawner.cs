@@ -34,7 +34,7 @@ public class ProjectilePickupSpawner : MonoBehaviour
     {
         GameManager.Instance.Gamemode.OnCharacterKill += OnCharacterKill;
         LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
-        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd += OnLevelLayoutAnimationEnded;
     }
 
     void OnDisable()
@@ -45,7 +45,7 @@ public class ProjectilePickupSpawner : MonoBehaviour
         if (LevelLayoutManager.Instance != null)
         {
             LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
-            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd += OnLevelLayoutAnimationEnded;
         }
     }
 

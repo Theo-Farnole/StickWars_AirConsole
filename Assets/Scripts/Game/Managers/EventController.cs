@@ -30,7 +30,7 @@ public class EventController : Singleton<EventController>
     void OnEnable()
     {
         LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
-        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd += OnLevelLayoutAnimationEnded;
     }
 
     void OnDisable()
@@ -38,7 +38,7 @@ public class EventController : Singleton<EventController>
         if (LevelLayoutManager.Instance != null)
         {
             LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
-            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd += OnLevelLayoutAnimationEnded;
         }
     }
     #endregion
