@@ -30,14 +30,18 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         get => _levelLayoutState;
         set
         {
+#if UNITY_EDITOR
             bool levelLayoutStateChanged = _levelLayoutState != value;
+#endif
 
             _levelLayoutState = value;
 
+#if UNITY_EDITOR
             if (levelLayoutStateChanged)
             {
                 LoadLayoutWithoutAnimation(value);
             }
+#endif
         }
     }
 
@@ -97,6 +101,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         OnLevelLayoutAnimationStart?.Invoke(this);
     }
 
+#if UNITY_EDITOR
     public static void LoadLayoutWithoutAnimation(int layout)
     {
         var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
@@ -114,6 +119,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
             levelData.GizmosEnabled = isCurrentLevelData;
         }
     }
+#endif
     #endregion
 
     #region Events Handler
