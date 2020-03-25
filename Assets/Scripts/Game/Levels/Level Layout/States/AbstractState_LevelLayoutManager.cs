@@ -7,4 +7,10 @@ public abstract class AbstractState_LevelLayoutManager : OwnerState<LevelLayoutM
     public AbstractState_LevelLayoutManager(LevelLayoutManager owner) : base(owner)
     {
     }
+
+    // don't force to inherit fixed tick
+    public override void FixedTick() { }
+
+    // don't force to inherit tick
+    public override void Tick() { }
 }
