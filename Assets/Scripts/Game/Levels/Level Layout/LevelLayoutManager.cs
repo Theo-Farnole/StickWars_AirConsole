@@ -100,7 +100,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         foreach (var levelData in levelDatas)
         {
             bool isCurrentLevelData = levelData.ActiveOnLayout == _levelLayoutState;
-            levelData.enabled = isCurrentLevelData;
+            levelData.GizmosEnabled = isCurrentLevelData;
         }
     }
     #endregion

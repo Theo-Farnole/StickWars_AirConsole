@@ -13,11 +13,14 @@ public class LevelData : MonoBehaviour
     [Header("COLLECTABLES SPAWN")]
     [SerializeField] private Transform[] _virusSpawnerPosition = new Transform[3];
     [SerializeField] private LineData[] _projectilePickupSpawnArea;
+
+    private bool gizmosEnabled = true;
     #endregion
 
     #region Properties
     public Transform[] VirusSpawnerPosition { get => _virusSpawnerPosition; }
     public int ActiveOnLayout { get => _activeOnLayout; }
+    public bool GizmosEnabled { get => gizmosEnabled; set => gizmosEnabled = value; }
     #endregion
 
     #region Methods
@@ -29,7 +32,7 @@ public class LevelData : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (!enabled)
+        if (!GizmosEnabled)
             return;
 
         const float gizmosSphereRadius = 0.1f;
