@@ -15,6 +15,7 @@ public class TutorialTextBoxManager : MonoBehaviour
     private float _timerTextBoxDisplay = 0;
 
     private string _currentTextBoxContent = string.Empty;
+    private bool _pauseTextBox = false;
     #endregion
 
     #region Properties
@@ -31,6 +32,36 @@ public class TutorialTextBoxManager : MonoBehaviour
     void Update()
     {
         ManageTextBoxDisplay();
+    }
+
+    void OnEnable()
+    {
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+    }
+
+    void OnDisable()
+    {
+        if (LevelLayoutManager.Instance != null)
+        {
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+        }
+    }
+    #endregion
+
+    #region Events Handler
+    void OnLevelLayoutAnimationStart(LevelLayoutManager levelLayoutManager)
+    {
+        _pauseTextBox = true;
+        _textBox.enabled = false;
+    }
+
+    void OnLevelLayoutAnimationEnded(LevelLayoutManager levelLayoutManager)
+    {
+        _pauseTextBox = false;
+        _timerTextBoxDisplay = 0; // reset timer
+        _textBox.enabled = true;
     }
     #endregion
 
@@ -53,6 +84,9 @@ public class TutorialTextBoxManager : MonoBehaviour
     #region Methods managing messages display
     void ManageTextBoxDisplay()
     {
+        if (_pauseTextBox)
+            return;
+
         // don't manage text box, if no one is displaying
         if (!IsMessageDisplaying)
             return;

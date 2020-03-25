@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LevelLayoutManager : MonoBehaviour
-{    
+public delegate void LevelLayoutManagerDelegate(LevelLayoutManager levelLayoutManager);
+
+public class LevelLayoutManager : Singleton<LevelLayoutManager>
+{
     #region Fields
     [SerializeField] private static int _levelLayoutState = 0;
+
+    public LevelLayoutManagerDelegate OnLevelLayoutAnimationStart;
+    public LevelLayoutManagerDelegate OnLevelLayoutAnimationEnded;
 
     [SerializeField] private CursorManager _cursor;
     [Header("DEBUG")]
     [SerializeField] private KeyCode _triggerLevelLayoutLoading = KeyCode.R;
+
+    private bool _isLevelLayoutAnimationRunning = false;
     #endregion
 
     #region Properties
@@ -46,6 +53,16 @@ public class LevelLayoutManager : MonoBehaviour
             LoadLayoutWithAnimation();
         }
     }
+
+    void OnEnable()
+    {
+        _cursor.OnCommandsQueueEmpty += OnCommandsQueueEmpty;
+    }
+
+    void OnDisable()
+    {
+        _cursor.OnCommandsQueueEmpty -= OnCommandsQueueEmpty;
+    }
     #endregion
 
     #region Load layout
@@ -64,6 +81,9 @@ public class LevelLayoutManager : MonoBehaviour
 
         Debug.LogFormat("Executing {0} commands.", cursorCommands.Count);
         _cursor.StartCommandsSequence(cursorCommands);
+
+        _isLevelLayoutAnimationRunning = true;
+        OnLevelLayoutAnimationStart?.Invoke(this);
     }
 
     public static void LoadLayoutWithoutAnimation(int layout)
@@ -83,9 +103,21 @@ public class LevelLayoutManager : MonoBehaviour
             levelData.enabled = isCurrentLevelData;
         }
     }
-    #endregion    
+    #endregion
 
-    #region
+    #region Events Handler
+    void OnCommandsQueueEmpty(CursorManager cursorManager)
+    {
+        if (_isLevelLayoutAnimationRunning)
+        {
+            OnLevelLayoutAnimationEnded?.Invoke(this);
+        }
+
+        _isLevelLayoutAnimationRunning = false;
+    }
+    #endregion
+
+    #region Layout modifications methods
     void DestroyCollectiblesAndBonus()
     {
         GameHelper.DestroyGameObjectsInScene<ProjectilePickup>();

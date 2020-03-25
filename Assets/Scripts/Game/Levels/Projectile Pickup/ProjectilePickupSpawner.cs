@@ -18,8 +18,9 @@ public class ProjectilePickupSpawner : MonoBehaviour
 
     private float _currentTimeToSpawnPickup = 0;
     private float _currentKillAmountToSpawnPickup = 0;
-    #endregion
 
+    private bool _disableSpawning = false;
+    #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
@@ -32,12 +33,20 @@ public class ProjectilePickupSpawner : MonoBehaviour
     void OnEnable()
     {
         GameManager.Instance.Gamemode.OnCharacterKill += OnCharacterKill;
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
     }
 
     void OnDisable()
     {
         if (GameManager.Instance != null)
             GameManager.Instance.Gamemode.OnCharacterKill -= OnCharacterKill;
+
+        if (LevelLayoutManager.Instance != null)
+        {
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+        }
     }
 
     void Update()
@@ -61,10 +70,23 @@ public class ProjectilePickupSpawner : MonoBehaviour
             SpawnProjectilePickup();
         }
     }
+
+    void OnLevelLayoutAnimationStart(LevelLayoutManager levelLayoutManager)
+    {
+        _disableSpawning = true;
+    }
+
+    void OnLevelLayoutAnimationEnded(LevelLayoutManager levelLayoutManager)
+    {
+        _disableSpawning = false;
+    }
     #endregion
 
     void SpawnProjectilePickup()
     {
+        if (_disableSpawning)
+            return;
+
         int projectilePickupInLevel = FindObjectsOfType<ProjectilePickup>().Length;
 
         // there is 

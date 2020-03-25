@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+public delegate void CursorManagerDelegate(CursorManager cursorManager);
+
 [RequireComponent(typeof(SpriteRenderer))]
 public class CursorManager : MonoBehaviour
 {
@@ -16,6 +18,8 @@ public class CursorManager : MonoBehaviour
     #endregion
 
     #region Fields
+    public CursorManagerDelegate OnCommandsQueueEmpty;
+
     [SerializeField] private float _speed = 3;
     [SerializeField, EnumNamedArray(typeof(CursorState))] private Sprite[] _spritesCursor = new Sprite[3];
 
@@ -144,7 +148,10 @@ public class CursorManager : MonoBehaviour
     public void ExecuteNextCommand()
     {
         if (_commands == null || _commands.Count == 0)
+        {
+            OnCommandsQueueEmpty?.Invoke(this);
             return;
+        }
 
         var nextCommand = _commands.Dequeue();
         nextCommand.Execute(this);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class EventController : Singleton<EventController>
 {
     private const KeyCode DEBUG_KEY_SPAWNVIRUSSPAWNER = KeyCode.P;
+
     #region Fields
     public VirusSpawnerDelegate OnVirusSpawnerSpawned;
 
@@ -13,9 +14,11 @@ public class EventController : Singleton<EventController>
     [SerializeField] private GameObject _prefabVirusSpawner;
 
     private GameObject _currentVirusSpawner = null;
+    private bool _disableVirusSpawnerInstancing = false;
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
 #if UNITY_EDITOR
     void Update()
     {
@@ -23,6 +26,34 @@ public class EventController : Singleton<EventController>
             InstantiateVirusSpawner();
     }
 #endif
+
+    void OnEnable()
+    {
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+    }
+
+    void OnDisable()
+    {
+        if (LevelLayoutManager.Instance != null)
+        {
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += OnLevelLayoutAnimationStart;
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnded += OnLevelLayoutAnimationEnded;
+        }
+    }
+    #endregion
+
+    #region Events Handler
+    void OnLevelLayoutAnimationStart(LevelLayoutManager levelLayoutManager)
+    {
+        _disableVirusSpawnerInstancing = true;
+    }
+
+    void OnLevelLayoutAnimationEnded(LevelLayoutManager levelLayoutManager)
+    {
+        _disableVirusSpawnerInstancing = false;
+    }
+    #endregion
 
     public void OnKill()
     {
@@ -47,6 +78,9 @@ public class EventController : Singleton<EventController>
 
     private void InstantiateVirusSpawner()
     {
+        if (_disableVirusSpawnerInstancing)
+            return;
+
         // prevent spawning another virus spawner
         if (_currentVirusSpawner != null)
             return;
