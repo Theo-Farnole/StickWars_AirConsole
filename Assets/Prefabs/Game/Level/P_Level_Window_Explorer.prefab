@@ -1507,7 +1507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6535182420067165187}
   m_Layer: 0
-  m_Name: explorer_window
+  m_Name: P_Level_Window_Explorer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6224115835215465233}
   m_Layer: 0
-  m_Name: terminal_window
+  m_Name: P_Level_Window_Terminal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
