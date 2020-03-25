@@ -122,6 +122,8 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     {
         GameHelper.DestroyGameObjectsInScene<ProjectilePickup>();
         GameHelper.DestroyGameObjectsInScene<VirusSpawner>();
+        GameHelper.DestroyGameObjectsInScene<VirusController>();
+        GameHelper.DestroyGameObjectsInScene<Projectile>();
     }
 
     void OpenShortcuts(ref Queue<AbstractCursorCommand> cursorCommands)
