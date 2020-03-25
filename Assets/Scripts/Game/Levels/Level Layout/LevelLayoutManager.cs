@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -154,7 +154,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
             var element = levelLayoutElements[i];
 
             var moveToWindow = new MoveToCommand(element.transform);
-            var dragWindow = new StartDragCommand(element);
+            var dragWindow = new StartDragCommand(element.transform);
             var moveToNewPosition = new MoveToCommand(element.GetPosition(_levelLayoutState));
             var stopDrag = new StopDragCommand(); // OPTIMIZATION: sortir cette line de la loop
 

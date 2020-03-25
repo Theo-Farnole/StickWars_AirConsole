@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class StartDragCommand : AbstractCursorCommand
 {
-    private readonly LevelLayoutElement _elementToDrag;
+    private readonly Transform _elementToDrag;
 
-    public StartDragCommand(LevelLayoutElement elementToDrag)
+    public StartDragCommand(Transform elementToDrag)
     {
         _elementToDrag = elementToDrag;
     }

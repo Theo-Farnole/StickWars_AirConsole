@@ -26,7 +26,7 @@ public class CursorManager : MonoBehaviour
     private Queue<AbstractCursorCommand> _commands;
 
     // drag variables
-    private LevelLayoutElement _draggedElement;
+    private Transform _draggedElement;
     private Vector3 _deltaPositionDraggedElement;
     private Vector3 _lastFramePosition;
 
@@ -122,16 +122,16 @@ public class CursorManager : MonoBehaviour
         _draggedElement.transform.position += offset;
     }
 
-    public void StartDrag(LevelLayoutElement levelLayoutElement)
+    public void StartDrag(Transform element)
     {
-        if (levelLayoutElement == null)
+        if (element == null)
         {
             Debug.LogWarningFormat("{0} start drag of null element! Please use StopDrag() if you want to stop dragging.", name);
             return;
         }
 
-        _draggedElement = levelLayoutElement;
-        _deltaPositionDraggedElement = transform.position - levelLayoutElement.transform.position;
+        _draggedElement = element;
+        _deltaPositionDraggedElement = transform.position - element.transform.position;
 
         ExecuteNextCommand();
     }
