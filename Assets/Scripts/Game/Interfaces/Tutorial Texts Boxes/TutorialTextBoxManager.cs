@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class TutorialTextBoxManager : MonoBehaviour
 {
     #region Fields
+    [SerializeField] private GameObject _textBoxWrapper;
     [SerializeField] private TextMeshProUGUI _textBox;
     [Space]
     [SerializeField] private float _displayDuration;
@@ -26,7 +28,7 @@ public class TutorialTextBoxManager : MonoBehaviour
     #region MonoBehaviour Callbacks
     void Start()
     {
-        _textBox.enabled = false;    
+        ActiveTextBox(false, false);
     }
 
     void Update()
@@ -55,6 +57,7 @@ public class TutorialTextBoxManager : MonoBehaviour
     {
         _pauseTextBox = true;
         _textBox.enabled = false;
+        ActiveTextBox(false);
     }
 
     void OnLevelLayoutAnimationEnded(LevelLayoutManager levelLayoutManager)
@@ -115,8 +118,7 @@ public class TutorialTextBoxManager : MonoBehaviour
         else
         {
             // disable text component
-            if (_textBox.enabled)
-                _textBox.enabled = false;
+            ActiveTextBox(false);
 
             _currentTextBoxContent = string.Empty;
         }
@@ -124,11 +126,33 @@ public class TutorialTextBoxManager : MonoBehaviour
 
     void DisplayTextBox(string message)
     {
-        if (!_textBox.enabled)
-            _textBox.enabled = true;
+        ActiveTextBox(true);
 
         _currentTextBoxContent = message;
         _textBox.text = _currentTextBoxContent;
+    }
+
+    void ActiveTextBox(bool active, bool withAnimation = true)
+    {
+        if (!withAnimation)
+        {
+            _textBoxWrapper.transform.localScale = active ? Vector3.one : Vector3.zero;
+        }
+        else
+        {
+            if (active)
+            {
+                _textBoxWrapper.transform.localScale = Vector3.zero;
+
+                _textBoxWrapper.transform.DOKill();
+                _textBoxWrapper.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.InOutCubic);
+            }
+            else
+            {
+                _textBoxWrapper.transform.DOKill();
+                _textBoxWrapper.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InOutCubic);
+            }
+        }
     }
     #endregion
     #endregion
