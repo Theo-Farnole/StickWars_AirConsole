@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     #region Fields
     public CharControllerDelegate OnCharacterSpawn;
 
+    [SerializeField] private AllGamemodesData _allGamemodesData;
     [SerializeField] private GameObject _prefabPlayer;
     [Header("Debug")]
     [SerializeField] private bool _enableHotConnection = false;
@@ -34,7 +35,8 @@ public class GameManager : Singleton<GameManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        _gamemode = _gamemodeType.ToGamemodeClass();
+        _gamemode = _gamemodeType.ToGamemodeClass();        
+        _gamemode.ValueForVictory = _allGamemodesData.GetGamemodeValue(_gamemodeType);
 
         foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {

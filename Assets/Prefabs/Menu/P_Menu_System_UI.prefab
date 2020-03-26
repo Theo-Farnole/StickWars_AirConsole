@@ -137,7 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8089560094173689795}
   m_Layer: 0
-  m_Name: P_MenuSystem
+  m_Name: P_Menu_System_UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,7 +203,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panelLevelSelection: {fileID: 0}
-  _textWinIndicatin: {fileID: 0}
+  _noEnoughPlayers:
+    text: {fileID: 0}
+  _deltaPosition: 5
+  _fadeDuration: 1
   _textWaitingForPlayers: {fileID: 0}
   _playersWrappers:
   - {fileID: 0}
@@ -211,6 +214,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _panelLoading: {fileID: 0}
+  _textGameInstruction: {fileID: 0}
 --- !u!1 &8089560095293512427
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,5 +259,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5509880fee11f04db1cdc0893b3c51d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gamemodeData:
-  - {fileID: 11400000, guid: adbd7d8448cab3e45933f1793dc225c8, type: 2}
+  _allGamemodesData: {fileID: 11400000, guid: f9f57e1bf73948d4ab14f152d6c519ea, type: 2}

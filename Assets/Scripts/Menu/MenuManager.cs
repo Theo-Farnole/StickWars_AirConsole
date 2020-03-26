@@ -14,21 +14,13 @@ public class MenuManager : Singleton<MenuManager>
     public static readonly float LOADING_TIME = 1.5f;
 
     #region Fields
-    [EnumNamedArray(typeof(GamemodeType))]
-    [SerializeField] private GamemodeData[] _gamemodeData = new GamemodeData[Enum.GetValues(typeof(GamemodeType)).Length];
+    [SerializeField] private AllGamemodesData _allGamemodesData;
 
     private GamemodeType _selectedGamemode = GamemodeType.DeathMatch;
     #endregion
 
     #region Properties
-    public GamemodeData[] GamemodeData { get => _gamemodeData; }
-    public int SelectedGamemodeDefaultValue
-    {
-        get
-        {
-            return _gamemodeData[(int)_selectedGamemode].DefaultValue;
-        }
-    }
+    public int SelectedGamemodeDefaultValue { get => _allGamemodesData.GetGamemodeValue(_selectedGamemode); }
     #endregion
 
     #region Methods
@@ -171,7 +163,7 @@ public class MenuManager : Singleton<MenuManager>
 
     void LoadScene()
     {
-        // pass the gamemode settings 
+        // pass the gamemode settings         
         AbstractGamemode.valueForVictory = SelectedGamemodeDefaultValue;
 
         // display play view on controllers

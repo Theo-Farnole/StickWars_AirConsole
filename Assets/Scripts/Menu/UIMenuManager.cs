@@ -70,9 +70,7 @@ public class UIMenuManager : Singleton<UIMenuManager>
                     c.SetActive(false);
                 });
             }
-        }
-
-        _textGameInstruction.text = _textGameInstruction.text.Replace("$value$", MenuManager.Instance.SelectedGamemodeDefaultValue.ToString());
+        }        
     }
     #endregion
 
@@ -134,6 +132,8 @@ public class UIMenuManager : Singleton<UIMenuManager>
     #region Panel Loading
     public void SetActivePanelLoading()
     {
+        _textGameInstruction.text = _textGameInstruction.text.Replace("$value$", MenuManager.Instance.SelectedGamemodeDefaultValue.ToString());
+
         _panelLevelSelection.SetActive(false);
         _panelLoading.SetActive(true);
     }

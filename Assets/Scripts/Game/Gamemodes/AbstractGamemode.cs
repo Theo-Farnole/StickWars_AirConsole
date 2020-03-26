@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public enum GamemodeType
 {
@@ -29,7 +30,7 @@ public delegate void IntArrayDelegate(int[] score, int scoreForVictory);
 public abstract class AbstractGamemode
 {
     #region Fields
-    public static int valueForVictory = 8;
+    public static int valueForVictory = -1;
 
     public CharIdDelegate OnCharacterKill;
     public IntArrayDelegate OnScoreUpdate;
@@ -71,7 +72,7 @@ public abstract class AbstractGamemode
         }
     }
 
-    public int ValueForVictory { get => valueForVictory; }
+    public int ValueForVictory { get => valueForVictory; set => valueForVictory = value; }
     public int KillCount { get => _killCount; }
     public int MaxKillsPossibleSum { get => GameManager.Instance.InstantiatedCharactersCount * valueForVictory; }
     #endregion
@@ -106,6 +107,8 @@ public abstract class AbstractGamemode
 
     public bool CheckForVictory()
     {
+        Assert.AreNotEqual(valueForVictory, -1, "Value for victory has not be set!");
+
         foreach (CharId item in Enum.GetValues(typeof(CharId)))
         {
             if (_charactersValue[item] >= valueForVictory)

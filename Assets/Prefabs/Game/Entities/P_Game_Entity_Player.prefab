@@ -1533,7 +1533,7 @@ MonoBehaviour:
   OnDamage:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7163881924193586204}
+      - m_Target: {fileID: 4436422633678434065}
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -1590,9 +1590,9 @@ MonoBehaviour:
   _nonOrientedParticles:
   - {fileID: 7745868226801935166}
   - {fileID: 7745868226801935166}
-  - {fileID: 7163881924193586204}
-  - {fileID: 7163881924193586204}
-  - {fileID: 7163881924193586204}
+  - {fileID: 4436422633678434065}
+  - {fileID: 4436422633678434065}
+  - {fileID: 4436422633678434065}
   _respawnParticles:
   - {fileID: 6191647641092485965}
   - {fileID: 6191647641092485963}
@@ -3324,7 +3324,7 @@ Transform:
   - {fileID: 6128275266898555466}
   - {fileID: 1148171679538569093}
   - {fileID: 3400795262113759433}
-  - {fileID: 7163881924193586268}
+  - {fileID: 4436422633678434064}
   - {fileID: 6191647641074136585}
   m_Father: {fileID: 3867000743114586797}
   m_RootOrder: 11
@@ -3931,13 +3931,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1307770aaa6d242438533fa18a62d92e, type: 3}
---- !u!4 &7163881924193586268 stripped
+--- !u!4 &4436422633678434064 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6843903831366001274, guid: 1307770aaa6d242438533fa18a62d92e,
     type: 3}
   m_PrefabInstance: {fileID: 7163881924193586538}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &7163881924193586204 stripped
+--- !u!198 &4436422633678434065 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6843903831366001275, guid: 1307770aaa6d242438533fa18a62d92e,
     type: 3}
