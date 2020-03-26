@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 730860264010549235}
   - component: {fileID: 5245271800145555555}
   m_Layer: 2
-  m_Name: P_Virus
+  m_Name: P_Game_Entity_Virus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -344,6 +344,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f24b45d2f80cb4e9c7b14a47d6f3b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnDamage:
+    m_PersistentCalls:
+      m_Calls: []
   _entityData: {fileID: 11400000, guid: 65db324ae09fe3a439d0ce727f97c49a, type: 2}
   isInvincible: 0
   _hideHealthSliderIfFull: 1
@@ -509,7 +512,8 @@ AudioSource:
   m_GameObject: {fileID: 3090471664145205058}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243978778724512988, guid: 7fca629ba01ba8d4d926bd5523742cd5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: eec676febd58e0c4799c9143812de5a5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.435
@@ -636,7 +640,8 @@ AudioSource:
   m_GameObject: {fileID: 3355577036943078092}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243915350279729920, guid: 7fca629ba01ba8d4d926bd5523742cd5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 4389232f8fcc10746be139c33998283b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.09
@@ -1218,7 +1223,8 @@ AudioSource:
   m_GameObject: {fileID: 7871796485710351154}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243933320520816556, guid: 7fca629ba01ba8d4d926bd5523742cd5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 881b4f4aa074c8b4eaf5b7d5089aaa78, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.675

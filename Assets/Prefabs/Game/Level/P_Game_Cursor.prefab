@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1872077102072874211}
   - component: {fileID: 8563556750379906349}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: SD_Menu_ButtonClick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,8 @@ AudioSource:
   m_GameObject: {fileID: 498416867659515244}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243189234611777514, guid: 7fca629ba01ba8d4d926bd5523742cd5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: b0ea1ce5e73e18747842d294e91f617b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.111

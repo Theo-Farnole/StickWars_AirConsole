@@ -180,13 +180,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1947664415}
-    characterCount: 5
+    characterCount: 0
     spriteCount: 0
     spaceCount: 0
-    wordCount: 1
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 4755789436170763418}
   - component: {fileID: 7452312217714967093}
   m_Layer: 9
-  m_Name: P_virus_triggerer
+  m_Name: P_Game_Entity_VirusSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -625,6 +625,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4091a2d90a6a7904c90f0fdb94e15f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnDamage:
+    m_PersistentCalls:
+      m_Calls: []
   _entityData: {fileID: 11400000, guid: 0397626aa9c4f904098313f81d38e7a8, type: 2}
   isInvincible: 0
   _hideHealthSliderIfFull: 0
@@ -674,8 +677,6 @@ MonoBehaviour:
   _shouldTranslate: 1
   _translateSpeed: 0.1
   _translateDistance: 0.1
-  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
-  _segmentSize: 0.1
 --- !u!1 &4851863862331302566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,7 +1501,8 @@ AudioSource:
   m_GameObject: {fileID: 9059916598049103263}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243614541271554168, guid: 7fca629ba01ba8d4d926bd5523742cd5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 26191a12d5aa5064e9f2d498a26a7542, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1

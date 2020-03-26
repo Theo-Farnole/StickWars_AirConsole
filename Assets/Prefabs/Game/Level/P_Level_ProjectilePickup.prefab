@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 7312016457109572213}
   - component: {fileID: 2563317729673048347}
   m_Layer: 0
-  m_Name: S_Character_Pickup
+  m_Name: SD_Game_Character_Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,7 +224,8 @@ AudioSource:
   m_GameObject: {fileID: 6614618682036806820}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243441732829378314, guid: 7fca629ba01ba8d4d926bd5523742cd5,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 1dfb8947b991cf147b35035adbe476a8, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
