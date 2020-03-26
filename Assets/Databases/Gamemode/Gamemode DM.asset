@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b99b0c012bf58d43b3978e412bd90ae, type: 3}
   m_Name: Gamemode DM
   m_EditorClassIdentifier: 
-  _defaultValue: 8
+  _defaultValue: 4

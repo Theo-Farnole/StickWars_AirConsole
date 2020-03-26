@@ -9,13 +9,14 @@ using DG.Tweening;
 public class GoalBarManager : MonoBehaviour
 {
     #region Fields
+    [Header("LINKING")]
     [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _coloredSliders;
-    [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _picturesSliders;
-    [Space]
+    [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _picturesSliders;    
     [SerializeField, EnumNamedArray(typeof(CharId))] private PlayerWrapper[] _playerPicturesWrapper;
-    [Header("Concurrency")]
+    [SerializeField] private RectTransform _goalSegmentsParent;
+    [Header("CONCURRENCY")]
     [SerializeField] private float _avatarOffsetOnConcurrency = 10;
-    [Header("Animation")]
+    [Header("ANIMATION")]
     [SerializeField] private float _barAnimationDuration = 1f;
     [SerializeField] private Ease _barAnimationEase = Ease.OutCubic;
     #endregion
@@ -33,6 +34,7 @@ public class GoalBarManager : MonoBehaviour
 
     void Start()
     {
+        InitializeSegments();
         InitializeSliders();
 
         // reactive bar on spawn
@@ -54,6 +56,20 @@ public class GoalBarManager : MonoBehaviour
     #endregion
 
     #region Initialization
+    void InitializeSegments()
+    {
+        int maxScore = GameManager.Instance.Gamemode.ValueForVictory;
+
+        int segmentsToDestroy = _goalSegmentsParent.childCount - maxScore;
+
+        // destroy segment
+        for (int i = 0; i < segmentsToDestroy; i++)
+        {
+            GameObject segment = _goalSegmentsParent.GetChild(i).gameObject;
+            Destroy(segment);
+        }
+    }
+
     void InitializeSliders()
     {
         int scoreToWin = GameManager.Instance.Gamemode.ValueForVictory;
