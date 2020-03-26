@@ -86,7 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389589251289468834}
   m_Layer: 0
-  m_Name: P_GameSystem
+  m_Name: P_System_Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,6 +250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646f7b214ad35b14886449d68404a3ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _generateTop: 1
+  _generateBottom: 0
+  _generateLeft: 1
+  _generateRight: 1
 --- !u!1 &7789799496205784619
 GameObject:
   m_ObjectHideFlags: 0
