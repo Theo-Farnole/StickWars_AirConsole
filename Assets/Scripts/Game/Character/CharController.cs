@@ -200,6 +200,7 @@ public class CharController : MonoBehaviour
     [SerializeField] private SpriteRenderer _crown;
     [Header("Events")]
     public UnityEvent NoCarriedProjectileOnThrow; // a bit too long, I apologize
+    public UnityEvent OnProjectileThrow; // a bit too long, I apologize
     #endregion
 
     #region internals variables
@@ -531,6 +532,8 @@ public class CharController : MonoBehaviour
             NoCarriedProjectileOnThrow?.Invoke();
             return;
         }
+
+        OnProjectileThrow?.Invoke();
 
         CurrentAmountProjectilesCarried--;
 
