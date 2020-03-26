@@ -17,7 +17,5 @@ public class Rigidbody2DRandomTorque : MonoBehaviour
         float torque = Random.Range(-_torqueForce, _torqueForce);
 
         GetComponent<Rigidbody2D>().AddTorque(torque, ForceMode2D.Impulse);
-
-        Debug.LogFormat("Applied torque is {0}", torque);
     }
 }

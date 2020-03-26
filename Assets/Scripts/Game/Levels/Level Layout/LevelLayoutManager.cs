@@ -152,8 +152,6 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         int currentKillsSum = GameManager.Instance.Gamemode.SumCharactersValue;
         int maxKillsSum = GameManager.Instance.Gamemode.MaxKillsPossibleSum;
 
-        Debug.LogFormat("{0} >= [{1} * {2}] = {3}", currentKillsSum, maxKillsSum, _sumRatioToLoadLayout, maxKillsSum * _sumRatioToLoadLayout);
-
         if (currentKillsSum >= maxKillsSum * _sumRatioToLoadLayout)
         {
             _disableStartLayout = true;
