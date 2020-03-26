@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public delegate void CursorManagerDelegate(CursorManager cursorManager);
 
@@ -20,8 +21,11 @@ public class CursorManager : MonoBehaviour
     #region Fields
     public CursorManagerDelegate OnCommandsQueueEmpty;
 
+    public UnityEvent OnDragStart;
+
     [SerializeField] private float _speed = 3;
     [SerializeField, EnumNamedArray(typeof(CursorState))] private Sprite[] _spritesCursor = new Sprite[3];
+    [Header("Feedbacks")]    
 
     private Queue<AbstractCursorCommand> _commands;
 
@@ -139,6 +143,8 @@ public class CursorManager : MonoBehaviour
 
         _draggedElement = element;
         _deltaPositionDraggedElement = transform.position - element.transform.position;
+
+        OnDragStart?.Invoke();
 
         ExecuteNextCommand();
     }
