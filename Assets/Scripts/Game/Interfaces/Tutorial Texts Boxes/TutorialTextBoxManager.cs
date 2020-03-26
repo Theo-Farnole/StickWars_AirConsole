@@ -56,7 +56,6 @@ public class TutorialTextBoxManager : MonoBehaviour
     void OnLevelLayoutAnimationStart(LevelLayoutManager levelLayoutManager)
     {
         _pauseTextBox = true;
-        _textBox.enabled = false;
         ActiveTextBox(false);
     }
 
