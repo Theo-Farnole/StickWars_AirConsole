@@ -10,16 +10,19 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     #region Fields
     [SerializeField] private static int _levelLayoutState = 0;
 
+    [Header("MAIN SETTINGS")]
+    [SerializeField] private float _sumRatioToLoadLayout = (8f / 3f);
+
+    [Header("EVENTS")]
     public LevelLayoutManagerDelegate OnLevelLayoutAnimationStart;
     public LevelLayoutManagerDelegate OnLevelLayoutAnimationEnd;
 
+    [Header("COMPONENTS LINKING")]
     [SerializeField] private CursorManager _mainCursor;
     [SerializeField, EnumNamedArray(typeof(CharId))] private CursorManager[] _grabStickmanCursors = new CursorManager[4];
-    [Header("DEBUG")]
-    [SerializeField] private KeyCode _triggerLevelLayoutLoading = KeyCode.R;
-    [SerializeField] private KeyCode _triggerStickmanNextPoints = KeyCode.T;
 
     private bool _isLevelLayoutAnimationRunning = false;
+    private bool _disableStartLayout = false;
 
     private AbstractState_LevelLayoutManager _currentState;
     #endregion
@@ -71,22 +74,20 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         _levelLayoutState = 0;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(_triggerLevelLayoutLoading))
-        {
-            StartLoadLayout();
-        }
-    }
-
     void OnEnable()
     {
         _mainCursor.OnCommandsQueueEmpty += SpreadLevelLayoutAnimationEnded;
+        GameManager.Instance.Gamemode.OnCharacterKill += OnCharacterKill;
     }
 
     void OnDisable()
     {
         _mainCursor.OnCommandsQueueEmpty -= SpreadLevelLayoutAnimationEnded;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.Gamemode.OnCharacterKill -= OnCharacterKill;
+        }
     }
     #endregion
 
@@ -131,6 +132,23 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         }
 
         _isLevelLayoutAnimationRunning = false;
+    }
+
+    void OnCharacterKill(CharId charId)
+    {
+        if (_disableStartLayout)
+            return;
+        
+        int currentKillsSum = GameManager.Instance.Gamemode.SumCharactersValue;
+        int maxKillsSum = GameManager.Instance.Gamemode.MaxKillsPossibleSum;
+
+        Debug.LogFormat("{0} >= [{1} * {2}] = {3}", currentKillsSum, maxKillsSum, _sumRatioToLoadLayout, maxKillsSum * _sumRatioToLoadLayout);
+
+        if (currentKillsSum >= maxKillsSum * _sumRatioToLoadLayout)
+        {
+            _disableStartLayout = true;
+            StartLoadLayout();
+        }
     }
     #endregion
 

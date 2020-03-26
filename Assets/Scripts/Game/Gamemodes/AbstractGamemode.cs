@@ -73,6 +73,7 @@ public abstract class AbstractGamemode
 
     public int ValueForVictory { get => valueForVictory; }
     public int KillCount { get => _killCount; }
+    public int MaxKillsPossibleSum { get => GameManager.Instance.InstantiatedCharactersCount * valueForVictory; }
     #endregion
 
     #region Methods

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharStateNormal : AbstractCharState
 {
-    private int _jumpCount = 0;    
+    private int _jumpCount = 0;
 
     public CharStateNormal(CharController charController) : base(charController)
     { }
@@ -47,7 +47,7 @@ public class CharStateNormal : AbstractCharState
         }
 
         if (_owner.Inputs.ThrowPressed)
-        {            
+        {
             _owner.ThrowProjectile();
         }
         else if (_owner.Inputs.TacklePressed)
@@ -111,8 +111,8 @@ public class CharStateNormal : AbstractCharState
         _owner.Rigidbody.AddForce(Vector2.up * _owner.Data.JumpForce);
 
         // on double jump
-        if (_jumpCount > 1)        
-            _owner.OnDoubleJump(_owner);        
+        if (_jumpCount > 1)
+            _owner.OnDoubleJump?.Invoke(_owner);
     }
 
     void ManageFootstepSound(Vector2 velocity)
