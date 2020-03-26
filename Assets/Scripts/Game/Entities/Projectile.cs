@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [SelectionBase]
 public class Projectile : MonoBehaviour, IPooledObject
@@ -15,10 +16,13 @@ public class Projectile : MonoBehaviour, IPooledObject
     public static EntityDelegate OnProjectileHitEntity;
 
     [SerializeField] private ProjectileData _data;
-    [SerializeField] private AudioSource _audioHitProjectile;
 
     [HideInInspector] public int damage = 10;
     [HideInInspector] public Entity sender;
+
+    [Header("EVENTS")]
+    public UnityEvent EventOnEntityHit;
+    public UnityEvent EventOnEnvironmentHit;
 
     private Vector3 _direction = Vector3.right;
 
@@ -43,19 +47,10 @@ public class Projectile : MonoBehaviour, IPooledObject
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-    }
-
-    public void OnObjectSpawn()
-    {
-        ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject, LIFETIME);
-        _isFreeze = false;
-
-#if UNITY_EDITOR
-        DynamicsObjects.Instance.SetToParent(transform, "projectile");
-#endif
     }
 
     void Update()
@@ -76,38 +71,59 @@ public class Projectile : MonoBehaviour, IPooledObject
         // if projectile hit an entity, and that's not the sender
         if (entity != null && entity != sender)
         {
-            // do the damage
-            entity.GetDamage(damage, sender);
-
-            _audioHitProjectile.transform.parent = null;
-            _audioHitProjectile.Play();
-
-            OnProjectileHitEntity?.Invoke(entity);
-
-            if (entity is CharacterEntity || entity is VirusSpawner || entity.GetComponent<VirusController>() != null)
-            {
-                ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject);
-            }
-            else
-            {
-                if (other.GetComponent<Projectile>() == null)
-                {
-                    _isFreeze = true;
-                    ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject, _data.LifetimeOnCollision);
-                }
-            }
+            OnEntityHit(entity);
         }
         else
         {
-            bool a = other.transform.CompareTag("Player");
-            bool b = (other.transform.parent != null && other.transform.parent.CompareTag("Player"));
-
-            if (!(a || b) && other.GetComponent<Projectile>() == null && other.GetComponent<ProjectilePickup>() == null)
-            {
-                _isFreeze = true;
-                ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject, _data.LifetimeOnCollision);
-            }
+            OnEnvironmentHit(other);
         }
+    }
+    #endregion
+
+    public void OnObjectSpawn()
+    {
+        ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject, LIFETIME);
+        _isFreeze = false;
+
+#if UNITY_EDITOR
+        DynamicsObjects.Instance.SetToParent(transform, "projectile");
+#endif
+    }
+
+    private void OnEnvironmentHit(Collider2D other)
+    {
+        bool a = other.transform.CompareTag("Player");
+        bool b = (other.transform.parent != null && other.transform.parent.CompareTag("Player"));
+
+        if (!(a || b) && other.GetComponent<Projectile>() == null && other.GetComponent<ProjectilePickup>() == null)
+        {
+            EventOnEnvironmentHit?.Invoke();
+            Freeze();
+        }
+    }
+
+    private void OnEntityHit(Entity entity)
+    {
+        // do the damage
+        entity.GetDamage(damage, sender);
+
+        EventOnEntityHit?.Invoke(); // non static event
+        OnProjectileHitEntity?.Invoke(entity); // static event
+
+        if (entity is CharacterEntity || entity is VirusSpawner || entity.GetComponent<VirusController>() != null)
+        {
+            ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject);
+        }
+        else
+        {
+            Freeze();
+        }
+    }
+
+    private void Freeze()
+    {
+        _isFreeze = true;
+        ObjectPooler.Instance.EnqueueGameObject("projectile", gameObject, _data.LifetimeOnCollision);
     }
     #endregion
 }
