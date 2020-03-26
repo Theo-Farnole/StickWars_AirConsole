@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 423379b16c039bd40bd80fd2d75be104, type: 3}
-  m_Name: Virus Spawner Controller
+  m_Name: Events Data Controller
   m_EditorClassIdentifier: 
-  _killsNeededToSpawnVirusSpawner: 5
+  _maxSpawnVirusSpawner: 3
