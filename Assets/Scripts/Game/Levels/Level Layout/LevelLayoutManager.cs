@@ -74,6 +74,16 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         _levelLayoutState = 0;
     }
 
+#if UNITY_EDITOR
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            StartLoadLayout();
+        }
+    }
+#endif
+
     void OnEnable()
     {
         _mainCursor.OnCommandsQueueEmpty += SpreadLevelLayoutAnimationEnded;
@@ -138,7 +148,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     {
         if (_disableStartLayout)
             return;
-        
+
         int currentKillsSum = GameManager.Instance.Gamemode.SumCharactersValue;
         int maxKillsSum = GameManager.Instance.Gamemode.MaxKillsPossibleSum;
 

@@ -1113,14 +1113,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0698cc588984d3c4c9c3a81ff5d48a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sumRatioToLoadLayout: 0.375
   _mainCursor: {fileID: 505921923}
   _grabStickmanCursors:
   - {fileID: 1587854907}
   - {fileID: 900917071}
   - {fileID: 1186108622}
   - {fileID: 1262132265}
-  _triggerLevelLayoutLoading: 114
-  _triggerStickmanNextPoints: 116
 --- !u!4 &559092679
 Transform:
   m_ObjectHideFlags: 0

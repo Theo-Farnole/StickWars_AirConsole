@@ -256,6 +256,7 @@ public class CharController : MonoBehaviour
             if (_freeze == true)
             {
                 _inputs.Reset();
+                _rigidbody.velocity = Vector3.zero;
             }
         }
     }
