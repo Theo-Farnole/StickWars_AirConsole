@@ -12,10 +12,13 @@ public class UI_SpecialPlayerWrapper : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _nickname;
     [Header("SPECIAL TITLE")]
     [SerializeField] private TextMeshProUGUI _specialTitle;
-    [SerializeField] private TextMeshProUGUI _specialTitleDescription;    
+    [SerializeField] private TextMeshProUGUI _specialTitleDescription;
+
+    public TextMeshProUGUI SpecialTitle { get => _specialTitle; }
+    public TextMeshProUGUI SpecialTitleDescription { get => _specialTitleDescription; }
 
     /// <summary>
-    /// Update content and color
+    /// Update profil picture, outline & nickname in fonction of charid passed in args.
     /// </summary>
     public void UpdateCharIdContent(CharId charId)
     {

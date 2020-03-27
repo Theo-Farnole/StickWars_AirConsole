@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public class StatisticsManager : MonoBehaviour
 {
     private Dictionary<CharId, CharacterStatistics> _characterStatistics = new Dictionary<CharId, CharacterStatistics>();
+
+    public Dictionary<CharId, CharacterStatistics> CharacterStatistics { get => _characterStatistics; }
+
+
 
     #region Methods
     #region MonoBehaviour Callbacks
