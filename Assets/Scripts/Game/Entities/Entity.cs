@@ -8,6 +8,7 @@ using UnityEngine.Events;
 
 public delegate void EntityDamage(Entity victim, int damageAmount);
 public delegate void EntityDelegate(Entity entity);
+public delegate void EntityEntityDelegate(Entity killer, Entity victim);
 [System.Serializable] public class UnityEventEntityDamage : UnityEvent<Entity, int> { }
 
 [SelectionBase]
@@ -18,7 +19,8 @@ public class Entity : MonoBehaviour
 
     #region Fields
     public EntityDelegate OnHealthPointsChanged;
-    public UnityEventEntityDamage OnDamage;
+    public EntityEntityDelegate OnKillMade;
+    public UnityEventEntityDamage OnDamage;    
 
     [Header("Entity Config")]
     [SerializeField] protected EntityData _entityData;
@@ -71,10 +73,9 @@ public class Entity : MonoBehaviour
         PopFloatingText(damage, attacker);
 
         if (!IsAlive)
-        {
+        {            
             Death(attacker);
         }
-
 
         OnHealthPointsChanged?.Invoke(this);
     }
@@ -106,6 +107,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Death(Entity killer)
     {
+        killer.OnKillMade?.Invoke(killer, this);
         Destroy(gameObject);
     }
 

@@ -8,7 +8,15 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum CharacterAttackType
+{
+    Tackle,
+    Projectile
+}
+
 public delegate void CharControllerDelegate(CharController charController);
+public delegate void CharControllerCharacterAttackTypeDelegate(CharController charController, CharacterAttackType characterAttackType);
+public delegate void CharControllerCharacterAttackTypeIntDelegate(CharController charController, CharacterAttackType characterAttackType, int damage);
 public delegate void CharControllerStateDelegate(CharController charController, AbstractCharState state);
 public delegate void CharControllerIntDelegate(CharController charController, int integer);
 
@@ -175,9 +183,13 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region events
+    public CharControllerDelegate OnJump;
     public CharControllerDelegate OnDoubleJump;
     public CharControllerStateDelegate OnStateChanged;
     public CharControllerIntDelegate OnProjectileAmountUpdated;
+    public CharControllerDelegate OnProjectilePickupPicked; 
+    public CharControllerCharacterAttackTypeDelegate OnAttack;
+    public CharControllerCharacterAttackTypeIntDelegate OnAttackHit; // TODO: linking
     #endregion
 
     #region serialized variables
@@ -239,7 +251,7 @@ public class CharController : MonoBehaviour
     public PlayerInputs Inputs { get => _inputs; }
     public List<Entity> EntitiesHit { get => _entitiesHit; }
     public CharAudio CharAudio { get => _charAudio; }
-    public CharFeedback CharFeedback { get => _charFeedback; }
+    public CharFeedback CharFeedback { get => _charFeedback; }    
 
     public bool Freeze
     {
@@ -383,7 +395,8 @@ public class CharController : MonoBehaviour
 
         gameObject.name = gameObject.name.Replace("(Clone)", " " + charId.ToString());
 
-        FillCarriedProjectilesAmount();
+        // fulfill current amount projectile carried
+        CurrentAmountProjectilesCarried = _data.MaxProjectilesCarried;
 
         NoCarriedProjectileOnThrow?.AddListener(ThrowBadProjectile);
     }
@@ -465,6 +478,8 @@ public class CharController : MonoBehaviour
 
                 if (!isEntityHittedPreviously)
                 {
+                    OnAttackHit?.Invoke(this, CharacterAttackType.Tackle, _data.DamageTackle);
+
                     otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>());
                     _entitiesHit.Add(otherEntity);
 
@@ -534,6 +549,7 @@ public class CharController : MonoBehaviour
             return;
         }
 
+        OnAttack?.Invoke(this, CharacterAttackType.Projectile);
         OnProjectileThrow?.Invoke();
 
         CurrentAmountProjectilesCarried--;
@@ -565,6 +581,7 @@ public class CharController : MonoBehaviour
 
     public void FillCarriedProjectilesAmount()
     {
+        OnProjectilePickupPicked?.Invoke(this);
         CurrentAmountProjectilesCarried = _data.MaxProjectilesCarried;
     }
     #endregion

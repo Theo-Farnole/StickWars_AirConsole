@@ -110,6 +110,8 @@ public class CharStateNormal : AbstractCharState
         _owner.Rigidbody.velocity = new Vector2(_owner.Rigidbody.velocity.x, 0);
         _owner.Rigidbody.AddForce(Vector2.up * _owner.Data.JumpForce);
 
+        _owner.OnJump?.Invoke(_owner);
+
         // on double jump
         if (_jumpCount > 1)
             _owner.OnDoubleJump?.Invoke(_owner);

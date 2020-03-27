@@ -107,6 +107,10 @@ public class Projectile : MonoBehaviour, IPooledObject
         // do the damage
         entity.GetDamage(damage, sender);
 
+        var charController = GetComponent<CharController>();
+        if (charController != null)        
+            charController.OnAttackHit(charController, CharacterAttackType.Projectile, damage);
+        
         EventOnEntityHit?.Invoke(); // non static event
         OnProjectileHitEntity?.Invoke(entity); // static event
 

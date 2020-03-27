@@ -17,6 +17,8 @@ public class CharStateTackle : AbstractCharState
     #region State Transitions Callbacks
     public override void OnStateEnter()
     {
+        _owner?.OnAttack(_owner, CharacterAttackType.Tackle);
+
         _owner.CharAudio.PlaySound(CharAudio.Sound.Tackle);
 
         if (_owner.Raycast.down)

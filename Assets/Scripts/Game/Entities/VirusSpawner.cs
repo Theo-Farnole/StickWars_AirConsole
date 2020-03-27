@@ -67,6 +67,7 @@ public class VirusSpawner : Entity
         // VirusTriggerer has reach last position
         if (_currentDeathCount >= _deathCountToReleaseVirus || _debugInstantKill)
         {
+            killer.OnKillMade?.Invoke(killer, this);
             TriggerVirus(killer);
 
             CameraShake.Instance.Shake(0.3f, 0.15f);
