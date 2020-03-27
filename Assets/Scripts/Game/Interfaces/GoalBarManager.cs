@@ -10,15 +10,20 @@ public class GoalBarManager : MonoBehaviour
 {
     #region Fields
     [Header("LINKING")]
-    [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _coloredSliders;
-    [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _picturesSliders;    
-    [SerializeField, EnumNamedArray(typeof(CharId))] private PlayerWrapper[] _playerPicturesWrapper;
+    [SerializeField] private Canvas _canvasGoalBarManager;
     [SerializeField] private RectTransform _goalSegmentsParent;
+    [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _coloredSliders;
+    [SerializeField, EnumNamedArray(typeof(CharId))] private Slider[] _picturesSliders;
+    [SerializeField, EnumNamedArray(typeof(CharId))] private PlayerWrapper[] _playerPicturesWrapper;
     [Header("CONCURRENCY")]
     [SerializeField] private float _avatarOffsetOnConcurrency = 10;
     [Header("ANIMATION")]
     [SerializeField] private float _barAnimationDuration = 1f;
     [SerializeField] private Ease _barAnimationEase = Ease.OutCubic;
+    #endregion
+
+    #region Properties
+    public Canvas CanvasGoalBarManager { get => _canvasGoalBarManager; }
     #endregion
 
     #region Methods
@@ -40,7 +45,7 @@ public class GoalBarManager : MonoBehaviour
         // reactive bar on spawn
         GameManager.Instance.Gamemode.OnScoreUpdate += OnScoreUpdate;
         GameManager.Instance.OnCharacterSpawn += SetSliderPicture;
-        GameManager.Instance.OnCharacterSpawn += 
+        GameManager.Instance.OnCharacterSpawn +=
             (CharController charController) => UpdateSliders_PicturesPosition();
 
         // if GameManager's Start() is called before this Start(), 

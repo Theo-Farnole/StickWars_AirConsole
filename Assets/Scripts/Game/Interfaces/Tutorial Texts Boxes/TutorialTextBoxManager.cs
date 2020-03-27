@@ -7,6 +7,8 @@ using DG.Tweening;
 public class TutorialTextBoxManager : MonoBehaviour
 {
     #region Fields
+    [SerializeField] private Canvas _textBoxCanvas;
+    [Space]
     [SerializeField] private GameObject _textBoxWrapper;
     [SerializeField] private TextMeshProUGUI _textBox;
     [Space]
@@ -22,6 +24,7 @@ public class TutorialTextBoxManager : MonoBehaviour
 
     #region Properties
     public bool IsMessageDisplaying => !string.IsNullOrEmpty(_currentTextBoxContent);
+    public Canvas TextBoxCanvas { get => _textBoxCanvas; }
     #endregion
 
     #region Methods

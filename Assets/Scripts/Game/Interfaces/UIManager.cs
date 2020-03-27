@@ -12,11 +12,7 @@ public class UIManager : Singleton<UIManager>
     public static readonly float VICTORY_SCREEN_DURATION = 1.8f;
 
     #region Fields
-    [SerializeField] private Canvas _mainCanvas;
-    [Header("Game Panel")]
-    [SerializeField] private GameObject _gamePanel;
-    [Header("Victory Animation")]
-    [SerializeField] private GameObject _victoryPanel;
+    [SerializeField] private GameObject _victoryCanvas;
     [SerializeField] private TextMeshProUGUI _textVictory;
     [SerializeField] private Image _crown;
     [SerializeField] private GameObject _winnerWrapper;
@@ -26,13 +22,14 @@ public class UIManager : Singleton<UIManager>
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        _victoryPanel.SetActive(false);
+        _victoryCanvas.SetActive(false);
     }
     #endregion
 
     public void LaunchVictoryAnimation(CharId winnerCharId)
     {
-        _gamePanel.SetActive(false);
+        DeactivateGamePanel();
+
         CameraEffectController.Instance.EnableBlur(true);
 
         int winnerDeviceId = CharIdAllocator.GetDeviceId(winnerCharId);
@@ -41,12 +38,23 @@ public class UIManager : Singleton<UIManager>
 
         ProfilePictureManager.Instance.SetProfilePicture(winnerDeviceId, _winnerWrapper.GetComponentInChildren<Image>());
 
-        _victoryPanel.SetActive(true);
+        _victoryCanvas.SetActive(true);
         this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
         {
             AirConsole.instance.ShowAd();
             AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("_SC_menu");
         });
+    }
+
+    void DeactivateGamePanel()
+    {
+        // TODO: deactive tuto textb o
+        var tutorialTextBoxManager = FindObjectOfType<TutorialTextBoxManager>();
+        tutorialTextBoxManager.TextBoxCanvas.gameObject.SetActive(false);
+
+        // TODO: deactie goal progress bar
+        var goalBarManager = FindObjectOfType<GoalBarManager>();
+        goalBarManager.CanvasGoalBarManager.gameObject.SetActive(false);
     }
     #endregion
 }
