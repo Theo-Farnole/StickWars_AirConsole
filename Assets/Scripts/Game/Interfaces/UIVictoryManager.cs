@@ -8,7 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIManager : Singleton<UIManager>
+public class UIVictoryManager : Singleton<UIVictoryManager>
 {
     public static readonly float VICTORY_SCREEN_DURATION = 1.8f;
 

@@ -181,7 +181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1697192351376426082}
   m_Layer: 0
-  m_Name: P_System_UI_Main
+  m_Name: P_System_UI_Victory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -31,6 +31,6 @@ public class GamemodeDeathMatch : AbstractGamemode
 
     protected override void Victory(CharId winnerCharId)
     {
-        UIManager.Instance.LaunchVictoryAnimation(winnerCharId);
+        UIVictoryManager.Instance.LaunchVictoryAnimation(winnerCharId);
     }
 }

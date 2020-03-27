@@ -87,7 +87,7 @@ public class GameManager : Singleton<GameManager>
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            UIManager.Instance.LaunchVictoryAnimation(CharId.Red);
+            UIVictoryManager.Instance.LaunchVictoryAnimation(CharId.Red);
         }
     }
 #endif
