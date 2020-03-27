@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 7005950882753661951}
   - component: {fileID: 4226798432035795738}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: UI Victory Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
