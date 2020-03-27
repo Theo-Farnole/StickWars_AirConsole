@@ -52,6 +52,12 @@ public class ProfilePictureManager : Singleton<ProfilePictureManager>
         }
     }
 
+    public void SetProfilePicture(CharId charId, Image destination)
+    {
+        int deviceId = CharIdAllocator.GetDeviceId(charId);
+        SetProfilePicture(deviceId, destination);
+    }
+
     IEnumerator LoadImage(int deviceId, Image destination = null)
     {
         if (_profilesPictures.ContainsKey(deviceId) == true)

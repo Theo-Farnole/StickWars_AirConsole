@@ -87,24 +87,6 @@ public abstract class AbstractGamemode
         }
     }
 
-    public int GetPlayersCountAtScore(int score)
-    {
-        return _charactersValue.Select(x => x.Value == score).Count();
-    }
-
-    public int GetPositionInPlayersAtScore(CharId charId)
-    {
-        int charIdScore = _charactersValue[charId];
-
-        var array = _charactersValue
-                        .Where(x => x.Value == charIdScore)
-                        .OrderByDescending(x => x.Key)
-                        .Select(x => x.Key)
-                        .ToArray();
-
-        return Array.FindIndex(array, x => x == charId);
-    }
-
     public bool CheckForVictory()
     {
         Assert.AreNotEqual(valueForVictory, -1, "Value for victory has not be set!");
@@ -165,5 +147,38 @@ public abstract class AbstractGamemode
             OnCharacterKill?.Invoke((CharId)killerCharID);
         }
     }
+
+    #region Getter
+    public int GetPlayersCountAtScore(int score)
+    {
+        return _charactersValue.Select(x => x.Value == score).Count();
+    }
+
+    public int GetPositionInPlayersAtScore(CharId charId)
+    {
+        int charIdScore = _charactersValue[charId];
+
+        var array = _charactersValue
+                        .Where(x => x.Value == charIdScore)
+                        .OrderByDescending(x => x.Key)
+                        .Select(x => x.Key)
+                        .ToArray();
+
+        return Array.FindIndex(array, x => x == charId);
+    }
+
+    public int GetScore(CharId charId)
+    {
+        return _charactersValue[charId];
+    }
+
+    public CharId[] GetCharIdsOrderByScore()
+    {
+        CharId[] charIds = (CharId[])Enum.GetValues(typeof(CharId));
+
+        CharId[] charIdsOrderByScore = charIds.OrderBy(x => GetScore(x)).ToArray();
+        return charIdsOrderByScore;
+    }
+    #endregion
     #endregion
 }

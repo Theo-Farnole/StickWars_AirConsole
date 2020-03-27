@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDream.AirConsole;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,10 +35,21 @@ public static class CharIdAllocator
             return -1;
         }
     }
+
+    public static string GetNickname(CharId charId)
+    {
+        int device_id = GetDeviceId(charId);
+        return AirConsole.instance.GetNickname(device_id);
+    }
     
     public static bool DoDeviceIdExist(int deviceId)
     {
         return (GetCharId(deviceId) != null);
+    }
+
+    public static bool IsCharIdConnected(CharId charId)
+    {
+        return _dictionary.ContainsKey(charId);
     }
 
     public static CharId? GetCharId(int deviceId)
@@ -49,12 +61,7 @@ public static class CharIdAllocator
         return item.Key;
     }
 
-    public static void DeallocateDeviceId(int deviceId)
-    {
-        var item = _dictionary.First(x => x.Value == deviceId);
-        _dictionary.Remove(item.Key);
-    }
-
+    #region Allocation Methods
     public static CharId? AllocateDeviceId(int allocatorDeviceId)
     {
         if (_dictionary.ContainsValue(allocatorDeviceId))
@@ -88,5 +95,12 @@ public static class CharIdAllocator
         _dictionary[charId] = allocatorDeviceId;
         return charId;
     }
+
+    public static void DeallocateDeviceId(int deviceId)
+    {
+        var item = _dictionary.First(x => x.Value == deviceId);
+        _dictionary.Remove(item.Key);
+    }
+    #endregion
     #endregion
 }
