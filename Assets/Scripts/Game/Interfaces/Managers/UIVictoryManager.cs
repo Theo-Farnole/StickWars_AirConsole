@@ -10,6 +10,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIVictoryManager : Singleton<UIVictoryManager>
 {
@@ -88,6 +89,9 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
         var characterStatistics = FindObjectOfType<StatisticsManager>().CharacterStatistics;
         Dictionary<CharId, string> titles = GetSpecialTitle(winnerCharId, characterStatistics);
 
+        const float animationDuration = 0.8f;
+        const float delayBetweenAnimation = 0.2f;
+
         for (int i = 0; i < _specialPlayerWrappers.Length; i++)
         {
             var wrapper = _specialPlayerWrappers[i];
@@ -101,8 +105,22 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
                 continue;
             }
 
+            wrapper.gameObject.SetActive(false);
+
+            // content
             wrapper.UpdateCharIdContent(charId);
             wrapper.SpecialTitle.text = titles[charId];
+
+            // animation
+            float animationDelay = i * delayBetweenAnimation + i * animationDuration;
+
+            this.ExecuteAfterTime(animationDelay, () => wrapper.gameObject.SetActive(true));
+
+            wrapper.transform.localScale = Vector3.one * 1.4f;
+            wrapper.transform.DOScale(Vector3.one, animationDuration)
+                .SetEase(Ease.InQuint)
+                .SetDelay(animationDelay)
+                .OnComplete(() => CameraShake.Instance.Shake(0.1f, 0.05f));
         }
     }
 
