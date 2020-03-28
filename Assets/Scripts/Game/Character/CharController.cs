@@ -624,6 +624,23 @@ public class CharController : MonoBehaviour
     }
     #endregion
 
+    #region Aspect methods
+    /// <summary>
+    /// Set animator's field to display jump animation & stop particle system.
+    /// </summary>
+    public void ForceJumpSprite()
+    {
+        Animator.SetBool(CharController.HASH_ANIMATOR_JUMP, true);
+        Animator.SetBool(CharController.HASH_ANIMATOR_WALLSLIDING, false);
+        Animator.SetBool(CharController.HASH_ANIMATOR_RUNNING, false);
+        Animator.SetBool(CharController.HASH_ANIMATOR_TACKLE, false);
+        Animator.SetBool(CharController.HASH_ANIMATOR_ATTACK, false);
+
+        CharFeedback.PlayOrientedParticle(false, CharFeedback.OrientateParticle.SlidingWall);
+        CharFeedback.PlayOrientedParticle(false, CharFeedback.OrientateParticle.Tackle);
+    }
+    #endregion
+
     #region Inputs Management
     void HandleInput(int deviceId, JToken data)
     {

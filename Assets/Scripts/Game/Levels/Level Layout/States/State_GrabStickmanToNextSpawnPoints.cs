@@ -19,7 +19,7 @@ public class State_GrabStickmanToNextSpawnPoints : AbstractState_LevelLayoutMana
     }
 
     public override void OnStateExit()
-    {        
+    {
         RegisterToCursorsEvent(false);
     }
     #endregion
@@ -39,16 +39,15 @@ public class State_GrabStickmanToNextSpawnPoints : AbstractState_LevelLayoutMana
             // freeze character input
             character.Freeze = true;
             character.enabled = false;
-            
+
 
             Queue<AbstractCursorCommand> cursorCommands = new Queue<AbstractCursorCommand>();
 
             // cursor commands
             Vector3 spawnPosition = LevelDataLocator.GetLevelData().GetDefaultSpawnPoint(charId);
-            void playJumpAnim() => character.Animator.SetBool(CharController.HASH_ANIMATOR_JUMP, true);
 
             var moveToStickman = new MoveToCommand(character.transform);
-            var drag = new StartDragCommand(character.transform, playJumpAnim);
+            var drag = new StartDragCommand(character.transform, character.ForceJumpSprite);
             var moveToSpawnPoint = new MoveToCommand(spawnPosition);
 
             cursorCommands.Enqueue(moveToStickman);
