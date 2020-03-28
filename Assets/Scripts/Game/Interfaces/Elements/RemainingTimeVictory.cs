@@ -15,7 +15,6 @@ public class RemainingTimeVictory : MonoBehaviour
 
     public void StartTimer(float timerDuration)
     {
-        Debug.Log("osti d'marde");
         _timer.DOFillAmount(1, timerDuration);
     }
 }
