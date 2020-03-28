@@ -17,7 +17,7 @@ public class CrownPositionManager : MonoBehaviour
     #endregion
 
     #region Properties
-    private bool IsAtOriginalPosition { get => !_isAtCopyPosition; }
+    private bool IsAtOriginalPosition { get => !_isAtCopyPosition; set => _isAtCopyPosition = !value; }
     #endregion
 
     #region Methods
@@ -77,6 +77,8 @@ public class CrownPositionManager : MonoBehaviour
         if (IsAtOriginalPosition)
             return;
 
+        IsAtOriginalPosition = true;
+
         SetNewPosition(_originalLocalPosition);
     }
 
@@ -95,6 +97,8 @@ public class CrownPositionManager : MonoBehaviour
 
     void SetNewPosition(Vector3 position)
     {
+        Debug.LogFormat("Set new position {0} to {1}", transform.localPosition, position);
+
         transform.localPosition = position;
         _fancyObject?.ResetStartingPosition(position);
     }
