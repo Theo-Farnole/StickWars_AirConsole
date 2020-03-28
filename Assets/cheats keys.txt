@@ -1,0 +1,20 @@
+=== IN MENU
+Start game: A
+
+=== SPAWNING CHARACTERS
+Spawn red: Alpha1
+Spawn blue: Alpha2
+Spawn green: Alpha3
+Spawn Purple: Alpha4
+
+=== MOVE CHARACTERS
+
+Red: ZQSD + E
+Blue: arrow key + numpad0
+Green: OKLM + p
+Purple: (numpad)4568 +9
+
+=== MISC
+
+Load next level layout: R
+Display statistics: A
