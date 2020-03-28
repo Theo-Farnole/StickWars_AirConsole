@@ -1,38 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class LevelDataLocator
 {
-    private static LevelData[] _levelData = new LevelData[0];
-
-    public static void RegisterLevelData(LevelData levelData)
-    {
-        int index = levelData.ActiveOnLayout;
-
-        ResizeIfNeeded(index);
-
-        if (_levelData[index] != null)
-        {
-            Debug.LogErrorFormat("On register level data, element at {0} is not empty. Abort {1} registering.", index, levelData.name);
-            return;
-        }
-
-        _levelData[index] = levelData;
-    }
+    private static LevelData[] _levelData = null;
 
     public static LevelData GetLevelData()
     {
+        if (_levelData == null)
+        {
+            InitializeLevelData();
+        }
+
         int index = LevelLayoutManager.LevelLayoutState;
         return _levelData[index];
     }
 
-    static void ResizeIfNeeded(int newSize)
+    static void InitializeLevelData()
     {
-        if (newSize >= _levelData.Length)
-        {
-            Array.Resize(ref _levelData, newSize + 1);
-        }
+        var levelDatas = GameObject.FindObjectsOfType<LevelData>();
+        _levelData = levelDatas.OrderBy(x => x.ActiveOnLayout).ToArray();
     }
 }

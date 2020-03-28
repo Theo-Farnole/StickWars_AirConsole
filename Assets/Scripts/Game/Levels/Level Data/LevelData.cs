@@ -25,11 +25,6 @@ public class LevelData : MonoBehaviour
 
     #region Methods
     #region MonoBehaviour Callbacks
-    void Start()
-    {
-        LevelDataLocator.RegisterLevelData(this);
-    }
-
     void OnDrawGizmos()
     {
         if (!GizmosEnabled)
