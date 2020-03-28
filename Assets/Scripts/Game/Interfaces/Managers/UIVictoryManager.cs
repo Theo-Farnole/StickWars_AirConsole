@@ -12,14 +12,19 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 
+[System.Serializable] public class UnityEventFloat : UnityEvent<float> { }
+
 public class UIVictoryManager : Singleton<UIVictoryManager>
 {
     public static readonly float VICTORY_SCREEN_DURATION = 4.5f;
+    public static readonly float ANIMATION_DURATION = 0.8f;
+    public static readonly float DELAY_BETWEEN_ANIMATION = 0.2f;
 
     #region Fields
     [Header("COMPONENTS LINKING")]
     [SerializeField] private GameObject _victoryCanvas;
     [SerializeField] private TextMeshProUGUI _textVictory;
+    [SerializeField] private RemainingTimeVictory _timerRemainingTime;
     [Space]
     [SerializeField] private TextMeshProUGUI _winnerNickname;
     [SerializeField] private Image _winnerProfilePicture;
@@ -28,7 +33,20 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
     [SerializeField] private UI_SpecialPlayerWrapper[] _specialPlayerWrappers;
 
     [Header("EVENTS")]
-    public UnityEvent OnLaunchVictoryAnimation;
+    public UnityEventFloat OnLaunchVictoryAnimation;
+    #endregion
+
+    #region Properties
+    public float SpecialTitleAnimationDuration
+    {
+        get
+        {
+            int activePlayerCount = GameManager.Instance.InstantiatedCharactersCount - 1;
+            float sumAnimationDuration = activePlayerCount * (DELAY_BETWEEN_ANIMATION + ANIMATION_DURATION);
+
+            return sumAnimationDuration;
+        }
+    }
     #endregion
 
     #region Methods
@@ -41,16 +59,30 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
 
     public void LaunchVictoryAnimation(CharId winnerCharId)
     {
+        // update canvas activation
         DeactivateGamePanel();
         _victoryCanvas.SetActive(true);
 
-        CameraEffectController.Instance.EnableBlur(true);
-        SetWinnerContent(winnerCharId);
+        OnLaunchVictoryAnimation?.Invoke(VICTORY_SCREEN_DURATION);
 
+        CameraEffectController.Instance.EnableBlur(true);
+
+        // update content
+        SetWinnerContent(winnerCharId);
         SetSpecialPlayersContent(winnerCharId);
 
-        this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
-        {
+        // setup delayed tasks
+        float cachedAnimationDuration = SpecialTitleAnimationDuration;
+
+        // start timer
+        this.ExecuteAfterTime(cachedAnimationDuration, () =>
+        {            
+            _timerRemainingTime.StartTimer(VICTORY_SCREEN_DURATION);
+        });
+
+        // play ad
+        this.ExecuteAfterTime(cachedAnimationDuration + VICTORY_SCREEN_DURATION, () =>
+        {            
             AirConsole.instance.ShowAd();
             AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("SC_Menu_Main");
         });
@@ -89,9 +121,6 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
         var characterStatistics = FindObjectOfType<StatisticsManager>().CharacterStatistics;
         Dictionary<CharId, string> titles = GetSpecialTitle(winnerCharId, characterStatistics);
 
-        const float animationDuration = 0.8f;
-        const float delayBetweenAnimation = 0.2f;
-
         for (int i = 0; i < _specialPlayerWrappers.Length; i++)
         {
             var wrapper = _specialPlayerWrappers[i];
@@ -112,12 +141,12 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
             wrapper.SpecialTitle.text = titles[charId];
 
             // animation
-            float animationDelay = i * delayBetweenAnimation + i * animationDuration;
+            float animationDelay = i * DELAY_BETWEEN_ANIMATION + i * ANIMATION_DURATION;
 
             this.ExecuteAfterTime(animationDelay, () => wrapper.gameObject.SetActive(true));
 
             wrapper.transform.localScale = Vector3.one * 1.4f;
-            wrapper.transform.DOScale(Vector3.one, animationDuration)
+            wrapper.transform.DOScale(Vector3.one, ANIMATION_DURATION)
                 .SetEase(Ease.InQuint)
                 .SetDelay(animationDelay)
                 .OnComplete(() => CameraShake.Instance.Shake(0.1f, 0.05f));
