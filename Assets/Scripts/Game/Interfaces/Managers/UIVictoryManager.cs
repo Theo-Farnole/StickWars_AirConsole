@@ -52,7 +52,7 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
         this.ExecuteAfterTime(VICTORY_SCREEN_DURATION, () =>
         {
             AirConsole.instance.ShowAd();
-            AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("_SC_menu");
+            AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("SC_Menu_Main");
         });
     }
 

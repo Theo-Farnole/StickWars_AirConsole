@@ -175,7 +175,7 @@ public class MenuManager : Singleton<MenuManager>
         AirConsole.instance.Broadcast(token);
 
         // then, finally load the scene
-        SceneManager.LoadScene("SC_Windows");
+        SceneManager.LoadScene("SC_Level_1");
     }
     #endregion
 }
