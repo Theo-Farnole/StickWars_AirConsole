@@ -73,8 +73,8 @@ public class CharacterEntity : Entity
             }
         }
 
-        GameManager.Instance.Gamemode.Kill(killerId);
         _charController.Respawn();
+        GameManager.Instance.Gamemode.Kill(killerId);
     }
 
     public void ResetHP()
