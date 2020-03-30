@@ -15,10 +15,10 @@ public class VirusSpawner : Entity
     [SerializeField] private int _deathCountToReleaseVirus = 3;
     [Header("Interface")]
     [SerializeField] private GameObject _sliderCanvas;
-    [SerializeField] private Slider[] _healthSliders = new Slider[3];    
+    [SerializeField] private Slider[] _healthSliders = new Slider[3];
     [Header("Feedbacks")]
-    [SerializeField] private AudioSource _audioDeath;    
-    [SerializeField] private float _glitchEffectDuration = 1f;    
+    [SerializeField] private AudioSource _audioDeath;
+    [SerializeField] private float _glitchEffectDuration = 1f;
     [Header("Debug")]
     [SerializeField] private bool _debugAttackEveryCharacter = false;
     [SerializeField] private bool _debugInstantKill = false;
@@ -26,9 +26,11 @@ public class VirusSpawner : Entity
     private bool _isApplicationQuitting = false;
 
     private int _currentDeathCount = 0;
+    private float _instanciatedTime;
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
 #if !UNITY_EDITOR
     protected override void Awake()
     {
@@ -49,7 +51,24 @@ public class VirusSpawner : Entity
 
         SetCurrentHealthBar();
         _sliderCanvas.SetActive(false);
+
+        _instanciatedTime = Time.time;
     }
+
+    void OnDestroy()
+    {
+        if (!_isApplicationQuitting)
+        {
+            _audioDeath.transform.parent = null;
+            _audioDeath.Play();
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        _isApplicationQuitting = true;
+    }
+    #endregion
 
     public override void GetDamage(int damage, Entity attacker)
     {
@@ -75,6 +94,12 @@ public class VirusSpawner : Entity
 
             CameraEffectController.Instance.ExecuteAfterTime(_glitchEffectDuration, ()
                 => CameraEffectController.Instance.EnableGlitch(false));
+
+            float lifetime = Time.time - _instanciatedTime;
+            ExtendedAnalytics.SendEvent("Virus Spawner Killed", new Dictionary<string, object>
+            {
+                { "Lifetime", lifetime}
+            });
         }
         else
         {
@@ -118,20 +143,6 @@ public class VirusSpawner : Entity
         {
             Debug.LogWarning("No Health Slider for " + _currentDeathCount + "th death of " + transform.name);
         }
-    }
-
-    void OnDestroy()
-    {
-        if (!_isApplicationQuitting)
-        {
-            _audioDeath.transform.parent = null;
-            _audioDeath.Play();
-        }
-    }
-
-    void OnApplicationQuit()
-    {
-        _isApplicationQuitting = true;
     }
     #endregion
 }
