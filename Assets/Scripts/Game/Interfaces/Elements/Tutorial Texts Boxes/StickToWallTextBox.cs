@@ -54,7 +54,10 @@ public class StickToWallTextBox : AbstractTextBoxTrigger
     #region Events Handlers
     void OnCharacterSpawn(CharController charController)
     {
-        _countSwitchToStickedForm.Add(charController, 0);
+        if (!_countSwitchToStickedForm.ContainsKey(charController))
+        {
+            _countSwitchToStickedForm.Add(charController, 0);
+        }
 
         charController.OnStateChanged += OnStateChanged;
     }
