@@ -637,10 +637,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: bec8ff20-ce9d-4c44-a6fc-15f63069a62b
+  cloudProjectId: 92f7836f-c698-4497-bc2e-ca34014d9d08
   framebufferDepthMemorylessMode: 0
-  projectName: StickWars_Phoenix
-  organizationId: lortedoo
+  projectName: StickWars_AirConsole
+  organizationId: theo-farnole-gmail-com
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
