@@ -60,7 +60,7 @@ public class EventController : Singleton<EventController>
         // calculating sum kills goal
         int killsGoalPerPlayer = GameManager.Instance.Gamemode.ValueForVictory;
         int playersCount = GameManager.Instance.InstantiatedCharactersCount;
-        int sumKillsGoal = killsGoalPerPlayer * playersCount; 
+        int sumKillsGoal = killsGoalPerPlayer * playersCount;
 
         // calcuting multiple to spawn virus spawner
         int multiple = (sumKillsGoal - 2 * playersCount) / _data.MaxSpawnVirusSpawner;
@@ -68,7 +68,7 @@ public class EventController : Singleton<EventController>
         // check if kill number is a multiple of multiple
         int killNumber = GameManager.Instance.Gamemode.SumCharactersValue;
         bool shouldSpawnVirus = (killNumber % multiple == 0);
-          
+
         // spawn virus spawner if there isn't VirusController in the map
         if (shouldSpawnVirus)
         {
@@ -84,7 +84,12 @@ public class EventController : Singleton<EventController>
         // prevent spawning another virus spawner
         if (_currentVirusSpawner != null)
             return;
-        
+
+        ExtendedAnalytics.SendEvent("Virus Spawner Instanciated", new Dictionary<string, object>()
+        {
+            { "Kill count", GameManager.Instance.Gamemode.KillCount }            
+        });
+
         // prevent spawning if viruses are on the map
         if (FindObjectsOfType<VirusController>().Length != 0)
             return;
