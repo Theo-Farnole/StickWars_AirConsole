@@ -20,7 +20,7 @@ public delegate void CharControllerCharacterAttackTypeIntDelegate(CharController
 public delegate void CharControllerStateDelegate(CharController charController, AbstractCharState state);
 public delegate void CharControllerIntDelegate(CharController charController, int integer);
 
-public class CharController : MonoBehaviour
+public partial class CharController : MonoBehaviour
 {
     #region Classes
     [Serializable]
@@ -545,9 +545,12 @@ public class CharController : MonoBehaviour
         // prevent throw projectile if not amount
         if (!HasEnoughtCarriedProjectileToThrow)
         {
+            Analytics_TriggerProjectileThrow(false);
             NoCarriedProjectileOnThrow?.Invoke();
             return;
         }
+
+        Analytics_TriggerProjectileThrow(true);
 
         OnAttack?.Invoke(this, CharacterAttackType.Projectile);
         OnProjectileThrow?.Invoke();
