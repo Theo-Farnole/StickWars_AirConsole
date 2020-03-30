@@ -49,8 +49,6 @@ public class PartyEndManager : MonoBehaviour
         float duration = (float)(System.DateTime.Now - _startTime).TotalSeconds;
         int playersCount = GameManager.Instance.InstantiatedCharactersCount;
 
-        Debug.LogFormat("duration {0} & playersCount {1}", duration, playersCount);
-
         ExtendedAnalytics.SendEvent("Party Ended", new Dictionary<string, object>()
         {
             { "Duration",  duration },
