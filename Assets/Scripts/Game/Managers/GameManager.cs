@@ -49,6 +49,8 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
+        SessionTime.InitNewSession();
+
         // AirConsole callbacks
         AirConsole.instance.onConnect += OnConnect;
 
