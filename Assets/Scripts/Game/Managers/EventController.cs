@@ -87,7 +87,7 @@ public class EventController : Singleton<EventController>
 
         ExtendedAnalytics.SendEvent("Virus Spawner Instanciated", new Dictionary<string, object>()
         {
-            { "Kill count", GameManager.Instance.Gamemode.KillCount }            
+            { "Kill count", GameManager.Instance.Gamemode.KillCount }
         });
 
         // prevent spawning if viruses are on the map

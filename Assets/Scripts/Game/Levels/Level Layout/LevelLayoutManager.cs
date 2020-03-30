@@ -107,7 +107,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
 
         ExtendedAnalytics.SendEvent("Level Layout Triggered", new Dictionary<string, object>()
         {
-            { "Time In Session", SessionTime.GetCurrentTimeInSession() }
+            { "Time In Session", Time.timeSinceLevelLoad }
         });
 
         CurrentState = new State_GrabStickmanToNextSpawnPoints(this);

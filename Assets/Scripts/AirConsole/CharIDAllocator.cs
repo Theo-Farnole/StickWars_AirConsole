@@ -12,7 +12,7 @@ public static class CharIdAllocator
     #endregion
 
     #region Properties
-    public static int AllocatedCharId
+    public static int AllocatedCharIdCount
     {
         get
         {

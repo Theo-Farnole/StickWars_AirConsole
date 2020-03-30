@@ -146,7 +146,7 @@ public class MenuManager : Singleton<MenuManager>
     #region Handle Input
     void APressed()
     {
-        if (CharIdAllocator.AllocatedCharId < 2)
+        if (CharIdAllocator.AllocatedCharIdCount < 2)
         {
             UIMenuManager.Instance.DisplayNoEnoughPlayersText(true);
         }

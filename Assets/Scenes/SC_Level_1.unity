@@ -1703,6 +1703,11 @@ PrefabInstance:
       propertyPath: _positionVirusSpawner
       value: 
       objectReference: {fileID: 2009684786}
+    - target: {fileID: 2074784697256711620, guid: 25bd1b13870e64b409e94aeb923bd731,
+        type: 3}
+      propertyPath: m_Name
+      value: Party End Manager
+      objectReference: {fileID: 0}
     - target: {fileID: 3126979609482512077, guid: 25bd1b13870e64b409e94aeb923bd731,
         type: 3}
       propertyPath: m_IsActive

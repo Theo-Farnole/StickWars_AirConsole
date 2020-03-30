@@ -23,12 +23,13 @@ public class GameManager : Singleton<GameManager>
     private AbstractGamemode _gamemode;
 
     private Dictionary<CharId, CharController> _characters = new Dictionary<CharId, CharController>();
+    private int _instantiatedCharactersCount = 0;
     #endregion
 
     #region Properties
     public AbstractGamemode Gamemode { get => _gamemode; }
     public Dictionary<CharId, CharController> Characters { get => _characters; }
-    public int InstantiatedCharactersCount { get => _characters.Where(x => x.Value != null).Count(); }
+    public int InstantiatedCharactersCount { get => _instantiatedCharactersCount; }
     #endregion
 
     #region Methods
@@ -48,9 +49,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     void Start()
-    {
-        SessionTime.InitNewSession();
-
+    {        
         // AirConsole callbacks
         AirConsole.instance.onConnect += OnConnect;
 
@@ -83,6 +82,7 @@ public class GameManager : Singleton<GameManager>
             player.charId = c_charId;
 
             _characters[c_charId] = player;
+            _instantiatedCharactersCount++;
 
             OnCharacterSpawn?.Invoke(player);
         }
@@ -180,6 +180,7 @@ public class GameManager : Singleton<GameManager>
         player.charId = charId;
 
         _characters[charId] = player;
+        _instantiatedCharactersCount++;
 
         // update view
         var token = new
