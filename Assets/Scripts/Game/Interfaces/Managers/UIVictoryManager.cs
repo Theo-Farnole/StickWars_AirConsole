@@ -32,6 +32,9 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
     [Space]
     [SerializeField] private UI_SpecialPlayerWrapper[] _specialPlayerWrappers;
 
+    [Header("DEBUG")]
+    [SerializeField] private bool _dontShowAdsInEditor = true;
+
     [Header("EVENTS")]
     public UnityEventFloat OnLaunchVictoryAnimation;
     #endregion
@@ -81,11 +84,24 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
         });
 
         // play ad
-        this.ExecuteAfterTime(cachedAnimationDuration + VICTORY_SCREEN_DURATION, () =>
-        {            
-            AirConsole.instance.ShowAd();
-            AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("SC_Menu_Main");
+        (this).ExecuteAfterTime(cachedAnimationDuration + VICTORY_SCREEN_DURATION, () =>
+        {
+            ShowAdThenShowScene();
         });
+    }
+
+    private void ShowAdThenShowScene()
+    {
+#if UNITY_EDITOR
+        if (_dontShowAdsInEditor)
+        {
+            SceneManager.LoadScene("SC_Menu_Main");
+            return;
+        }
+#endif
+
+        AirConsole.instance.ShowAd();
+        AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("SC_Menu_Main");
     }
 
     void DeactivateGamePanel()
@@ -153,7 +169,7 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
         }
     }
 
-    #region Special title attributions
+#region Special title attributions
     Dictionary<CharId, string> GetSpecialTitle(CharId winnerId, Dictionary<CharId, CharacterStatistics> characterStatistics)
     {
         Dictionary<CharId, string> specialTitles = new Dictionary<CharId, string>();
@@ -198,6 +214,6 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
             specialTitles.Add(charId, title);
         }
     }
-    #endregion
-    #endregion
+#endregion
+#endregion
 }
