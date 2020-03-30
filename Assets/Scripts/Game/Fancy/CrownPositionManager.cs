@@ -97,8 +97,6 @@ public class CrownPositionManager : MonoBehaviour
 
     void SetNewPosition(Vector3 position)
     {
-        Debug.LogFormat("Set new position {0} to {1}", transform.localPosition, position);
-
         transform.localPosition = position;
         _fancyObject?.ResetStartingPosition(position);
     }
