@@ -1698,48 +1698,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 779570745710546895, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _positionVirusSpawner
-      value: 
-      objectReference: {fileID: 2009684786}
-    - target: {fileID: 2074784697256711620, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: m_Name
-      value: Party End Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126979609482512077, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3520997393711508338, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _pools.Array.data[1].prefab
-      value: 
-      objectReference: {fileID: 8925926180478064266, guid: dfd7d801ec43e9c4d95782aae59a5751,
-        type: 3}
     - target: {fileID: 4140513709645708289, guid: 25bd1b13870e64b409e94aeb923bd731,
         type: 3}
       propertyPath: m_Name
       value: P_System_Game
       objectReference: {fileID: 0}
-    - target: {fileID: 4140513709645708289, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4280474210882689148, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _enableHotConnection
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4280474210882689148, guid: 25bd1b13870e64b409e94aeb923bd731,
-        type: 3}
-      propertyPath: _allGamemodesData
-      value: 
-      objectReference: {fileID: 11400000, guid: f9f57e1bf73948d4ab14f152d6c519ea,
-        type: 2}
     - target: {fileID: 4389589251289468834, guid: 25bd1b13870e64b409e94aeb923bd731,
         type: 3}
       propertyPath: m_LocalPosition.x
