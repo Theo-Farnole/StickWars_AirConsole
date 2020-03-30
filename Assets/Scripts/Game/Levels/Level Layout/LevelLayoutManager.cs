@@ -105,6 +105,11 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     {
         _levelLayoutState++;
 
+        ExtendedAnalytics.SendEvent("Level Layout Triggered", new Dictionary<string, object>()
+        {
+            { "Time In Session", SessionTime.GetCurrentTimeInSession() }
+        });
+
         CurrentState = new State_GrabStickmanToNextSpawnPoints(this);
 
         _isLevelLayoutAnimationRunning = true;
