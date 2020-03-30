@@ -57,7 +57,6 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
             _currentState?.OnStateExit();
 
             _currentState = value;
-            Debug.LogFormat("New state is {0}", _currentState);
 
             _currentState?.OnStateEnter();
         }

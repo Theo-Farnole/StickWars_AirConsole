@@ -162,7 +162,6 @@ public class CursorManager : MonoBehaviour
     {
         if (_commands == null || _commands.Count == 0)
         {
-            Debug.LogFormat("{0} OnCommandsQueueEmpty", name);
             OnCommandsQueueEmpty?.Invoke(this);
             return;
         }
@@ -178,7 +177,7 @@ public class CursorManager : MonoBehaviour
 
     public void StartCommandsSequence(Queue<AbstractCursorCommand> cursorCommands)
     {
-        Debug.LogFormat("{0} starts a sequence of {1} commands.", name, cursorCommands.Count);
+        //Debug.LogFormat("<color=yellow>LevelLayout</color> # {0} starts a sequence of {1} commands.", name, cursorCommands.Count);
 
         _commands = cursorCommands;
         ExecuteNextCommand();
