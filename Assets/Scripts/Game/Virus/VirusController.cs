@@ -135,7 +135,7 @@ public class VirusController : MonoBehaviour
         {
             _hitCharacterEntityByTime[characterEntity] = Time.time + _data.DelayBetweenAttackInflict;
 
-            characterEntity.GetDamage(_data.AttackDamage, _entity);
+            characterEntity.GetDamage(_data.AttackDamage, _entity, AttackType.VirusHit);
             _audioDoDamage.Stop();
             _audioDoDamage.Play();
         }

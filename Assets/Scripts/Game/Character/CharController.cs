@@ -1,4 +1,4 @@
-using NDream.AirConsole;
+﻿using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -418,7 +418,7 @@ public partial class CharController : MonoBehaviour
         if (transform.position.y <= FORCEKILL_MIN_Y)
         {
             Debug.LogErrorFormat("{0} is below {1} on Y. Automaticaly kiling {0}", name, FORCEKILL_MIN_Y);
-            GetComponent<CharacterEntity>().Kill(null);
+            GetComponent<CharacterEntity>().Kill(null, AttackType.AutoKill_BelowMap);
         }
     }
 
@@ -474,7 +474,7 @@ public partial class CharController : MonoBehaviour
                 {
                     OnAttackHit?.Invoke(this, CharacterAttackType.Tackle, _data.DamageTackle);
 
-                    otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>());
+                    otherEntity.GetDamage(_data.DamageTackle, GetComponent<Entity>(), AttackType.Tackle);
                     _entitiesHit.Add(otherEntity);
 
                     _charAudio.PlayHitTackle();

@@ -9,6 +9,8 @@ public class Deathzone : MonoBehaviour
 
     [SerializeField] private GameObject _prefabOnKillFX;
 
+    #region Methods
+    #region MonoBehaviour Callbacks
     void Start()
     {
 #if UNITY_EDITOR
@@ -29,10 +31,12 @@ public class Deathzone : MonoBehaviour
         if (hitEntity)
         {
             PlayKillFX(hitEntity.transform);
-            hitEntity.Kill(null);
+            hitEntity.Kill(null, AttackType.Deathzone);
         }
     }
+    #endregion
 
+    #region FX Methods
     private void PlayKillFX(Transform hitTransform)
     {
         // find FX play position
@@ -71,11 +75,10 @@ public class Deathzone : MonoBehaviour
 
                 bool isFXRoot = fx.gameObject.GetInstanceID() == particleSystem.gameObject.GetInstanceID();
                 fxMain.startColor = isFXRoot ? minColor : maxColor;
-
-                Debug.LogFormat("Set color {1} to FX {0} ", fx.name, isFXRoot ? minColor : maxColor);
             }
         }
     }
+    #endregion
 
     #region Debugging
     void CheckIfColliderIsSettedCorrectly()
@@ -103,5 +106,6 @@ public class Deathzone : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer(LAYER_NAME_IGNORECOLLISION);
         }
     }
+    #endregion
     #endregion
 }

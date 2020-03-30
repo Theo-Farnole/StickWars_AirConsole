@@ -70,9 +70,9 @@ public class VirusSpawner : Entity
     }
     #endregion
 
-    public override void GetDamage(int damage, Entity attacker)
+    public override void GetDamage(int damage, Entity attacker, AttackType attackType)
     {
-        base.GetDamage(damage, attacker);
+        base.GetDamage(damage, attacker, attackType);
 
         bool shouldHideCanvas = (_currentDeathCount == 0 && _hp == MaxHp);
         _sliderCanvas.SetActive(!shouldHideCanvas);

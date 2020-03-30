@@ -13,8 +13,9 @@ public class CharacterEntity : Entity
     private int _myID = -1;
     private CharController _charController;
 
-    private KeyValuePair<CharacterEntity, float> _lastCharacterAttacker = new KeyValuePair<CharacterEntity, float>(null, -1);
+    private KeyValuePair<CharacterEntity, float> _lastCharacterAttacker = new KeyValuePair<CharacterEntity, float>(null, -1);    
     #endregion
+
 
     #region Methods
     #region MonoBehaviour Callbacks
@@ -31,7 +32,7 @@ public class CharacterEntity : Entity
     }
     #endregion
 
-    public override void GetDamage(int damage, Entity attacker)
+    public override void GetDamage(int damage, Entity attacker, AttackType attackType)
     {
         bool hasHitVirusController = attacker != null && attacker.GetComponent<VirusController>();
         if (hasHitVirusController)
@@ -43,7 +44,7 @@ public class CharacterEntity : Entity
             }
         }
 
-        base.GetDamage(damage, attacker);
+        base.GetDamage(damage, attacker, attackType);
 
         if (attacker is CharacterEntity)
         {
@@ -69,12 +70,18 @@ public class CharacterEntity : Entity
             }
             else
             {
+                // killed by a deathzone or somewhat
                 killerId = null;
             }
         }
 
         _charController.Respawn();
-        GameManager.Instance.Gamemode.Kill(killerId);
+
+        GameManager.Instance.Gamemode.Kill(killerId, _charController.charId);
+
+        // reset attack history
+        _lastCharacterAttacker = new KeyValuePair<CharacterEntity, float>(null, -1);
+        _attacksHistory.Clear();
     }
 
     public void ResetHP()

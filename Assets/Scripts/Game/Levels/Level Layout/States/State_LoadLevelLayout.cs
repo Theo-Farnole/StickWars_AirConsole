@@ -39,7 +39,7 @@ public class State_LoadLevelLayout : AbstractState_LevelLayoutManager
         // then, move layout
         MoveLevelLayout(ref cursorCommands);
 
-        Debug.LogFormat("Executing {0} commands.", cursorCommands.Count);
+        //Debug.LogFormat("Executing {0} commands.", cursorCommands.Count);
         _owner.MainCursor.StartCommandsSequence(cursorCommands);
     }
 

@@ -29,6 +29,8 @@ public class Entity : MonoBehaviour
     [SerializeField] private bool _hideHealthSliderIfFull = true;
     [SerializeField] protected Slider _healthSlider;
 
+    protected List<AttackType> _attacksHistory = new List<AttackType>();
+
     protected int _hp;
     private int _maxHp;
     #endregion
@@ -38,9 +40,12 @@ public class Entity : MonoBehaviour
     public int Hp { get => _hp; }
     public bool IsAlive { get => _hp > 0 ? true : false; }
     public bool IsFullLife { get => _hp == MaxHp; }
-    public Slider HealthSlider { get => _healthSlider; }
+    public Slider HealthSlider { get => _healthSlider; }    
+    public List<AttackType> AttacksHistory { get => _attacksHistory; }
     #endregion
 
+    #region Methods
+    #region MonoBehaviour Callbacks
     protected virtual void Awake()
     {
         if (_entityData != null)
@@ -55,36 +60,54 @@ public class Entity : MonoBehaviour
             Debug.Log("Il manque une entity data pour " + transform.name);
         }
     }
+    #endregion
 
-    /**
-     * Reduce entity's HP.
-     */
-    virtual public void GetDamage(int damage, Entity attacker)
+    #region Damage Methods
+    public virtual void GetDamage(int damage, Entity attacker, AttackType attackType)
     {
         if (isInvincible)
             return;
+        AddToHistory(attackType);
 
+        // remove HP
         _hp -= damage;
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 
-        OnDamage?.Invoke(this, damage);
-
+        // damage feedbacks
         UpdateHealthSlider();
         PopFloatingText(damage, attacker);
 
+        // check if alive
         if (!IsAlive)
-        {            
+        {
             Death(attacker);
         }
 
+        // events
+        OnDamage?.Invoke(this, damage);
         OnHealthPointsChanged?.Invoke(this);
     }
 
-    public void Kill(Entity attacker)
+    public void Kill(Entity attacker, AttackType attackType)
     {
-        GetDamage(_hp, attacker);
+        GetDamage(_hp, attacker, attackType);
     }
 
+    protected virtual void Death(Entity killer)
+    {
+        killer.OnKillMade?.Invoke(killer, this);
+        Destroy(gameObject);
+    }
+    #endregion
+
+    #region History methods
+    protected void AddToHistory(AttackType attackType)
+    {
+        _attacksHistory.Add(attackType);
+    }
+    #endregion
+
+    #region Damage Feedbacks
     protected void UpdateHealthSlider()
     {
         if (_healthSlider == null)
@@ -105,12 +128,6 @@ public class Entity : MonoBehaviour
         _healthSlider.DOValue(_hp, HEALTHBAR_ANIMATION_DURATION).SetEase(HEALTHBAR_ANIMATION_EASE);
     }
 
-    protected virtual void Death(Entity killer)
-    {
-        killer.OnKillMade?.Invoke(killer, this);
-        Destroy(gameObject);
-    }
-
     private void PopFloatingText(int damage, Entity attacker)
     {
         if (attacker == null)
@@ -127,4 +144,6 @@ public class Entity : MonoBehaviour
             floatingText.Text.color = attacker.GetComponent<CharController>().charId.GetSpriteColor();
         }
     }
+    #endregion
+    #endregion
 }

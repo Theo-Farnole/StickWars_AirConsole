@@ -9,9 +9,9 @@ public class GamemodeDeathMatch : AbstractGamemode
     {
     }
 
-    public override void Kill(CharId? killerCharID)
+    public override void Kill(CharId? killerCharID, CharId victim)
     {
-        base.Kill(killerCharID);
+        base.Kill(killerCharID, victim);
 
         // update score
         if (killerCharID != null)

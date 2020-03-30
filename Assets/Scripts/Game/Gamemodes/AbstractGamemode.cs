@@ -138,14 +138,39 @@ public abstract class AbstractGamemode
 
     protected abstract void Victory(CharId winnerID);
 
-    public virtual void Kill(CharId? killerCharID)
+    public virtual void Kill(CharId? killerCharID, CharId victim)
     {
+        TriggerKillEvent(killerCharID, victim);
+
+        if (killerCharID == null)
+        {
+            Debug.LogWarningFormat("{0} has been killed by a NULL CharId", victim);
+            return;
+        }        
+
         _killCount++;
 
-        if (killerCharID != null)
+        OnCharacterKill?.Invoke((CharId)killerCharID);
+    }
+
+    void TriggerKillEvent(CharId? killerCharID, CharId victim)
+    {
+        // getting type
+        var victimCharacterEntity = GameManager.Instance.Characters[victim].GetComponent<CharacterEntity>();
+        AttackType characterAttackType = victimCharacterEntity.AttacksHistory.Last();
+        string killType = characterAttackType.ToString();
+
+        // getting players' name
+        string victimName = victim.ToString();
+        string killerName = killerCharID != null ? killerCharID.ToString() : "NONE";
+
+
+        ExtendedAnalytics.SendEvent("Player Makes Kill", new Dictionary<string, object>()
         {
-            OnCharacterKill?.Invoke((CharId)killerCharID);
-        }
+            { "Type", killType },
+            { "Killer", killerName },
+            { "Victim", victimName }
+        });
     }
 
     #region Getter

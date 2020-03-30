@@ -105,7 +105,7 @@ public class Projectile : MonoBehaviour, IPooledObject
     private void OnEntityHit(Entity entity)
     {
         // do the damage
-        entity.GetDamage(damage, sender);
+        entity.GetDamage(damage, sender, AttackType.Projectile);        
 
         var charController = GetComponent<CharController>();
         if (charController != null)        
