@@ -10,7 +10,7 @@ public static class ExtendedAnalytics
         var result = AnalyticsEvent.Custom(eventName, eventData);
 
 #if UNITY_EDITOR
-        Debug.LogFormat("Analytics # Event {0} fired with result {1}. (param: {2})", eventName, result, eventData);
+        Debug.LogFormat("<color=red>Analytics</color> # Event <color=green>{0}</color> fired with result {1}. (param: {2})", eventName, result, eventData);
 #endif
     }
 }
