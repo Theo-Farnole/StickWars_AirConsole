@@ -1,4 +1,4 @@
-﻿using NDream.AirConsole;
+using NDream.AirConsole;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -7,12 +7,6 @@ using System.Text;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Events;
-
-public enum CharacterAttackType
-{
-    Tackle,
-    Projectile
-}
 
 public delegate void CharControllerDelegate(CharController charController);
 public delegate void CharControllerCharacterAttackTypeDelegate(CharController charController, CharacterAttackType characterAttackType);
