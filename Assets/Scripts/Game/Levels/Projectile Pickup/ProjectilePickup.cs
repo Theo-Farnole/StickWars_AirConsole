@@ -50,22 +50,26 @@ public class ProjectilePickup : MonoBehaviour, IPooledObject
         ExtendedAnalytics.SendEvent("Projectile Pickup Destroy");
     }
 
-    void TakePickup(CharController hitCharController)
+    void TakePickup(CharController takerCharController)
     {
-        hitCharController.FillCarriedProjectilesAmount();
-        OnPickup?.Invoke();
+        int ammoBeforeTaking = takerCharController.CurrentAmountProjectilesCarried;
+        ExtendedAnalytics.SendEvent("Projectile Pickup Taken", new Dictionary<string, object>()
+        {
+            { "Taker Char ID", takerCharController.charId },
+            { "Ammo Before Taking", ammoBeforeTaking }
+        });
 
-        ExtendedAnalytics.SendEvent("Projectile Pickup Spawn");
+        takerCharController.FillCarriedProjectilesAmount();
+        OnPickup?.Invoke();
 
         ObjectPooler.Instance.EnqueueGameObject("projectile_pickup", gameObject);
     }
 
     void IPooledObject.OnObjectSpawn()
     {
-        Debug.LogFormat("On object spawn position {0}", transform.position);
         FancyObject.ResetStartingPosition(transform.position);
 
-        ExtendedAnalytics.SendEvent("Projectile Pickup Taken");
+        ExtendedAnalytics.SendEvent("Projectile Pickup Spawn");
 
         OnSpawn?.Invoke();
     }
