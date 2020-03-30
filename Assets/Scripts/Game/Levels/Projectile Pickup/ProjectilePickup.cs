@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Events;
 
 public delegate void ProjectilePickupDelegate(ProjectilePickup projectilePickup);
@@ -8,6 +9,7 @@ public delegate void ProjectilePickupDelegate(ProjectilePickup projectilePickup)
 public class ProjectilePickup : MonoBehaviour, IPooledObject
 {
     #region Fields    
+    public UnityEvent OnSpawn;
     public UnityEvent OnPickup;
 
     // cache variable
@@ -34,17 +36,38 @@ public class ProjectilePickup : MonoBehaviour, IPooledObject
 
         if (hitCharController)
         {
-            hitCharController.FillCarriedProjectilesAmount();
-            OnPickup?.Invoke();
-
-            ObjectPooler.Instance.EnqueueGameObject("projectile_pickup", gameObject);
+            TakePickup(hitCharController);
         }
+    }    
+
+    void Start()
+    {
+        ExtendedAnalytics.SendEvent("Projectile Pickup Spawn");
+    }
+
+    void OnDestroy()
+    {
+        ExtendedAnalytics.SendEvent("Projectile Pickup Destroy");
+    }
+
+    void TakePickup(CharController hitCharController)
+    {
+        hitCharController.FillCarriedProjectilesAmount();
+        OnPickup?.Invoke();
+
+        ExtendedAnalytics.SendEvent("Projectile Pickup Spawn");
+
+        ObjectPooler.Instance.EnqueueGameObject("projectile_pickup", gameObject);
     }
 
     void IPooledObject.OnObjectSpawn()
     {
         Debug.LogFormat("On object spawn position {0}", transform.position);
         FancyObject.ResetStartingPosition(transform.position);
+
+        ExtendedAnalytics.SendEvent("Projectile Pickup Taken");
+
+        OnSpawn?.Invoke();
     }
     #endregion
 }
