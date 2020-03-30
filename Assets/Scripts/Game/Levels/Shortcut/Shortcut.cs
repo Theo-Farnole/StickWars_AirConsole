@@ -60,6 +60,11 @@ public class Shortcut : Entity
                 _images[i].color.SetAlpha(t);
             }
         });
+
+        ExtendedAnalytics.SendEvent("Shortcut Hit", new Dictionary<string, object>()
+        {
+            { "New Window State", _isWindowOpen ? "open" : "close" }
+        });
     }
 
     public void OpenWindow()
