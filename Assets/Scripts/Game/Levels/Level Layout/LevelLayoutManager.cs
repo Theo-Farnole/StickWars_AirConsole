@@ -11,7 +11,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     [SerializeField] private static int _levelLayoutState = 0;
 
     [Header("MAIN SETTINGS")]
-    [SerializeField] private float _sumRatioToLoadLayout = (8f / 3f);
+    [SerializeField] private LevelLayoutData _data;
 
     [Header("EVENTS")]
     public LevelLayoutManagerDelegate OnLevelLayoutAnimationStart;
@@ -103,6 +103,12 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     #region Load Layout methods
     void StartLoadLayout()
     {
+        if (!_data.EnableLevelLayout)
+        {
+            Debug.LogWarningFormat("You try to start load layout, whereas it's disabled. Tick the property \"Enable Level Layout\" in the database.");
+            return;
+        }
+
         _levelLayoutState++;
 
         ExtendedAnalytics.SendEvent("Level Layout Triggered", new Dictionary<string, object>()
@@ -150,13 +156,13 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
 
     void OnCharacterKill(CharId charId)
     {
-        if (_disableStartLayout)
-            return;
+        if (_disableStartLayout)        
+            return;        
 
         int currentKillsSum = GameManager.Instance.Gamemode.SumCharactersValue;
         int maxKillsSum = GameManager.Instance.Gamemode.MaxKillsPossibleSum;
 
-        if (currentKillsSum >= maxKillsSum * _sumRatioToLoadLayout)
+        if (currentKillsSum >= maxKillsSum * _data.SumRatioToLoadLayout)
         {
             _disableStartLayout = true;
             StartLoadLayout();
