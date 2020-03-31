@@ -235,7 +235,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _speed: 5
+  _data: {fileID: 11400000, guid: fac7a6e579bb8f34385e222418b27786, type: 2}
   _spritesCursor:
   - {fileID: 21300000, guid: 1de09b68c58e838418d5c0fb2356934a, type: 3}
   - {fileID: 21300000, guid: 034e57b6067cf7148a2bfecb5c944939, type: 3}

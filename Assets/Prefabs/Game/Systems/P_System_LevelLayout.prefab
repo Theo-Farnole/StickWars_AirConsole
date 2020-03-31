@@ -158,6 +158,12 @@ PrefabInstance:
       propertyPath: _speed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4276988732628576109, guid: ecc86ecb7482c0746bbaf6c7c73b2596,
+        type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: c3cc4c9bb3f0f3449a177a9ab31aaf6c,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecc86ecb7482c0746bbaf6c7c73b2596, type: 3}
 --- !u!4 &8460472736315412451 stripped
@@ -250,6 +256,12 @@ PrefabInstance:
       propertyPath: _speed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4276988732628576109, guid: ecc86ecb7482c0746bbaf6c7c73b2596,
+        type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: c3cc4c9bb3f0f3449a177a9ab31aaf6c,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecc86ecb7482c0746bbaf6c7c73b2596, type: 3}
 --- !u!4 &8460472736089442054 stripped
@@ -429,6 +441,12 @@ PrefabInstance:
       propertyPath: _speed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4276988732628576109, guid: ecc86ecb7482c0746bbaf6c7c73b2596,
+        type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: c3cc4c9bb3f0f3449a177a9ab31aaf6c,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecc86ecb7482c0746bbaf6c7c73b2596, type: 3}
 --- !u!4 &8460472736490925553 stripped
@@ -521,6 +539,12 @@ PrefabInstance:
       propertyPath: _speed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4276988732628576109, guid: ecc86ecb7482c0746bbaf6c7c73b2596,
+        type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: c3cc4c9bb3f0f3449a177a9ab31aaf6c,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecc86ecb7482c0746bbaf6c7c73b2596, type: 3}
 --- !u!4 &8460472735804257413 stripped

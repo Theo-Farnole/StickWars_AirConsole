@@ -23,7 +23,7 @@ public class CursorManager : MonoBehaviour
 
     public UnityEvent OnDragStart;
 
-    [SerializeField] private float _speed = 3;
+    [SerializeField] private CursorData _data;
     [SerializeField, EnumNamedArray(typeof(CursorState))] private Sprite[] _spritesCursor = new Sprite[3];
     [Header("Feedbacks")]    
 
@@ -55,6 +55,13 @@ public class CursorManager : MonoBehaviour
 
     #region Methods
     #region MonoBehaviour Callbacks
+#if UNITY_EDITOR
+    void Start()
+    {
+        UnityEngine.Assertions.Assert.IsNotNull(_data);    
+    }
+#endif
+
     void Update()
     {
         // movement
@@ -74,7 +81,7 @@ public class CursorManager : MonoBehaviour
         targetPosition.z = transform.position.z;
 
         float distance = Vector3.Distance(transform.position, targetPosition);
-        float moveDuration = distance / _speed;
+        float moveDuration = distance / _data.Speed;
 
         transform.DOKill();
         transform.DOMove(targetPosition, moveDuration)
