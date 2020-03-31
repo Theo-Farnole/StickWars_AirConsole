@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 423379b16c039bd40bd80fd2d75be104, type: 3}
-  m_Name: Events Data Controller
+  m_Script: {fileID: 11500000, guid: c1ea7438ffc72df4887f580b0d9045cb, type: 3}
+  m_Name: DB_Gamemodes
   m_EditorClassIdentifier: 
-  _maxSpawnVirusSpawner: 3
+  _gamemodeData:
+  - {fileID: 11400000, guid: adbd7d8448cab3e45933f1793dc225c8, type: 2}

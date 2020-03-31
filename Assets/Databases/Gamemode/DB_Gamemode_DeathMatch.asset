@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e8cf7b0dd14b44d8e1bd3e1692aeb5, type: 3}
-  m_Name: Projectile
+  m_Script: {fileID: 11500000, guid: 0b99b0c012bf58d43b3978e412bd90ae, type: 3}
+  m_Name: DB_Gamemode_DeathMatch
   m_EditorClassIdentifier: 
-  _speed: 8
+  _defaultValue: 8

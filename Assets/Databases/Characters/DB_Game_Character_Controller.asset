@@ -9,8 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1ea7438ffc72df4887f580b0d9045cb, type: 3}
-  m_Name: All Gamemodes
+  m_Script: {fileID: 11500000, guid: 718d9fb26a1122540a7810c9c9d406ab, type: 3}
+  m_Name: DB_Game_Character_Controller
   m_EditorClassIdentifier: 
-  _gamemodeData:
-  - {fileID: 11400000, guid: adbd7d8448cab3e45933f1793dc225c8, type: 2}
+  _speed: 3.5
+  _jumpForce: 325
+  _slidingDownSpeed: -0.2
+  _damageTackle: 10
+  _damageProjectile: 20
+  _cadenceProjectile: 1
+  _maxProjectilesCarried: 2
+  _respawnDuration: 1.5

@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 718d9fb26a1122540a7810c9c9d406ab, type: 3}
-  m_Name: Character Controller
+  m_Script: {fileID: 11500000, guid: 10e8cf7b0dd14b44d8e1bd3e1692aeb5, type: 3}
+  m_Name: DB_Game_Character_Projectile
   m_EditorClassIdentifier: 
-  _speed: 3.5
-  _jumpForce: 325
-  _slidingDownSpeed: -0.2
-  _damageTackle: 10
-  _damageProjectile: 20
-  _cadenceProjectile: 1
-  _maxProjectilesCarried: 2
-  _respawnDuration: 1.5
+  _speed: 8
+  _lifetimeOnCollision: 3
