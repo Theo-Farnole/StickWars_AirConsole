@@ -24,6 +24,8 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     private bool _isLevelLayoutAnimationRunning = false;
     private bool _disableStartLayout = false;
 
+    private float _timeStartLoadLayout = 0;
+
     private AbstractState_LevelLayoutManager _currentState;
     #endregion
 
@@ -109,6 +111,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
             return;
         }
 
+        _timeStartLoadLayout = Time.time;
         _levelLayoutState++;
 
         ExtendedAnalytics.SendEvent("Level Layout Triggered", new Dictionary<string, object>()
@@ -183,6 +186,8 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         else if (CurrentState is State_ReleaseStickman)
         {
             CurrentState = null;
+
+            Debug.LogFormat("<color=yellow>Level Layout</color> # Loading ended. Duration {0}", Time.time - _timeStartLoadLayout);
 
             _isLevelLayoutAnimationRunning = false;
             OnLevelLayoutAnimationEnd?.Invoke(this);
