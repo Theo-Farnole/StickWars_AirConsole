@@ -36,7 +36,7 @@ public abstract class AbstractGamemode
     public IntArrayDelegate OnScoreUpdate;
 
     protected Dictionary<CharId, int> _charactersValue = new Dictionary<CharId, int>();
-    protected CharId? _currentMVPCharID = null;
+    protected CharId? _mvp = null;
 
     private int _killCount = 0;
     #endregion
@@ -75,6 +75,7 @@ public abstract class AbstractGamemode
     public int ValueForVictory { get => valueForVictory; set => valueForVictory = value; }
     public int KillCount { get => _killCount; }
     public int MaxKillsPossibleSum { get => GameManager.Instance.InstantiatedCharactersCount * valueForVictory; }
+    public CharId? MVP { get => _mvp; }
     #endregion
 
     #region Methods
@@ -111,15 +112,15 @@ public abstract class AbstractGamemode
         if (charIDToCheck == null) return;
 
         // if there is no current mvp, let charId become the mvp
-        if (_currentMVPCharID == null)
+        if (_mvp == null)
         {
-            _currentMVPCharID = charIDToCheck;
+            _mvp = charIDToCheck;
             GameManager.Instance.Characters[(CharId)charIDToCheck].IsMVP = true;
             return;
         }
 
         // converting from CharId? to CharId
-        CharId currentMVPCharIDConverted = (CharId)_currentMVPCharID;
+        CharId currentMVPCharIDConverted = (CharId)_mvp;
         CharId charIDToCheckConverted = (CharId)charIDToCheck;
 
         if (_charactersValue[currentMVPCharIDConverted] < _charactersValue[charIDToCheckConverted])
@@ -128,7 +129,7 @@ public abstract class AbstractGamemode
             GameManager.Instance.Characters[currentMVPCharIDConverted].IsMVP = false;
 
             // set new MVP
-            _currentMVPCharID = charIDToCheck;
+            _mvp = charIDToCheck;
             currentMVPCharIDConverted = charIDToCheckConverted;
 
             // set isMvp to true to new MVP
@@ -195,6 +196,18 @@ public abstract class AbstractGamemode
     public int GetScore(CharId charId)
     {
         return _charactersValue[charId];
+    }
+
+    /// <summary>
+    /// Return -1 if there is no MVP.
+    /// </summary>
+    /// <returns></returns>
+    public int GetMVPScore()
+    {
+        if (MVP == null)
+            return -1;
+
+        return _charactersValue[(CharId)MVP];
     }
 
     public CharId[] GetCharIdsOrderByScore()

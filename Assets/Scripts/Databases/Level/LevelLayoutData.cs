@@ -7,8 +7,9 @@ public class LevelLayoutData : ScriptableObject
 {
     [Header("MAIN SETTINGS")]
     [SerializeField] private bool _enableLevelLayout = true;
-    [SerializeField] private float _sumRatioToLoadLayout = (3f / 8f);
+    [Tooltip("0.5f means that the MVP is a the half of the kill goal.")]
+    [SerializeField, Range(0, 1)] private float _mvpKillProgressToLoadLayout = 0.5f;
 
     public bool EnableLevelLayout { get => _enableLevelLayout; }
-    public float SumRatioToLoadLayout { get => _sumRatioToLoadLayout; }
+    public float MvpKillProgressToLoadLayout { get => _mvpKillProgressToLoadLayout; }
 }

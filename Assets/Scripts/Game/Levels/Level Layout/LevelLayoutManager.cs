@@ -162,10 +162,14 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         if (_disableStartLayout)        
             return;        
 
-        int currentKillsSum = GameManager.Instance.Gamemode.SumCharactersValue;
-        int maxKillsSum = GameManager.Instance.Gamemode.MaxKillsPossibleSum;
+        int mvpScore = GameManager.Instance.Gamemode.GetMVPScore();        
+        int scoreGoal = GameManager.Instance.Gamemode.ValueForVictory;
 
-        if (currentKillsSum >= maxKillsSum * _data.SumRatioToLoadLayout)
+        // TODO: 
+        // > checker si progress mvp >= _data.MvpKillProgressToLoadLayout
+        // > si oui, StartLoadLayout
+
+        if (mvpScore != -1 && mvpScore >= scoreGoal * _data.MvpKillProgressToLoadLayout)
         {
             _disableStartLayout = true;
             StartLoadLayout();

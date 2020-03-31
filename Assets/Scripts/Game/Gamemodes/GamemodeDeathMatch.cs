@@ -10,9 +10,7 @@ public class GamemodeDeathMatch : AbstractGamemode
     }
 
     public override void Kill(CharId? killerCharID, CharId victim)
-    {
-        base.Kill(killerCharID, victim);
-
+    {        
         // update score
         if (killerCharID != null)
         {
@@ -27,6 +25,9 @@ public class GamemodeDeathMatch : AbstractGamemode
 
         CheckForNewMVP(killerCharID);
         CheckForVictory();
+
+        // at the end, because it trigger an event
+        base.Kill(killerCharID, victim);
     }
 
     protected override void Victory(CharId winnerCharId)
