@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TF.Utilities.RemoteConfig;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "StickWars/Character Controller")]
-public class CharacterControllerData : ScriptableObject
+public class CharacterControllerData : RemoteConfigScriptableObject
 {
     [Header("Movements")]
 

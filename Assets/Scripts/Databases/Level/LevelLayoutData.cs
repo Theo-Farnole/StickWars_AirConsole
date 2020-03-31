@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TF.Utilities.RemoteConfig;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "StickWars/Level/Level Layout")]
-public class LevelLayoutData : ScriptableObject
+public class LevelLayoutData : RemoteConfigScriptableObject
 {
     [Header("MAIN SETTINGS")]
     [SerializeField] private bool _enableLevelLayout = true;

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TF.Utilities.RemoteConfig;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "StickWars/Virus Controller")]
-public class VirusControllerData : ScriptableObject
+public class VirusControllerData : RemoteConfigScriptableObject
 {
     #region Fields
     [Header("Global Config")]

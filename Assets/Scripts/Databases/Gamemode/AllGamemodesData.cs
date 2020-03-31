@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TF.Utilities.RemoteConfig;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "StickWars/Gamemode/AllGamemodes")]
-public class AllGamemodesData : ScriptableObject
+public class AllGamemodesData : RemoteConfigScriptableObject
 {
     [EnumNamedArray(typeof(GamemodeType))]
     [SerializeField] private GamemodeData[] _gamemodeData = new GamemodeData[Enum.GetValues(typeof(GamemodeType)).Length];
