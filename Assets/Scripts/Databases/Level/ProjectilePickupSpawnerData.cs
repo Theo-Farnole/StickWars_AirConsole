@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Level/Projectile Pickup Spawner")]
+[CreateAssetMenu(menuName = "StickWars/Level/Projectile Pickup Spawner")]
 public class ProjectilePickupSpawnerData : ScriptableObject
 {
     [Tooltip("Inclusive; Eg. if this variable is set at 3, there'll only be 3 projectile pickups simultaneously in the level maximum.")]
