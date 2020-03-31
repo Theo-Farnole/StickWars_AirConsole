@@ -26,7 +26,7 @@ namespace TF.Utilities.RemoteConfig
         #endregion
         #endregion
 
-        #region Fields
+        #region Methods
         [MenuItem("StickWars/Open CSV exporter")]
         static void Init()
         {
@@ -143,30 +143,16 @@ namespace TF.Utilities.RemoteConfig
                          BindingFlags.Instance);
 
             // Browse every private fields          
-            string prefix = instance.name; // filename
             foreach (var field in fields)
             {
-                AddEntryFromField(ref entries, instance, prefix, field);
+                Entry entry = RemoteConfigScriptableObject.GetEntryFromField(instance, field);
+                entries.Add(entry);
             }
 
             // Debug
             Debug.LogFormat("Found file guid: {1} of path {0}", fileRelativePath, guid);
 
             return entries;
-        }
-
-        void AddEntryFromField(ref List<Entry> entries, UnityEngine.Object instance, string prefix, FieldInfo field)
-        {
-            // gather informations for entry
-            string key = prefix + field.Name;
-            string type = GetRemoteConfigType(field.GetValue(instance));
-            string value = field.GetValue(instance).ToString().Replace(",", ".");
-            string segment = "\"All Current Users\"";
-            string priority = "";
-
-            // create entry
-            Entry entry = new Entry(key, type, value, segment, priority);
-            entries.Add(entry);
         }
 
         void CreateFileFromEntries(List<Entry> entries)
@@ -188,21 +174,6 @@ namespace TF.Utilities.RemoteConfig
         }
 
         #region Getter
-        public string GetRemoteConfigType(object toConvertObject)
-        {
-            var notConvertedType = toConvertObject.GetType();
-
-            if (notConvertedType == typeof(float)) return "float"; // otherwise, return System.Single
-            if (notConvertedType == typeof(int)) return "int"; // otherwise, return Single.Int32
-            if (notConvertedType == typeof(long)) return "long"; // etc...
-            if (notConvertedType == typeof(bool)) return "bool";
-            if (notConvertedType == typeof(string)) return "string";
-
-            Debug.LogErrorFormat("Remote config doesn't support type of {0}.", notConvertedType);
-
-            return "unsupported";
-        }
-
         public string GetFilename()
         {
             return DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
@@ -210,28 +181,5 @@ namespace TF.Utilities.RemoteConfig
         #endregion
         #endregion
         #endregion
-    }
-
-    public struct Entry
-    {
-        public string key;
-        public string type;
-        public string value;
-        public string segment;
-        public string priority;
-
-        public Entry(string key, string type, string value, string segment, string priority)
-        {
-            this.key = key;
-            this.type = type;
-            this.value = value;
-            this.segment = segment;
-            this.priority = priority;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0},{1},{2},{3},{4},", key, type, value, segment, priority);
-        }
     }
 }
