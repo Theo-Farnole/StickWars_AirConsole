@@ -5,29 +5,25 @@ using UnityEngine;
 public class ProjectilePickupSpawner : MonoBehaviour
 {
     #region Fields
-    private const string TAG_PROJECTILEPICKUP = "projectile_pickup";
+    private const string POOL_ID_PROJECTILEPICKUP = "projectile_pickup";
 
     public ProjectilePickupDelegate OnProjectilePickupSpawn;
 
-    [Tooltip("Inclusive; Eg. if this variable is set at 3, there'll only be 3 projectile pickups simultaneously in the level maximum.")]
-    [SerializeField] private int _maxProjectilePickupsSimultaneously = 1;
-    [Space]
-    [Tooltip("In seconds")]
-    [SerializeField] private float _timeToSpawnPickup = 10;
-    [SerializeField] private float _killAmountToSpawnPickup = 2;
+    [SerializeField] private ProjectilePickupSpawnerData _data;
 
-    private float _currentTimeToSpawnPickup = 0;
-    private float _currentKillAmountToSpawnPickup = 0;
+    private float _timeToSpawnPickup = 0; // not a timer
+    private float _killAmountToSpawnPickup = 0;
 
-    private bool _disableSpawning = false;
+    private bool _disablePickupSpawning = false;
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Start()
     {
-        _currentTimeToSpawnPickup = Time.time + _timeToSpawnPickup;
-        _currentKillAmountToSpawnPickup += _killAmountToSpawnPickup;
+        UnityEngine.Assertions.Assert.IsNotNull(_data);
+
+        ResetTimers();
     }
 
     void OnEnable()
@@ -51,9 +47,8 @@ public class ProjectilePickupSpawner : MonoBehaviour
 
     void Update()
     {
-        if (Time.time >= _currentTimeToSpawnPickup)
-        {
-            _currentTimeToSpawnPickup = Time.time + _timeToSpawnPickup;
+        if (Time.time >= _timeToSpawnPickup)
+        {            
             SpawnProjectilePickup();
         }
     }
@@ -64,41 +59,48 @@ public class ProjectilePickupSpawner : MonoBehaviour
     {
         int killAmount = GameManager.Instance.Gamemode.KillCount;
 
-        if (_currentKillAmountToSpawnPickup >= killAmount)
-        {
-            _currentKillAmountToSpawnPickup += _killAmountToSpawnPickup;
+        if (_killAmountToSpawnPickup >= killAmount)
+        {            
             SpawnProjectilePickup();
         }
     }
 
     void OnLevelLayoutAnimationStart(LevelLayoutManager levelLayoutManager)
     {
-        _disableSpawning = true;
+        _disablePickupSpawning = true;
     }
 
     void OnLevelLayoutAnimationEnded(LevelLayoutManager levelLayoutManager)
     {
-        _disableSpawning = false;
+        _disablePickupSpawning = false;
     }
     #endregion
 
     void SpawnProjectilePickup()
     {
-        if (_disableSpawning)
+        if (_disablePickupSpawning)
             return;
+
+        ResetTimers();
 
         int projectilePickupInLevel = FindObjectsOfType<ProjectilePickup>().Length;
 
-        // there is 
-        if (projectilePickupInLevel >= _maxProjectilePickupsSimultaneously)
+        // projectiles pickup in the level limit reached
+        if (projectilePickupInLevel >= _data.MaxProjectilePickupsSimultaneously)
             return;
 
         var position = LevelDataLocator.GetLevelData().GetRandomProjectilePickupPosition();
         var rotation = Quaternion.identity;
 
-        var projectilePickup = ObjectPooler.Instance.SpawnFromPool(TAG_PROJECTILEPICKUP, position, rotation).GetComponent<ProjectilePickup>();
+        var projectilePickup = ObjectPooler.Instance.SpawnFromPool(POOL_ID_PROJECTILEPICKUP, position, rotation).GetComponent<ProjectilePickup>();
 
         OnProjectilePickupSpawn?.Invoke(projectilePickup);
+    }
+
+    private void ResetTimers()
+    {
+        _timeToSpawnPickup = Time.time + _data.TimeToSpawnPickup;
+        _killAmountToSpawnPickup = GameManager.Instance.Gamemode.KillCount + _data.KillAmountToSpawnPickup;
     }
     #endregion
 }

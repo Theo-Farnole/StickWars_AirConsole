@@ -146,9 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a164f0bec7e40064ea98f6bef2281b90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxProjectilePickupsSimultaneously: 1
-  _timeToSpawnPickup: 12
-  _killAmountToSpawnPickup: 3
+  _data: {fileID: 11400000, guid: 1140651b6c06fe6489e0d6189a84e298, type: 2}
 --- !u!1 &4140513709645708289
 GameObject:
   m_ObjectHideFlags: 0
