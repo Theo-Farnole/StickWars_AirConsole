@@ -32,25 +32,7 @@ namespace TF.Utilities.RemoteConfig
 
     public class RemoteConfigScriptableObject : ScriptableObject
     {
-        void OnEnable()
-        {
-#if UNITY_EDITOR
-            if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-                return;
-#endif
-
-            RemoteSettingsUpdated();
-            RemoteSettings.Updated += RemoteSettingsUpdated;
-
-            Debug.LogFormat("RS Keys > {0}", RemoteSettings.GetKeys().Length);
-        }
-
-        void OnDisable()
-        {
-            RemoteSettings.Updated -= RemoteSettingsUpdated;
-        }
-
-        void RemoteSettingsUpdated()
+        public void UpdateRemoteSettings()
         {
             Type myType = this.GetType();
 
@@ -65,25 +47,46 @@ namespace TF.Utilities.RemoteConfig
 
                 if (RemoteSettings.HasKey(entry.key))
                 {
+                    bool valueChanged = false;
+
                     //Type doesn't work with a switch, so let's do it this way
                     if (entry.type == "bool")
                     {
-                        field.SetValue(this, RemoteSettings.GetBool(entry.key));
+                        bool value = RemoteSettings.GetBool(entry.key);
+
+                        if (value != (bool)field.GetValue(this)) valueChanged = true;
+
+                        field.SetValue(this, value);
                     }
                     else if (entry.type == "float")
                     {
-                        field.SetValue(this, RemoteSettings.GetFloat(entry.key));
+                        float value = RemoteSettings.GetFloat(entry.key);
+
+                        if (value != (float)field.GetValue(this)) valueChanged = true;
+
+                        field.SetValue(this, value);
                     }
                     else if (entry.type == "int")
                     {
-                        field.SetValue(this, RemoteSettings.GetInt(entry.key));
+                        int value = RemoteSettings.GetInt(entry.key);
+
+                        if (value != (int)field.GetValue(this)) valueChanged = true;
+
+                        field.SetValue(this, value);
                     }
                     else if (entry.type == "string")
                     {
-                        field.SetValue(this, RemoteSettings.GetString(entry.key));
+                        string value = RemoteSettings.GetString(entry.key);
+
+                        if (value != (string)field.GetValue(this)) valueChanged = true;
+
+                        field.SetValue(this, value);
                     }
 
-                    Debug.LogFormat("<color=blue>Remote Settings</color> # Update field {0} of {1}.", entry.key, this.name);
+                    if (valueChanged)
+                    {
+                        Debug.LogFormat("<color=cyan>Remote Settings</color> # Update field {0} of {1}.", entry.key, this.name);
+                    }
                 }
 
                 else
@@ -119,7 +122,7 @@ namespace TF.Utilities.RemoteConfig
             if (notConvertedType == typeof(bool)) return "bool";
             if (notConvertedType == typeof(string)) return "string";
 
-            Debug.LogErrorFormat("Remote config doesn't support type of {0}.", notConvertedType);
+            Debug.LogErrorFormat("<color=cyan>Remote Settings</color> # Remote config doesn't support type of {0}.", notConvertedType);
 
             return "unsupported";
         }
