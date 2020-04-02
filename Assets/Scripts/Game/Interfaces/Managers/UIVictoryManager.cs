@@ -79,7 +79,7 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
 
         // start timer
         this.ExecuteAfterTime(cachedAnimationDuration, () =>
-        {            
+        {
             _timerRemainingTime.StartTimer(VICTORY_SCREEN_DURATION);
         });
 
@@ -169,7 +169,7 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
         }
     }
 
-#region Special title attributions
+    #region Special title attributions
     Dictionary<CharId, string> GetSpecialTitle(CharId winnerId, Dictionary<CharId, CharacterStatistics> characterStatistics)
     {
         Dictionary<CharId, string> specialTitles = new Dictionary<CharId, string>();
@@ -190,7 +190,7 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
             }
         }
 
-        Assert.AreEqual(specialTitles.Count, characterStatistics.Count);
+        //Assert.AreEqual(specialTitles.Count, characterStatistics.Count);
 
         return specialTitles;
     }
@@ -214,6 +214,6 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
             specialTitles.Add(charId, title);
         }
     }
-#endregion
-#endregion
+    #endregion
+    #endregion
 }
