@@ -10,6 +10,7 @@ public class TutorialTextBoxManager : MonoBehaviour
     [SerializeField] private Canvas _textBoxCanvas;
     [Space]
     [SerializeField] private GameObject _textBoxWrapper;
+    [SerializeField] private RectTransform _secondPositionTextBoxWrapper;
     [SerializeField] private TextMeshProUGUI _textBox;
     [Space]
     [SerializeField] private float _displayDuration;
@@ -32,6 +33,8 @@ public class TutorialTextBoxManager : MonoBehaviour
     void Start()
     {
         ActiveTextBox(false, false);
+
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationStart += (LevelLayoutManager levelLayoutManager) => SetTextBoxToSecondPosition();
     }
 
     void Update()
@@ -83,6 +86,13 @@ public class TutorialTextBoxManager : MonoBehaviour
             // otherwise, add message to queue
             _queuedTextsBoxes.Enqueue(message);
         }
+    }
+    #endregion
+
+    #region Position methods
+    void SetTextBoxToSecondPosition()
+    {
+        _textBoxWrapper.GetComponent<RectTransform>().position = _secondPositionTextBoxWrapper.position;
     }
     #endregion
 
