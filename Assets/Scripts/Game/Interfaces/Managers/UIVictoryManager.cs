@@ -57,6 +57,11 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
     void Awake()
     {
         _victoryCanvas.SetActive(false);
+
+        for (int i = 0; i < _specialPlayerWrappers.Length; i++)
+        {
+            _specialPlayerWrappers[i].gameObject.SetActive(false);
+        }
     }
     #endregion
 
@@ -149,9 +154,6 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
                 wrapper.gameObject.SetActive(false);
                 continue;
             }
-
-            if (charId == winnerCharId)
-                continue;
 
             wrapper.gameObject.SetActive(false);
 
