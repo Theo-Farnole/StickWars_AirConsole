@@ -150,6 +150,9 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
                 continue;
             }
 
+            if (charId == winnerCharId)
+                continue;
+
             wrapper.gameObject.SetActive(false);
 
             // content
@@ -189,8 +192,6 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
                 specialTitles.Add(charId, "Collector");
             }
         }
-
-        //Assert.AreEqual(specialTitles.Count, characterStatistics.Count);
 
         return specialTitles;
     }
