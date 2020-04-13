@@ -53,7 +53,8 @@ public class PartyEndManager : MonoBehaviour
         {
             { "Duration",  duration },
             { "Players Count",  playersCount },
-            { "Party Finished", _isPartyFinished }
+            { "Party Finished", _isPartyFinished },
+            { "Kill Goal", GameManager.Instance.Gamemode.ValueForVictory }
         });
     }
 }
