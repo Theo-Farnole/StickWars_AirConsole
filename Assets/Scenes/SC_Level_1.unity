@@ -4528,6 +4528,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_System_UI_Tutorial
       objectReference: {fileID: 0}
+    - target: {fileID: 1914411504329078864, guid: a34c49f33b67d8d49a3b5f42f777f40b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1914411504329078879, guid: a34c49f33b67d8d49a3b5f42f777f40b,
         type: 3}
       propertyPath: m_LocalPosition.x
