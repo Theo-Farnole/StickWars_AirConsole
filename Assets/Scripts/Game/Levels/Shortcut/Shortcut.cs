@@ -20,9 +20,10 @@ public class Shortcut : Entity
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
     void Start()
     {
-        _deltaTargetPosition = _window.transform.position - transform.position;
+        CalculateDeltaTargetPosition();
         _images = transform.GetComponentsInChildren<Image>();
 
         if (_closeOnStart)
@@ -34,6 +35,21 @@ public class Shortcut : Entity
         }
     }
 
+    void OnEnable()
+    {
+        LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd += (LevelLayoutManager LevelLayoutManager) => CalculateDeltaTargetPosition();
+    }
+
+    void OnDisable()
+    {
+        if (LevelLayoutManager.Instance != null)
+        {
+            LevelLayoutManager.Instance.OnLevelLayoutAnimationEnd -= (LevelLayoutManager LevelLayoutManager) => CalculateDeltaTargetPosition();
+        }
+    }
+    #endregion
+
+    #region Public methods
     public override void GetDamage(int damage, Entity attacker, AttackType attackType)
     {
         AddToHistory(attackType);
@@ -43,6 +59,16 @@ public class Shortcut : Entity
         OnDamage?.Invoke(this, damage);
     }
 
+    public void OpenWindow()
+    {
+        if (_isWindowOpen)
+            return;
+
+        SwitchWindowState();
+    }
+    #endregion
+
+    #region Private methods
     private void SwitchWindowState()
     {
         _isWindowOpen = !_isWindowOpen;
@@ -69,12 +95,10 @@ public class Shortcut : Entity
         });
     }
 
-    public void OpenWindow()
+    void CalculateDeltaTargetPosition()
     {
-        if (_isWindowOpen)
-            return;
-
-        SwitchWindowState();
+        _deltaTargetPosition = _window.transform.position - transform.position;
     }
+    #endregion
     #endregion
 }
