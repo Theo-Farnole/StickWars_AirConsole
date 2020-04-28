@@ -67,6 +67,21 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
 
     public void LaunchVictoryAnimation(CharId winnerCharId)
     {
+        // setup delayed tasks
+        float cachedAnimationDuration = SpecialTitleAnimationDuration;
+
+        // play ad
+        (this).ExecuteAfterTime(cachedAnimationDuration + VICTORY_SCREEN_DURATION, () =>
+        {
+            ShowAdThenShowScene();
+        });
+
+        // start timer
+        this.ExecuteAfterTime(cachedAnimationDuration, () =>
+        {
+            _timerRemainingTime.StartTimer(VICTORY_SCREEN_DURATION);
+        });
+
         // update canvas activation
         DeactivateGamePanel();
         _victoryCanvas.SetActive(true);
@@ -77,22 +92,7 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
 
         // update content
         SetWinnerContent(winnerCharId);
-        SetSpecialPlayersContent(winnerCharId);
-
-        // setup delayed tasks
-        float cachedAnimationDuration = SpecialTitleAnimationDuration;
-
-        // start timer
-        this.ExecuteAfterTime(cachedAnimationDuration, () =>
-        {
-            _timerRemainingTime.StartTimer(VICTORY_SCREEN_DURATION);
-        });
-
-        // play ad
-        (this).ExecuteAfterTime(cachedAnimationDuration + VICTORY_SCREEN_DURATION, () =>
-        {
-            ShowAdThenShowScene();
-        });
+        SetSpecialPlayersContent(winnerCharId); // we put it at the end of method, if it has errors
     }
 
     private void ShowAdThenShowScene()
@@ -181,10 +181,10 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
 
         characterStatistics.Remove(winnerId);
 
-        CheckSpecialTitle(ref characterStatistics, ref specialTitles, "_jumpCount", 0, "Climber");
         CheckSpecialTitle(ref characterStatistics, ref specialTitles, "_virusReleased", 1, "Hacker");
         CheckSpecialTitle(ref characterStatistics, ref specialTitles, "_tackleSumDamage", 80, "Scrapper");
         CheckSpecialTitle(ref characterStatistics, ref specialTitles, "_projectileThrowCount", 4, "Crazy Shooter");
+        CheckSpecialTitle(ref characterStatistics, ref specialTitles, "_jumpCount", 0, "Climber");
 
         // fill empty title by a random title
         foreach (var charId in (CharId[])Enum.GetValues(typeof(CharId)))
@@ -208,13 +208,18 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
                                         .OrderBy(x => (int)field.GetValue(x)) // the first, the better
                                         .FirstOrDefault();
 
+        // is there is someone that achieve condition ?
         if (firstOfSpecialTitle != null)
         {
-            // get key from value
-            var charId = characterStatistics.FirstOrDefault(x => x.Value == firstOfSpecialTitle).Key;
+            // get charId of first of special title
+            CharId charId = characterStatistics.FirstOrDefault(x => x.Value == firstOfSpecialTitle).Key;
 
-            // set title to the first of special title
-            specialTitles.Add(charId, title);
+            if (!specialTitles.ContainsKey(charId))
+            {
+                // set title to the first of special title
+                specialTitles.Add(charId, title);
+            }
+
         }
     }
     #endregion
