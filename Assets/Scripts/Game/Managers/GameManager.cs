@@ -78,7 +78,7 @@ public class GameManager : Singleton<GameManager>
             CharId c_charId = (CharId)charId;
 
             var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
-            player.transform.position = LevelDataLocator.GetLevelData().GetDefaultSpawnPoint(c_charId);
+            player.transform.position = LevelLayoutManager.Instance.GetLevelData().GetDefaultSpawnPoint(c_charId);
             player.charId = c_charId;
 
             _characters[c_charId] = player;
@@ -175,7 +175,7 @@ public class GameManager : Singleton<GameManager>
         }
 
         var player = Instantiate(_prefabPlayer).GetComponent<CharController>();
-        player.transform.position = LevelDataLocator.GetLevelData().GetDefaultSpawnPoint(charId);
+        player.transform.position = LevelLayoutManager.Instance.GetLevelData().GetDefaultSpawnPoint(charId);
         player.ownerDeviceId = deviceId;
         player.charId = charId;
 

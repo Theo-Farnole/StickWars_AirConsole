@@ -31,7 +31,7 @@ public class LevelLayoutElement : MonoBehaviour
         // prevent Out of bounds exception
         FitPositionArrayInsideLayoutState();
 
-        int layoutState = LevelLayoutManager.LevelLayoutState;
+        int layoutState = LevelLayoutManager.Instance.LevelLayoutState;
         _positions[layoutState] = transform.position;
     }
 
@@ -40,7 +40,7 @@ public class LevelLayoutElement : MonoBehaviour
         // prevent Out of bounds exception
         FitPositionArrayInsideLayoutState();
 
-        int layoutState = LevelLayoutManager.LevelLayoutState;
+        int layoutState = LevelLayoutManager.Instance.LevelLayoutState;
 
         // we should disable the game object,
         // however, FindObjectsOfType doesn't work on disable gameObject
@@ -50,7 +50,7 @@ public class LevelLayoutElement : MonoBehaviour
 
     public void FitPositionArrayInsideLayoutState()
     {
-        int layoutState = LevelLayoutManager.LevelLayoutState;
+        int layoutState = LevelLayoutManager.Instance.LevelLayoutState;
         int oldPositionsLength = _positions.Length;
 
         // we don't need to resize the array

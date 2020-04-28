@@ -81,7 +81,7 @@ public class State_LoadLevelLayout : AbstractState_LevelLayoutManager
 
             var moveToWindow = new MoveToCommand(element.transform);
             var dragWindow = new StartDragCommand(element.transform);
-            var moveToNewPosition = new MoveToCommand(element.GetPosition(LevelLayoutManager.LevelLayoutState));
+            var moveToNewPosition = new MoveToCommand(element.GetPosition(LevelLayoutManager.Instance.LevelLayoutState));
             var stopDrag = new StopDragCommand(); // OPTIMIZATION: sortir cette line de la loop
 
             cursorCommands.Enqueue(moveToWindow);

@@ -8,7 +8,7 @@ public delegate void LevelLayoutManagerDelegate(LevelLayoutManager levelLayoutMa
 public class LevelLayoutManager : Singleton<LevelLayoutManager>
 {
     #region Fields
-    [SerializeField] private static int _levelLayoutState = 0;
+    [SerializeField] private int _levelLayoutState = 0;
 
     [Header("MAIN SETTINGS")]
     [SerializeField] private LevelLayoutData _data;
@@ -24,13 +24,14 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     private bool _isLevelLayoutAnimationRunning = false;
     private bool _disableStartLayout = false;
 
+    private LevelData[] _currentLevelData = null;
     private float _timeStartLoadLayout = 0;
 
     private AbstractState_LevelLayoutManager _currentState;
     #endregion
 
     #region Properties
-    public static int LevelLayoutState
+    public int LevelLayoutState
     {
         get => _levelLayoutState;
         set
@@ -100,6 +101,11 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
             GameManager.Instance.Gamemode.OnCharacterKill -= OnCharacterKill;
         }
     }
+
+    void OnDestroy()
+    {
+        _levelLayoutState = 0;
+    }
     #endregion
 
     #region Load Layout methods
@@ -126,7 +132,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
     }
 
 #if UNITY_EDITOR
-    public static void LoadLayoutWithoutAnimation(int layout)
+    public void LoadLayoutWithoutAnimation(int layout)
     {
         var levelLayoutElements = GameObject.FindObjectsOfType<LevelLayoutElement>();
 
@@ -176,7 +182,7 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         }
     }
     #endregion
-
+    
     public void GoToNextState()
     {
         if (CurrentState is State_GrabStickmanToNextSpawnPoints)
@@ -198,7 +204,24 @@ public class LevelLayoutManager : Singleton<LevelLayoutManager>
         }
     }
 
-    #region Getter
+    #region Getter    
+    public LevelData GetLevelData()
+    {
+        if (_currentLevelData == null)
+        {
+            InitializeLevelData();
+        }
+
+        int index = _levelLayoutState;
+        return _currentLevelData[index];
+    }
+
+    void InitializeLevelData()
+    {
+        var levelDatas = GameObject.FindObjectsOfType<LevelData>();
+        _currentLevelData = levelDatas.OrderBy(x => x.ActiveOnLayout).ToArray();
+    }
+
     public bool DoStickmanCursorsCommandsEmpty()
     {
         for (int i = 0; i < _grabStickmanCursors.Length; i++)

@@ -32,11 +32,14 @@ public class LevelLayoutStateWindow : EditorWindow
     {
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
-        var inputLevelLayoutState = EditorGUILayout.IntSlider("Slider", LevelLayoutManager.LevelLayoutState, 0, 1);
+        if (LevelLayoutManager.Instance == null)
+            GUILayout.Label("You must have a LevelLayoutManager in your scene to use Level Layout window.");
 
-        if (inputLevelLayoutState != LevelLayoutManager.LevelLayoutState)
+        var inputLevelLayoutState = EditorGUILayout.IntSlider("Slider", LevelLayoutManager.Instance.LevelLayoutState, 0, 1);
+
+        if (inputLevelLayoutState != LevelLayoutManager.Instance.LevelLayoutState)
         {
-            LevelLayoutManager.LevelLayoutState = inputLevelLayoutState;
+            LevelLayoutManager.Instance.LevelLayoutState = inputLevelLayoutState;
             EditorPrefs.SetInt("LevelLayoutState", inputLevelLayoutState);
         }
     }
@@ -45,7 +48,10 @@ public class LevelLayoutStateWindow : EditorWindow
     #region Events handlers
     public void OnAfterAssemblyReload()
     {
-        LevelLayoutManager.LevelLayoutState = EditorPrefs.GetInt("LevelLayoutState", 0);
+        if (LevelLayoutManager.Instance != null)
+        {
+            LevelLayoutManager.Instance.LevelLayoutState = EditorPrefs.GetInt("LevelLayoutState", 0);
+        }
     }
     #endregion
     #endregion
