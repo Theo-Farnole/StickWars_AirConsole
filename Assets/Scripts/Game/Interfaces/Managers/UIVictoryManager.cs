@@ -67,6 +67,9 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
 
     public void LaunchVictoryAnimation(CharId winnerCharId)
     {
+        // stop music
+        GameObject.FindGameObjectWithTag("Music")?.SetActive(false);
+
         // setup delayed tasks
         float cachedAnimationDuration = SpecialTitleAnimationDuration;
 
@@ -105,8 +108,15 @@ public class UIVictoryManager : Singleton<UIVictoryManager>
         }
 #endif
 
+        // mute audio
+        AudioListener.volume = 0;
+
         AirConsole.instance.ShowAd();
-        AirConsole.instance.onAdComplete += (bool adWasShown) => SceneManager.LoadScene("SC_Menu_Main");
+        AirConsole.instance.onAdComplete += (bool adWasShown) =>
+        {
+            SceneManager.LoadScene("SC_Menu_Main");
+            AudioListener.volume = 1; // unmuted audio
+        };
     }
 
     void DeactivateGamePanel()

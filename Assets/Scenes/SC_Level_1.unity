@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 121774911}
   m_Layer: 0
   m_Name: SD_Game_Music
-  m_TagString: Untagged
+  m_TagString: Music
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
